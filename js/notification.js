@@ -73,36 +73,3 @@ async function markAsRead(id) {
   }
 }
 
-// ================== SOCKET.IO REAL-TIME SETUP ==================
-const socket = io("http://localhost:4000");
-
-const notifUser = JSON.parse(localStorage.getItem("notifUser"));
-if (notifUser && notifUser._id) {
-  socket.emit("register", notifUser._id);
-  console.log("🟢 Registered with Socket.IO:", notifUser._id);
-}
-
-// Listen for real-time notifications (from likes/comments)
-socket.on("newNotification", (data) => {
-  console.log("🔔 Real-time notification received:", data);
-
-  // 🔹 Show alert or toast (you can later replace this with custom UI)
-  alert(`🔔 ${data.message}`);
-
-  // 🔹 Update badge count visually
-  let count = parseInt(notifBadge.textContent || "0") + 1;
-  notifBadge.textContent = count;
-  notifBadge.classList.remove("hidden");
-
-  // 🔹 Add the new notification on top of the drawer list
-  if (notifList) {
-    const item = document.createElement("div");
-    item.className =
-      "p-3 rounded-md border bg-blue-50 hover:bg-gray-100 cursor-pointer transition";
-    item.innerHTML = `
-      <p class="text-sm font-semibold">${data.message}</p>
-      <span class="text-xs text-gray-400">${new Date().toLocaleString()}</span>
-    `;
-    notifList.prepend(item);
-  }
-});

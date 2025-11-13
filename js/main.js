@@ -66,3 +66,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+  const socket = io("https://fastconnect-rl5y.onrender.com");
+  socket.on("connect", () => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser")||"{}");
+    socket.emit("register", currentUser?.id);
+  });
+
+  socket.on("notification", payload => {
+    // show toast or refresh notifications list
+    console.log("notification", payload);
+  });
+
+  socket.on("postUpdated", post => { /* update feed DOM */ });
+  socket.on("likeUpdate", data => { /* update like count */ });

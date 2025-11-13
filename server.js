@@ -4,7 +4,10 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 const http = require('http');
-const { Server } = require('socket.io');
+// server.js (add near top after server creation)
+const { Server } = require("socket.io");
+
+
 
 /* ---------------- Import Routes ---------------- */
 const authRoutes = require('./routes/auth');
@@ -36,8 +39,8 @@ app.use('/api/profile', profileroutes);
 app.use('/api/search', searchRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-/* --------------------- Health check -------------------- */
-app.get('/api/health', (_req, res) => res.json({ ok: true }));
+// Optional health / root route (good for Render)
+app.get('/', (req, res) => res.send('✅ FastConnect backend is running'));
 
 /* --------------- Environment checks -------------- */
 if (!process.env.MONGO_URI) {
@@ -54,32 +57,31 @@ app.get("/config.js", (req, res) => {
   res.send(`window.__CONFIG__ = { API_BASE: "${process.env.API_BASE}" };`);
 });
 
-/* =========================================================
-   SOCKET.IO CONFIGURATION
-========================================================= */
 const io = new Server(server, {
-  cors: { origin: "*", methods: ["GET", "POST"] },
+  cors: {
+    origin: [
+      "https://fast-connect-mu.vercel.app", // replace with actual domain
+      "http://localhost:3000"
+    ],
+    methods: ["GET", "POST"],
+    credentials: true
+  }
 });
+const onlineUsers = new Map();
+app.set("io", io);
+app.set("onlineUsers", onlineUsers);
 
-// Global socket map
 io.on("connection", (socket) => {
-  console.log("⚡ User connected:", socket.id);
-
-  // Each user joins their personal room
   socket.on("register", (userId) => {
-    if (userId) {
-      socket.join(userId);
-      console.log(`📦 User ${userId} joined their personal room`);
-    }
+    if (userId) onlineUsers.set(String(userId), socket.id);
   });
 
   socket.on("disconnect", () => {
-    console.log("❌ User disconnected:", socket.id);
+    for (const [u, s] of onlineUsers.entries())
+      if (s === socket.id) onlineUsers.delete(u);
   });
 });
 
-// Export io to use in routes (for sending notifications)
-module.exports.io = io;
 
 /* =========================================================
    DATABASE CONNECTION + SERVER START
@@ -98,3 +100,4 @@ mongoose
     console.error('❌ MongoDB connection error:', err);
     process.exit(1);
   });
+

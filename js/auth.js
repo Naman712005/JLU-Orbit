@@ -159,16 +159,16 @@ otpForm.addEventListener("submit", async (e) => {
       body: JSON.stringify({ userId: pendingUserId, otp }),
     });
     const data = await res.json();
-if (res.ok) {
-  // expecting { token, user }
-  localStorage.setItem('authToken', data.token);
-  localStorage.setItem('currentUser', JSON.stringify(data.user));
-  localStorage.setItem('userName', data.user?.name || "User");
-  window.location.href = 'index.html';
-} else {
-  alert(data.error || 'OTP verification failed');
-}
+    if (res.ok) {
+      // expecting { token, user }
+      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("currentUser", JSON.stringify(data.user));
 
+      localStorage.setItem("userName", data.user?.name || "User");
+      window.location.href = "index.html";
+    } else {
+      alert(data.error || "OTP verification failed");
+    }
   } catch (err) {
     console.error(err);
     alert("Network error");

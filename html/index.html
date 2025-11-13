@@ -10,7 +10,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 
   </head>
   <body class="bg-gray-100">
@@ -352,15 +351,13 @@
   </div>
 </div>
 
-    <!-- ✅ Load backend config first -->
-    <script src="http://localhost:4000/config.js"></script>
 
     <!-- ✅ Define API_BASE globally (not const) -->
-    <script>
-      window.API_BASE =
-        window.__CONFIG__?.API_BASE || "http://localhost:4000/api";
-      console.log("✅ API_BASE loaded:", window.API_BASE);
-    </script>
+<script>
+  window.API_BASE = "https://fastconnect-rl5y.onrender.com/api";
+  console.log("✅ API_BASE loaded:", window.API_BASE);
+</script>
+
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const name = localStorage.getItem("userName") || "User";
@@ -377,6 +374,11 @@
         if (navUser) navUser.textContent = initials.toUpperCase();
       });
     </script>
+<script src="https://fastconnect-rl5y.onrender.com/socket.io/socket.io.js"></script>
+<script>
+  const socket = io("https://fastconnect-rl5y.onrender.com");
+</script>
+
     <script src="../js/feed.js"></script>
     <script src="../js/groups.js"></script>
     <script src="../js/profile.js"></script>

@@ -1,5 +1,5 @@
 // API base (adjust if your backend runs elsewhere)
-const API_BASE = "http://localhost:4000/api";
+const API_BASE = "https://fastconnect-rl5y.onrender.com/api";
 
 // container and links for toggling UI
 const container = document.querySelector(".container");

@@ -161,7 +161,7 @@ async function createPostHandler(e) {
       formData.append("tags", tags);
       formData.append("image", file);
 
-      res = await fetch("http://localhost:4000/api/posts/create", {
+      res = await fetch("https://fastconnect-rl5y.onrender.com/api/posts/create", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -173,7 +173,7 @@ async function createPostHandler(e) {
       const name = currentUser.name || "User";
       const body = { type, title, content, tags, image: imageUrl, name };
 
-      res = await fetch("http://localhost:4000/api/posts/create", {
+      res = await fetch("https://fastconnect-rl5y.onrender.com/api/posts/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

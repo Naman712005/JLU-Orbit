@@ -16,7 +16,7 @@ async function loadGroups() {
 
 // ---------- REPLACE initGroupPage() and helpers with this ----------
 function initGroupPage() {
-  const API_BASE = "http://localhost:4000/api";
+  const API_BASE = "https://fastconnect-rl5y.onrender.com/api";
   const rawCurrentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
   // Normalize user id (backend might return `id` or `_id`)
   const currentUserId = String(rawCurrentUser.id || rawCurrentUser._id || "");
@@ -193,7 +193,7 @@ async function joinGroup(groupId) {
   const token = getAuthToken();
   if (!token) return alert("Please login first");
   try {
-    const res = await fetch(`http://localhost:4000/api/groups/${groupId}/join`, {
+    const res = await fetch(`https://fastconnect-rl5y.onrender.com/api/groups/${groupId}/join`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -219,7 +219,7 @@ async function leaveGroup(groupId) {
   const token = getAuthToken();
   if (!token) return alert("Please login first");
   try {
-    const res = await fetch(`http://localhost:4000/api/groups/${groupId}/leave`, {
+    const res = await fetch(`https://fastconnect-rl5y.onrender.com/api/groups/${groupId}/leave`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -257,7 +257,7 @@ async function editGroup(groupId) {
   };
 
   try {
-    const res = await fetch(`http://localhost:4000/api/groups/${groupId}`, {
+    const res = await fetch(`https://fastconnect-rl5y.onrender.com/api/groups/${groupId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -287,7 +287,7 @@ async function deleteGroup(groupId) {
   if (!token) return alert("Please login first");
   if (!confirm("Are you sure you want to delete this group?")) return;
   try {
-    const res = await fetch(`http://localhost:4000/api/groups/${groupId}`, {
+    const res = await fetch(`https://fastconnect-rl5y.onrender.com/api/groups/${groupId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });

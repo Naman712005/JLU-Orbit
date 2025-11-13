@@ -30,6 +30,9 @@ app.use(express.urlencoded({ extended: true }));
 /* ----------- Static files (uploads) -------------- */
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+/* ✅ added for Railway deployment: Serve frontend from /html */
+app.use(express.static(path.join(__dirname, 'html')));
+
 /* --------------------- Routes -------------------- */
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
@@ -41,6 +44,11 @@ app.use("/api/notifications", notificationRoutes);
 
 // Optional health / root route (good for Render)
 app.get('/', (req, res) => res.send('✅ FastConnect backend is running'));
+
+/* ✅ added for Railway deployment: fallback for frontend routes */
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'html', 'index.html'));
+});
 
 /* --------------- Environment checks -------------- */
 if (!process.env.MONGO_URI) {

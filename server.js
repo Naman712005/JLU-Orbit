@@ -12,6 +12,13 @@ const http = require('http');
 const { Server } = require("socket.io");
 
 
+app.use(express.static(path.join(__dirname, 'html')));
+
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'html', 'index.html'));
+});
+
 
 /* ---------------- Import Routes ---------------- */
 const authRoutes = require('./routes/auth');
@@ -44,8 +51,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 
-/* ✅ added for Railway deployment: Serve frontend from /html */
-app.use(express.static(path.join(__dirname, 'html')));
 
 /* ---------------------- Dynamic front-end config ----------------------
    This responds to /config.js with JS that sets window.__CONFIG__.
@@ -74,10 +79,6 @@ app.use("/api/notifications", notificationRoutes);
 // Optional health / root route (good for Render)
 app.get('/', (req, res) => res.send('✅ FastConnect backend is running'));
 
-/* ✅ added for Railway deployment: fallback for frontend routes */
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'html', 'index.html'));
-});
 
 /* --------------- Environment checks -------------- */
 if (!process.env.MONGO_URI) {

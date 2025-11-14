@@ -15,8 +15,8 @@ const { Server } = require("socket.io");
 app.use(express.static(path.join(__dirname, 'html')));
 
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'html', 'index.html'));
+app.get("/**", (req, res) => {
+  res.sendFile(path.join(__dirname, "html", "index.html"));
 });
 
 

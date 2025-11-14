@@ -87,7 +87,7 @@ io.on("connection", (socket) => {
 });
 
 /********************* SPA FALLBACK (Express 5 SAFE) *********************/
-app.get("*", (req, res) => {
+app.use((req, res, next) => {
   if (
     req.path.startsWith('/api') ||
     req.path.startsWith('/uploads') ||
@@ -98,6 +98,7 @@ app.get("*", (req, res) => {
 
   res.sendFile(path.join(__dirname, 'html', 'index.html'));
 });
+
 
 /********************* DB + SERVER START *********************/
 const PORT = process.env.PORT || 4000;

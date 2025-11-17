@@ -67,6 +67,8 @@ git push -u origin main
 - **Start Command**: `npm start`
 - **Instance Type**: Free
 
+**✅ No special flags needed** - The dependency conflict has been fixed!
+
 ### C. Add Environment Variables
 
 Click **Add Environment Variable** and add ALL of these:

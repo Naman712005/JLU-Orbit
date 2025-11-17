@@ -5,7 +5,7 @@ const authMiddleware = require("../middleware/authMiddleware"); // adjust path
 const Post = require("../models/Post");
 const User = require("../models/User");
 const Notification = require("../models/Notification");
-const { upload, isCloudinaryConfigured } = require("../utils/cloudinary");
+const { upload, isCloudinaryConfigured, uploadToCloudinary } = require("../utils/cloudinary");
 
 const router = express.Router();
 
@@ -46,10 +46,24 @@ router.post(
         .map((t) => t.trim().toLowerCase())
         .filter(Boolean);
 
-      // Use Cloudinary URL if configured, otherwise local path
-      const imagePath = req.file
-        ? (isCloudinaryConfigured() ? req.file.path : `/uploads/${req.file.filename}`)
-        : image || null;
+      // Handle image upload
+      let imagePath = image || null;
+      
+      if (req.file) {
+        // If Cloudinary is configured, upload to cloud
+        if (isCloudinaryConfigured()) {
+          try {
+            imagePath = await uploadToCloudinary(req.file.path);
+          } catch (cloudError) {
+            console.error('Cloudinary upload failed:', cloudError);
+            // Fall back to local path if Cloudinary fails
+            imagePath = `/uploads/${req.file.filename}`;
+          }
+        } else {
+          // Use local path
+          imagePath = `/uploads/${req.file.filename}`;
+        }
+      }
 
       const post = await Post.create({
         author: req.user.id,
@@ -106,7 +120,16 @@ router.put(
 
       // Update image if new one is uploaded or provided
       if (req.file) {
-        post.image = isCloudinaryConfigured() ? req.file.path : `/uploads/${req.file.filename}`;
+        if (isCloudinaryConfigured()) {
+          try {
+            post.image = await uploadToCloudinary(req.file.path);
+          } catch (cloudError) {
+            console.error('Cloudinary upload failed:', cloudError);
+            post.image = `/uploads/${req.file.filename}`;
+          }
+        } else {
+          post.image = `/uploads/${req.file.filename}`;
+        }
       } else if (image) {
         post.image = image;
       }

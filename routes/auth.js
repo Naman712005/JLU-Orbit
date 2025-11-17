@@ -39,15 +39,29 @@ router.post("/signup", async (req, res) => {
     await user.save();
 
     // Send OTP email
-    await sendOTP(email, otp);
-
-    res.json({
-      message: "Signup successful. Please verify OTP sent to your email.",
-      userId: user._id,
-    });
+    try {
+      await sendOTP(email, otp);
+      console.log(`✅ OTP sent to ${email}`);
+      
+      res.json({
+        message: "Signup successful. Please verify OTP sent to your email.",
+        userId: user._id,
+      });
+    } catch (emailError) {
+      // If email fails, still allow user to continue but log the error
+      console.error('❌ Failed to send OTP email:', emailError.message);
+      
+      // Delete the user since they can't verify without OTP
+      await User.findByIdAndDelete(user._id);
+      
+      return res.status(500).json({ 
+        error: 'Failed to send verification email. Please check your email address and try again.',
+        details: emailError.message
+      });
+    }
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+    console.error('❌ Signup error:', err);
+    res.status(500).json({ error: err.message || 'Signup failed' });
   }
 });
 

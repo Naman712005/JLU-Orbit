@@ -38,6 +38,21 @@ function logout() {
   window.location.href = "auth.html";
 }
 
+// Mobile Menu Toggle Functions
+function toggleMobileMenu() {
+  const menu = document.getElementById("mobileMenu");
+  if (menu) {
+    menu.classList.toggle("hidden");
+  }
+}
+
+function closeMobileMenu() {
+  const menu = document.getElementById("mobileMenu");
+  if (menu) {
+    menu.classList.add("hidden");
+  }
+}
+
 
 function escapeHtml(str = "") {
   return String(str)

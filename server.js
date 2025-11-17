@@ -18,15 +18,19 @@ const app = express();
 const server = http.createServer(app);
 
 /********************* CORS *********************/
+// Auto-detect FRONTEND_URL: Use env var, or Render URL, or accept all origins
 const FRONTEND_URL =
   process.env.FRONTEND_URL ||
   (process.env.RENDER_EXTERNAL_URL ? `https://${process.env.RENDER_EXTERNAL_URL}` : null);
 
+// Allow all origins in development/when not configured
 app.use(cors({
   origin: FRONTEND_URL || "*",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: false
 }));
+
+console.log('🌐 CORS configured for origin:', FRONTEND_URL || "* (all origins)");
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -37,6 +41,7 @@ app.use(express.static(path.join(__dirname, 'html')));
 
 /********************* DYNAMIC FRONTEND CONFIG *********************/
 app.get('/config.js', (req, res) => {
+  // Auto-detect API base URL
   const apiBase =
     process.env.API_BASE ||
     (process.env.RENDER_EXTERNAL_URL ? `https://${process.env.RENDER_EXTERNAL_URL}/api` : '/api');

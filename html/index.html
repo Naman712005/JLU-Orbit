@@ -11,7 +11,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
   </head>
-  <body class="bg-gray-100">
+  <body class="bg-gradient-to-br from-gray-50 via-blue-50 to-cyan-50 min-h-screen">
     <script>
       // Redirect to auth if not logged in
       const token = localStorage.getItem("authToken");
@@ -20,44 +20,47 @@
 
     <!-- MAIN APP -->
     <div id="mainApp" class="min-h-screen">
-      <nav class="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3">
+    <nav class="bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-700 px-4 md:px-6 py-3 shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
-          <div class="flex items-center space-x-2 text-white font-bold text-lg">
+          <div class="flex items-center space-x-2 text-white font-bold text-lg md:text-xl">
             <i class="fas fa-rocket"></i><span>FAST-Connect</span>
           </div>
-          <ul class="hidden md:flex space-x-6 text-white font-medium">
+          
+          <!-- Desktop Navigation -->
+          <ul class="hidden lg:flex space-x-6 text-white font-medium">
             <li
               onclick="showTab('feed')"
-              class="hover:text-gray-200 cursor-pointer"
+              class="hover:text-cyan-200 cursor-pointer transition-colors duration-200"
             >
               <i class="fas fa-stream"></i> Feed
             </li>
             <li
               onclick="showTab('profile')"
-              class="hover:text-gray-200 cursor-pointer"
+              class="hover:text-cyan-200 cursor-pointer transition-colors duration-200"
             >
               <i class="fas fa-user"></i> Profile
             </li>
             <li
               onclick="showTab('groups')"
-              class="hover:text-gray-200 cursor-pointer"
+              class="hover:text-cyan-200 cursor-pointer transition-colors duration-200"
             >
               <i class="fas fa-users"></i> Groups
             </li>
             <li
               onclick="showTab('research')"
-              class="hover:text-gray-200 cursor-pointer"
+              class="hover:text-cyan-200 cursor-pointer transition-colors duration-200"
             >
               <i class="fas fa-flask"></i> Research
             </li>
             <li
               onclick="showTab('search')"
-              class="hover:text-gray-200 cursor-pointer"
+              class="hover:text-cyan-200 cursor-pointer transition-colors duration-200"
             >
               <i class="fas fa-search"></i> Search
             </li>
           </ul>
-          <div class="flex items-center space-x-4">
+          
+          <div class="flex items-center space-x-2 md:space-x-4">
             <div class="relative">
               <button id="notifBtn" class="relative text-white">
                 <i class="fas fa-bell text-xl cursor-pointer"></i>
@@ -71,62 +74,103 @@
 
             <div
               id="navUser"
-              class="w-8 h-8 flex items-center justify-center rounded-full bg-indigo-300 text-white font-bold cursor-pointer"
+              class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-cyan-400 text-white font-bold cursor-pointer shadow-md hover:scale-110 transition-transform"
             >
               U
             </div>
             <button
               id="logoutBtn"
               onclick="logout()"
-              class="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700"
+              class="hidden md:block bg-red-500 text-white px-3 py-1.5 rounded-lg hover:bg-red-600 transition-colors font-medium"
             >
               Logout
             </button>
+            
+            <!-- Mobile Menu Button -->
+            <button
+              id="mobileMenuBtn"
+              class="lg:hidden text-white text-2xl focus:outline-none"
+              onclick="toggleMobileMenu()"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Mobile Menu Overlay -->
+        <div id="mobileMenu" class="hidden lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40" onclick="closeMobileMenu()">
+          <div class="bg-gradient-to-b from-cyan-600 to-indigo-700 w-64 h-full shadow-2xl p-6" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-8">
+              <h3 class="text-white font-bold text-lg">Menu</h3>
+              <button onclick="closeMobileMenu()" class="text-white text-2xl">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <ul class="space-y-4">
+              <li onclick="showTab('feed'); closeMobileMenu()" class="text-white text-lg font-medium cursor-pointer hover:text-cyan-200 flex items-center space-x-3">
+                <i class="fas fa-stream w-6"></i><span>Feed</span>
+              </li>
+              <li onclick="showTab('profile'); closeMobileMenu()" class="text-white text-lg font-medium cursor-pointer hover:text-cyan-200 flex items-center space-x-3">
+                <i class="fas fa-user w-6"></i><span>Profile</span>
+              </li>
+              <li onclick="showTab('groups'); closeMobileMenu()" class="text-white text-lg font-medium cursor-pointer hover:text-cyan-200 flex items-center space-x-3">
+                <i class="fas fa-users w-6"></i><span>Groups</span>
+              </li>
+              <li onclick="showTab('research'); closeMobileMenu()" class="text-white text-lg font-medium cursor-pointer hover:text-cyan-200 flex items-center space-x-3">
+                <i class="fas fa-flask w-6"></i><span>Research</span>
+              </li>
+              <li onclick="showTab('search'); closeMobileMenu()" class="text-white text-lg font-medium cursor-pointer hover:text-cyan-200 flex items-center space-x-3">
+                <i class="fas fa-search w-6"></i><span>Search</span>
+              </li>
+              <li onclick="logout()" class="text-red-300 text-lg font-medium cursor-pointer hover:text-red-200 flex items-center space-x-3 mt-8 pt-8 border-t border-white border-opacity-20">
+                <i class="fas fa-sign-out-alt w-6"></i><span>Logout</span>
+              </li>
+            </ul>
           </div>
         </div>
       </nav>
 
       <!-- FEED -->
-      <section id="feed" class="p-6 max-w-3xl mx-auto">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-2xl font-bold">Community Feed</h2>
+      <section id="feed" class="p-4 md:p-6 max-w-4xl mx-auto">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
+          <h2 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent">Community Feed</h2>
           <button
             id="createPostBtn"
             onclick="openPostModal()"
-            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2"
+            class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center space-x-2 font-medium w-full sm:w-auto justify-center"
           >
-            <i class="fas fa-pencil-alt"></i> Create Post
+            <i class="fas fa-pencil-alt"></i> <span>Create Post</span>
           </button>
         </div>
 
-        <div id="filters" class="flex space-x-2 mb-6">
+        <div id="filters" class="flex flex-wrap gap-2 mb-6">
           <button
             data-type="All"
-            class="filter-btn px-4 py-1 border rounded-full bg-blue-600 text-white font-medium"
+            class="filter-btn px-3 md:px-4 py-1.5 border rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-medium text-sm transition-all duration-300 hover:shadow-md"
           >
             All Posts
           </button>
           <button
             data-type="Discussion"
-            class="filter-btn px-4 py-1 border rounded-full bg-gray-800 text-white font-medium"
+            class="filter-btn px-3 md:px-4 py-1.5 border rounded-full bg-gray-700 text-white font-medium text-sm transition-all duration-300 hover:shadow-md hover:bg-gray-600"
           >
             Discussions
           </button>
           <button
             data-type="Question"
-            class="filter-btn px-4 py-1 border rounded-full bg-gray-800 text-white font-medium"
+            class="filter-btn px-3 md:px-4 py-1.5 border rounded-full bg-gray-700 text-white font-medium text-sm transition-all duration-300 hover:shadow-md hover:bg-gray-600"
           >
             Questions
           </button>
           <button
             data-type="Announcement"
-            class="filter-btn px-4 py-1 border rounded-full bg-gray-800 text-white font-medium"
+            class="filter-btn px-3 md:px-4 py-1.5 border rounded-full bg-gray-700 text-white font-medium text-sm transition-all duration-300 hover:shadow-md hover:bg-gray-600"
           >
             Announcements
           </button>
           <button
             data-type="Project Work"
-            class="filter-btn px-4 py-1 border rounded-full bg-gray-800 text-white font-medium"
+            class="filter-btn px-3 md:px-4 py-1.5 border rounded-full bg-gray-700 text-white font-medium text-sm transition-all duration-300 hover:shadow-md hover:bg-gray-600"
           >
             Project Work
           </button>
@@ -136,26 +180,26 @@
       </section>
 
       <!-- Profile/Groups/Research/Search -->
-      <section id="profile" class="hidden p-6 max-w-4xl mx-auto">
-        <h2 class="text-2xl font-bold">My Profile</h2>
+      <section id="profile" class="hidden p-4 md:p-6 max-w-4xl mx-auto">
+        <h2 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent mb-6">My Profile</h2>
         <!-- profile.html will be loaded here dynamically -->
       </section>
 
-      <section id="groups" class="hidden p-6 max-w-5xl mx-auto">
+      <section id="groups" class="hidden p-4 md:p-6 max-w-6xl mx-auto">
         <div id="groupContent" class="text-center text-gray-500">
           Loading groups...
         </div>
       </section>
 
-      <section id="research" class="hidden p-6 max-w-5xl mx-auto">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-2xl font-bold">Research Hub</h2>
+      <section id="research" class="hidden p-4 md:p-6 max-w-6xl mx-auto">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
+          <h2 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent">Research Hub</h2>
           <button
             id="addResearchBtn"
             onclick="openResearchModal()"
-            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2"
+            class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center space-x-2 font-medium w-full sm:w-auto justify-center"
           >
-            <i class="fas fa-plus"></i> Add Research
+            <i class="fas fa-plus"></i> <span>Add Research</span>
           </button>
         </div>
 
@@ -164,28 +208,28 @@
         </div>
       </section>
 
-      <section id="search" class="hidden p-6 max-w-4xl mx-auto">
-        <h2 class="text-2xl font-bold mb-6">Search & Discover</h2>
+      <section id="search" class="hidden p-4 md:p-6 max-w-4xl mx-auto">
+        <h2 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent mb-6">Search & Discover</h2>
 
         <!-- Search Input and Button -->
-        <div class="flex items-center space-x-2 mb-6">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 mb-6">
           <input
             id="navSearchInput"
             type="text"
             placeholder="Search posts..."
-            class="flex-1 rounded px-3 py-2 text-sm border focus:outline-none focus:ring-2 focus:ring-blue-400"
+            class="flex-1 rounded-xl px-4 py-2.5 text-sm border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
           />
           <button
             id="navSearchBtn"
-            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm transition"
+            class="bg-gradient-to-r from-blue-600 to-cyan-600 hover:shadow-lg text-white px-6 py-2.5 rounded-xl text-sm transition-all duration-300 font-medium"
           >
-            Search
+            <i class="fas fa-search mr-2"></i>Search
           </button>
         </div>
 
         <!-- Search Results -->
-        <div class="bg-white shadow rounded-lg p-4">
-          <h3 class="font-bold mb-3 text-lg">Results</h3>
+        <div class="bg-white shadow-lg rounded-2xl p-4 md:p-6">
+          <h3 class="font-bold mb-4 text-lg md:text-xl">Results</h3>
           <ul id="searchResults" class="space-y-3 text-gray-700"></ul>
         </div>
       </section>
@@ -194,18 +238,18 @@
     <!-- Post Modal -->
     <div
       id="postModal"
-      class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
     >
-      <div class="bg-white rounded-2xl w-96 p-6 relative shadow-lg">
-        <h2 class="text-xl font-bold text-center mb-4">Create a Post</h2>
+      <div class="bg-white rounded-2xl w-full max-w-md p-6 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+        <h2 class="text-xl md:text-2xl font-bold text-center mb-4 bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent">Create a Post</h2>
         <form id="postForm" class="space-y-4">
           <div>
-            <label class="block text-gray-700 font-medium mb-1"
+            <label class="block text-gray-700 font-medium mb-1 text-sm"
               >Post Type</label
             >
             <select
               id="postType"
-              class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              class="w-full px-4 py-2 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
             >
               <option value="Event">Event</option>
               <option value="Question">Question</option>
@@ -215,72 +259,73 @@
             </select>
           </div>
           <div>
-            <label class="block text-gray-700 font-medium mb-1">Title</label>
+            <label class="block text-gray-700 font-medium mb-1 text-sm">Title</label>
             <input
               id="postTitle"
               type="text"
               placeholder="Post Title"
-              class="w-full px-4 py-2 border rounded-lg"
+              class="w-full px-4 py-2 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
               required
             />
           </div>
           <div>
-            <label class="block text-gray-700 font-medium mb-1">Content</label>
+            <label class="block text-gray-700 font-medium mb-1 text-sm">Content</label>
             <textarea
               id="postContent"
               placeholder="Write your content..."
-              class="w-full px-4 py-2 border rounded-lg"
+              class="w-full px-4 py-2 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
+              rows="4"
               required
             ></textarea>
           </div>
           <div>
-            <label class="block text-gray-700 font-medium mb-1"
+            <label class="block text-gray-700 font-medium mb-1 text-sm"
               >Tags (comma separated)</label
             >
             <input
               id="postTags"
               type="text"
               placeholder="e.g. AI, Education"
-              class="w-full px-4 py-2 border rounded-lg"
+              class="w-full px-4 py-2 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
             />
           </div>
           <div>
-            <label class="block text-gray-700 font-medium mb-1"
+            <label class="block text-gray-700 font-medium mb-1 text-sm"
               >Image URL</label
             >
             <input
               id="postImage"
               type="text"
               placeholder="Enter image URL"
-              class="w-full px-4 py-2 border rounded-lg"
+              class="w-full px-4 py-2 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
             />
           </div>
           <div>
-            <label class="block text-gray-700 font-medium mb-1"
+            <label class="block text-gray-700 font-medium mb-1 text-sm"
               >Or upload from device</label
             >
             <input
               id="postImageFile"
               type="file"
               accept="image/*"
-              class="w-full px-4 py-2 border rounded-lg"
+              class="w-full px-4 py-2 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
             />
             <p class="text-xs text-gray-500 mt-1">
               If a file is selected, the Image URL field is ignored.
             </p>
           </div>
 
-          <div class="flex justify-between">
+          <div class="flex gap-3 mt-2">
             <button
               type="button"
               onclick="closePostModal()"
-              class="px-4 py-2 bg-gray-300 rounded-lg"
+              class="flex-1 px-4 py-2.5 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors font-medium"
             >
               Cancel
             </button>
             <button
               type="submit"
-              class="px-4 py-2 bg-blue-600 text-white rounded-lg"
+              class="flex-1 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl hover:shadow-lg transition-all font-medium"
             >
               Post
             </button>
@@ -335,30 +380,36 @@
     <!-- 🔔 Notification Drawer -->
     <div
       id="notifDrawer"
-      class="hidden fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50 transition-transform duration-300 transform translate-x-full"
+      class="hidden fixed top-0 right-0 h-full w-80 max-w-[90vw] bg-white shadow-2xl z-50 transition-transform duration-300 transform translate-x-full"
     >
-      <div class="flex items-center justify-between p-4 border-b">
-        <h2 class="text-lg font-semibold">Notifications</h2>
-        <button id="closeNotifBtn" class="text-gray-500 hover:text-gray-800">
+      <div class="flex items-center justify-between p-4 border-b bg-gradient-to-r from-cyan-600 to-indigo-600">
+        <h2 class="text-lg font-semibold text-white"><i class="fas fa-bell mr-2"></i>Notifications</h2>
+        <button id="closeNotifBtn" class="text-white hover:text-cyan-200">
           <i class="fa-solid fa-xmark text-xl"></i>
         </button>
       </div>
 
       <div
         id="notifList"
-        class="overflow-y-auto h-[calc(100%-60px)] p-4 space-y-3"
+        class="overflow-y-auto h-[calc(100%-60px)] p-4 space-y-3 bg-gray-50"
       >
         <!-- Notifications will load here -->
       </div>
     </div>
     <script src="/config.js"></script>
-
 <script>
-  // Fallback if config.js not loaded for some reason
-window.API_BASE = window.location.origin + "/api";
-
-  console.log("✅ API_BASE loaded:", window.API_BASE);
+  // Wait for config.js to load
+  document.addEventListener("DOMContentLoaded", () => {
+    if (window.__CONFIG__ && window.__CONFIG__.API_BASE) {
+      window.API_BASE = window.__CONFIG__.API_BASE;
+      console.log("Using API_BASE from config.js:", window.API_BASE);
+    } else {
+      window.API_BASE = window.location.origin + "/api";
+      console.warn("config.js missing — using fallback API_BASE:", window.API_BASE);
+    }
+  });
 </script>
+
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const name = localStorage.getItem("userName") || "User";

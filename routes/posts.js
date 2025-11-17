@@ -1,22 +1,13 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const multer = require("multer");
 const path = require("path");
 const authMiddleware = require("../middleware/authMiddleware"); // adjust path
 const Post = require("../models/Post");
 const User = require("../models/User");
 const Notification = require("../models/Notification");
+const { upload, isCloudinaryConfigured } = require("../utils/cloudinary");
 
 const router = express.Router();
-
-/* ------------ Multer setup for multipart /create -------------- */
-const storage = multer.diskStorage({
-  destination: (req, file, cb) =>
-    cb(null, path.join(__dirname, "..", "uploads")),
-  filename: (req, file, cb) =>
-    cb(null, Date.now() + path.extname(file.originalname)),
-});
-const upload = multer({ storage });
 
 /* =========================================================
    GET /api/posts
@@ -55,8 +46,9 @@ router.post(
         .map((t) => t.trim().toLowerCase())
         .filter(Boolean);
 
+      // Use Cloudinary URL if configured, otherwise local path
       const imagePath = req.file
-        ? `/uploads/${req.file.filename}`
+        ? (isCloudinaryConfigured() ? req.file.path : `/uploads/${req.file.filename}`)
         : image || null;
 
       const post = await Post.create({
@@ -114,7 +106,7 @@ router.put(
 
       // Update image if new one is uploaded or provided
       if (req.file) {
-        post.image = `/uploads/${req.file.filename}`;
+        post.image = isCloudinaryConfigured() ? req.file.path : `/uploads/${req.file.filename}`;
       } else if (image) {
         post.image = image;
       }

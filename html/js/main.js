@@ -84,14 +84,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Connect socket.io to same origin. If you hosted API_BASE as a full URL like https://<app>.onrender.com/api,
-// strip the /api to get base origin. Fallback to automatic same origin.
-const socketOrigin = (window.__CONFIG__ && window.__CONFIG__.API_BASE)
-  ? window.__CONFIG__.API_BASE.replace(/\/api\/?$/, '')
-  : '';
-const socket = socketOrigin ? io(socketOrigin) : io(); // io() => same origin
+// Connect socket.io to same origin if the client library is loaded.
+// This avoids runtime errors when /socket.io/socket.io.js is not included.
+let socket = null;
+if (typeof io !== 'undefined') {
+  const socketOrigin = (window.__CONFIG__ && window.__CONFIG__.API_BASE)
+    ? window.__CONFIG__.API_BASE.replace(/\/api\/?$/, '')
+    : '';
+  socket = socketOrigin ? io(socketOrigin) : io(); // io() => same origin
+
   socket.on("connect", () => {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser")||"{}");
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
     socket.emit("register", currentUser?.id);
   });
 
@@ -102,3 +105,6 @@ const socket = socketOrigin ? io(socketOrigin) : io(); // io() => same origin
 
   socket.on("postUpdated", post => { /* update feed DOM */ });
   socket.on("likeUpdate", data => { /* update like count */ });
+} else {
+  console.warn('Socket.io client not loaded; realtime features disabled.');
+}

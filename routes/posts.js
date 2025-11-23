@@ -218,39 +218,46 @@ router.post("/:postId/like", authMiddleware, async (req, res) => {
     const post = await Post.findById(req.params.postId);
     if (!post) return res.status(404).json({ error: "Post not found" });
 
-    const userId = req.user.id;
-    const hasLiked = post.likes.some((id) => id.toString() === userId);
+    const userId = String(req.user.id);
+    const authorId = String(post.author);
+    const hasLiked = post.likes.some((id) => String(id) === userId);
 
     if (hasLiked) {
-      post.likes = post.likes.filter((id) => id.toString() !== userId);
+      post.likes = post.likes.filter((id) => String(id) !== userId);
     } else {
       post.likes.push(userId);
     }
 
-    // ✅ Create notification only if it's not the author's own like
     const actor = await User.findById(userId).select("name");
-    await Notification.create({
-      user: post.author, // receiver (post owner)
-      message: `${actor?.name || "Someone"} liked your post "${post.title}"`,
-      link: `/post/${post._id}`,
-    });
 
-    // After await Notification.create(...)
-    const io = req.app.get("io");
-    const onlineUsers = req.app.get("onlineUsers");
-    const socketId = onlineUsers.get(String(post.author));
-    if (String(post.author) !== String(userId)) {
-    if (socketId && io) {
-      io.to(socketId).emit("notification", {
-        type: "like",
-        message: `${actor?.name || "Someone"} liked your post "${post.title}"`,
+    // Create notification & emit only if user is not liking their own post
+    if (authorId !== userId) {
+      const message = `${actor?.name || "Someone"} liked your post "${post.title}"`;
+
+      const notification = await Notification.create({
+        user: authorId,
+        message,
         link: `/post/${post._id}`,
       });
-    }}
+
+      const io = req.app.get("io");
+      const onlineUsers = req.app.get("onlineUsers");
+      if (io && onlineUsers) {
+        const socketId = onlineUsers.get(authorId);
+        if (socketId) {
+          io.to(socketId).emit("notification", {
+            type: "like",
+            message,
+            link: `/post/${post._id}`,
+            id: notification._id,
+          });
+        }
+      }
+    }
 
     await post.save();
 
-    const liked = post.likes.some((id) => id.toString() === userId);
+    const liked = post.likes.some((id) => String(id) === userId);
     res.json({ likesCount: post.likes.length, liked });
   } catch (err) {
     res
@@ -264,7 +271,7 @@ router.post("/:postId/like", authMiddleware, async (req, res) => {
 ========================================================= */
 router.post("/:postId/comment", authMiddleware, async (req, res) => {
   try {
-    console.log("🔹 Comment API triggered by user:", req.user); // <-- log req.user
+    console.log("🔹 Comment API triggered by user:", req.user);
     const { text } = req.body;
 
     if (!text || !String(text).trim()) {
@@ -274,27 +281,39 @@ router.post("/:postId/comment", authMiddleware, async (req, res) => {
     const post = await Post.findById(req.params.postId);
     if (!post) return res.status(404).json({ error: "Post not found" });
 
-    post.comments.push({ user: req.user.id, text: String(text).trim() });
+    const userId = String(req.user.id);
+    const authorId = String(post.author);
+
+    post.comments.push({ user: userId, text: String(text).trim() });
     await post.save();
 
-    const actor = await User.findById(req.user.id).select("name");
-    console.log("🔹 Actor fetched:", actor); // <-- log user details
-// Notify post author only if the commenter is NOT the author
-if (String(req.user.id) !== String(post.author)) {
-  const notification = await Notification.create({
-    user: post.author,
-    message: `${actor?.name || "Someone"} commented on your post "${post.title}"`,
-    link: `/post/${post._id}`,
-  });
+    const actor = await User.findById(userId).select("name");
+    console.log("🔹 Actor fetched:", actor);
 
-  const io = req.app.get("io");
-  const onlineUsers = req.app.get("onlineUsers");
-  const socketId = onlineUsers.get(String(post.author));
+    // Notify post author only if the commenter is NOT the author
+    if (authorId !== userId) {
+      const message = `${actor?.name || "Someone"} commented on your post "${post.title}"`;
 
-  if (socketId && io) {
-    io.to(socketId).emit("notification", { type: "comment", notification });
-  }
-}
+      const notification = await Notification.create({
+        user: authorId,
+        message,
+        link: `/post/${post._id}`,
+      });
+
+      const io = req.app.get("io");
+      const onlineUsers = req.app.get("onlineUsers");
+      if (io && onlineUsers) {
+        const socketId = onlineUsers.get(authorId);
+        if (socketId) {
+          io.to(socketId).emit("notification", {
+            type: "comment",
+            message,
+            link: `/post/${post._id}`,
+            id: notification._id,
+          });
+        }
+      }
+    }
 
     const updatedPost = await Post.findById(post._id)
       .populate("author", "name")

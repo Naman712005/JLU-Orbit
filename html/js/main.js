@@ -99,12 +99,22 @@ if (typeof io !== 'undefined') {
   });
 
   socket.on("notification", payload => {
-    // show toast or refresh notifications list
+    // Refresh notifications list and update badge in realtime
     console.log("notification", payload);
+    if (typeof loadNotifications === "function") {
+      loadNotifications();
+    }
+    const badge = document.getElementById("notifBadge");
+    if (badge) {
+      // If badge is hidden or empty, set to 1; otherwise increment
+      const current = parseInt(badge.textContent || "0", 10) || 0;
+      badge.textContent = String(current + 1);
+      badge.classList.remove("hidden");
+    }
   });
 
-  socket.on("postUpdated", post => { /* update feed DOM */ });
-  socket.on("likeUpdate", data => { /* update like count */ });
+  socket.on("postUpdated", post => { /* update feed DOM if desired */ });
+  socket.on("likeUpdate", data => { /* update like count if desired */ });
 } else {
   console.warn('Socket.io client not loaded; realtime features disabled.');
 }

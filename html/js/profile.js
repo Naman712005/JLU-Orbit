@@ -1,5 +1,5 @@
 // — dynamic API base that gets set by the server via /config.js — fallback to relative path
-const API_BASE = (window.__CONFIG__ && window.__CONFIG__.API_BASE) || (location.origin + '/api') || '/api';
+var API_BASE = (window.__CONFIG__ && window.__CONFIG__.API_BASE) || (location.origin + '/api') || '/api';
 /* ---------------- PROFILE TAB ---------------- */
 async function loadProfilePage() {
   try {

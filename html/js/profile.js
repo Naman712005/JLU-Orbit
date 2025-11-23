@@ -4,7 +4,9 @@ var API_BASE = (window.__CONFIG__ && window.__CONFIG__.API_BASE) || (location.or
 async function loadProfilePage() {
   try {
     console.log("✅ Loading profile.html dynamically...");
-    const res = await fetch("../html/profile.html");
+    // In production, index.html and profile.html are served from the same /html root,
+    // so we just fetch "profile.html" relative to the current page.
+    const res = await fetch("profile.html");
     const html = await res.text();
 
     const profileSection = document.getElementById("profile");

@@ -299,7 +299,12 @@ if (String(req.user.id) !== String(post.author)) {
     const updatedPost = await Post.findById(post._id)
       .populate("author", "name")
       .populate("comments.user", "name");
-    io.emit("postUpdated", updatedPost);
+
+    // Broadcast the updated post to all connected clients if socket.io is available
+    const io = req.app.get("io");
+    if (io) {
+      io.emit("postUpdated", updatedPost);
+    }
 
     res.json(post.comments);
   } catch (err) {

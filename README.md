@@ -132,10 +132,7 @@ Visit: http://localhost:4000
 
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
 
-**Quick Deploy Options:**
-- ✅ Render.com (Recommended)
 - ✅ Railway.app
-- ✅ Vercel (with serverless setup)
 
 ## 📄 License
 

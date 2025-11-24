@@ -69,8 +69,8 @@ JLU Orbit is a modern, feature-rich social networking and blogging platform desi
 - Socket.io (real-time features)
 - JWT (authentication)
 - Bcrypt (password hashing)
-- Multer (file uploads)
-- Nodemailer (email OTP)
+- Cloudinary (file uploads)
+- Brevo (email service)
 
 ## 🚀 Getting Started
 

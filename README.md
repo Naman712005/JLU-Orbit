@@ -100,7 +100,7 @@ npm run dev
 npm start
 ```
 
-Visit: http://localhost:4000
+Visit: https://jlu-orbit-production.up.railway.app/
 
 ## 📁 Project Structure
 

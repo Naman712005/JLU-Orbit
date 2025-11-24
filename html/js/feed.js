@@ -65,7 +65,7 @@ function addPostToFeedFromAPI(post) {
         <button onclick="editPost('${post._id}')" class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
           <i class="fas fa-edit mr-2"></i>Edit
         </button>
-        <button onclick="deletePost('${post._id}')" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+<button onclick=\"deletePost('${post._id}')\" class=\"w-full text-left px-4 py-2 text-sm text-sky-300 hover:bg-gray-100\">
           <i class="fas fa-trash mr-2"></i>Delete
         </button>
       </div>
@@ -456,12 +456,21 @@ document
 document.querySelectorAll(".filter-btn").forEach((button) => {
   button.addEventListener("click", async () => {
     const type = button.getAttribute("data-type");
+    
+    // Reset all buttons to inactive state
     document.querySelectorAll(".filter-btn").forEach((btn) => {
-      btn.classList.remove("bg-blue-600", "text-white");
-      btn.classList.add("bg-gray-800", "text-white");
+      btn.style.border = "1px dashed rgba(148, 163, 184, 0.5)";
+      btn.style.background = "rgba(15, 23, 42, 0.6)";
+      btn.style.color = "rgba(229, 243, 255, 0.8)";
+      btn.style.boxShadow = "none";
     });
-    button.classList.remove("bg-gray-800");
-    button.classList.add("bg-blue-600", "text-white");
+    
+    // Set clicked button to active state
+    button.style.border = "1px solid rgba(56, 189, 248, 0.6)";
+    button.style.background = "linear-gradient(135deg, #0ea5e9, #06b6d4)";
+    button.style.color = "white";
+    button.style.boxShadow = "0 4px 15px rgba(14, 165, 233, 0.4)";
+    
     await loadPosts(type === "All" ? null : type);
   });
 });
@@ -471,11 +480,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Make sure "feed" tab is visible
   showTab("feed");
 
-  // Mark "All" filter as active
+  // Mark "All" filter as active with new styles
   const allBtn = document.querySelector('.filter-btn[data-type="All"]');
   if (allBtn) {
-    allBtn.classList.remove("bg-gray-800");
-    allBtn.classList.add("bg-blue-600", "text-white");
+    allBtn.style.border = "1px solid rgba(56, 189, 248, 0.6)";
+    allBtn.style.background = "linear-gradient(135deg, #0ea5e9, #06b6d4)";
+    allBtn.style.color = "white";
+    allBtn.style.boxShadow = "0 4px 15px rgba(14, 165, 233, 0.4)";
   }
 
   // ✅ Finally load all posts after DOM + scripts ready

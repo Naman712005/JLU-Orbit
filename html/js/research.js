@@ -119,7 +119,7 @@ async function loadResearchList() {
                 )}', '${r.keywords.join(", ")}')" 
                 class="fc-button-ghost text-xs px-3 py-1.5">Edit</button>
               <button onclick="deleteResearch('${r._id}')" 
-                class="fc-button-ghost text-xs px-3 py-1.5 border-red-400/60 text-red-300">Delete</button>
+class=\"fc-button-ghost text-xs px-3 py-1.5\"
             </div>`
               : ""
           }

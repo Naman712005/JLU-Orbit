@@ -1,10 +1,10 @@
-# 🚀 FastConnect
+# 🚀 JLU Orbit
 
 **Social Networking Platform for JLU Engineering Department**
 
 ## 📖 Overview
 
-FastConnect is a modern, feature-rich social networking and blogging platform designed specifically for the FAST (Faculty of Applied Sciences & Technology) community at JLU. It enables students, faculty, and staff to connect, collaborate, share knowledge, and stay updated with department activities.
+JLU Orbit is a modern, feature-rich social networking and blogging platform designed specifically for the FAST (Faculty of Applied Sciences & Technology) community at JLU. It enables students, faculty, and staff to connect, collaborate, share knowledge, and stay updated with department activities.
 
 ## ✨ Features
 
@@ -69,8 +69,8 @@ FastConnect is a modern, feature-rich social networking and blogging platform de
 - Socket.io (real-time features)
 - JWT (authentication)
 - Bcrypt (password hashing)
-- Multer (file uploads)
-- Nodemailer (email OTP)
+- Cloudinary (file uploads)
+- Brevo (email service)
 
 ## 🚀 Getting Started
 
@@ -100,7 +100,7 @@ npm run dev
 npm start
 ```
 
-Visit: http://localhost:4000
+Visit: https://jlu-orbit-production.up.railway.app/
 
 ## 📁 Project Structure
 
@@ -132,10 +132,7 @@ Visit: http://localhost:4000
 
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
 
-**Quick Deploy Options:**
-- ✅ Render.com (Recommended)
 - ✅ Railway.app
-- ✅ Vercel (with serverless setup)
 
 ## 📄 License
 

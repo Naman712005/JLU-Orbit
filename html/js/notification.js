@@ -43,11 +43,10 @@ async function loadNotifications() {
 
     data.forEach((notif) => {
       const item = document.createElement("div");
-      item.className =
-        "p-3 rounded-md border hover:bg-gray-100 cursor-pointer transition";
+      item.className = "fc-card fc-card--compact p-3 cursor-pointer text-xs";
       item.innerHTML = `
-        <p class="text-sm">${notif.message}</p>
-        <span class="text-xs text-gray-400">${new Date(
+        <p class="mb-1">${notif.message}</p>
+        <span class="text-[0.7rem] text-slate-400">${new Date(
           notif.createdAt
         ).toLocaleString()}</span>
       `;

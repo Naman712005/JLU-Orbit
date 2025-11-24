@@ -73,22 +73,26 @@ function addPostToFeedFromAPI(post) {
     : "";
 
   const postHTML = `
-      <div class="bg-white shadow rounded-lg p-4 mb-6 post-item" data-id="${post._id}">
+      <div class="fc-card p-4 mb-6 post-item text-sm" data-id="${post._id}">
         <div class="flex items-center space-x-3 mb-3">
-          <div class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">
+          <div class="w-10 h-10 rounded-full bg-sky-500 text-white flex items-center justify-center font-bold shadow-lg shadow-sky-900/60">
             ${escapeHtml((author[0] || "U").toUpperCase())}
           </div>
           <div>
-            <h3 class="font-bold">${escapeHtml(author)}</h3>
-            <p class="text-sm text-gray-500">${escapeHtml(dataType)}</p>
+            <p class="fc-heading">${escapeHtml(dataType)}</p>
+            <h3 class="text-base font-semibold text-sky-100 tracking-wide">${escapeHtml(author)}</h3>
           </div>
         </div>
-        <h4 class="font-semibold text-gray-700 mb-2">${title}</h4>
-        <p class="text-gray-700 mb-2">${content}</p>
+        <h4 class="font-semibold text-sky-50 mb-1 text-base">${title}</h4>
+        <p class="text-sky-100/90 mb-2 leading-relaxed">${content}</p>
         ${imageHTML}
         ${
           tags
-            ? `<p class="text-sm text-gray-500 mb-2">Tags: ${escapeHtml(tags)}</p>`
+            ? `<div class="flex flex-wrap gap-1.5 mb-2">${escapeHtml(tags)
+                .split(',')
+                .filter(Boolean)
+                .map(t => `<span class=\"fc-chip\">#${t.trim()}</span>`)
+                .join('')}</div>`
             : ""
         }
 
@@ -135,7 +139,7 @@ async function createPostHandler(e) {
   e.preventDefault();
 
   const token = await getAuthToken();
-  if (!token) return alert("Please login to create a post.");
+  if (!token) return window.fcToast && fcToast("Please login to create a post.", "error");
 
   const type = document.getElementById("postType").value.trim();
   const title = document.getElementById("postTitle").value.trim();
@@ -183,7 +187,8 @@ res = await fetch(`${API_BASE}/posts/create`, {
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({ error: "Create failed" }));
-      return alert(err.error || "Failed to create post");
+      if (window.fcToast) fcToast(err.error || "Failed to create post", "error");
+      return;
     }
 
     const created = await res.json();
@@ -192,17 +197,17 @@ res = await fetch(`${API_BASE}/posts/create`, {
     e.target.reset();
     if (fileInput) fileInput.value = "";
 
-    alert("✅ Post created successfully!");
+    if (window.fcToast) fcToast("Post created successfully", "success");
   } catch (err) {
     console.error("❌ Error creating post:", err);
-    alert("Network error while creating post.");
+    if (window.fcToast) fcToast("Network error while creating post.", "error");
   }
 }
 
 /* ---------------- POST ACTIONS ---------------- */
 async function likePost(postId) {
   const token = await getAuthToken();
-  if (!token) return alert("Login first");
+  if (!token) return window.fcToast && fcToast("Please login first", "error");
   await fetch(`${API_BASE}/posts/${postId}/like`, {
     method: "POST",
     headers: { Authorization: "Bearer " + token },
@@ -218,7 +223,7 @@ function toggleCommentBox(postId) {
 async function commentPost(e, postId) {
   e.preventDefault();
   const token = await getAuthToken();
-  if (!token) return alert("Login first");
+  if (!token) return window.fcToast && fcToast("Please login first", "error");
   const input = document.getElementById(`comment-input-${postId}`);
   const text = input.value.trim();
   if (!text) return;
@@ -249,10 +254,11 @@ async function commentPost(e, postId) {
 async function deleteComment(event, postId, commentId) {
   event.stopPropagation(); // stop bubbling in case it's inside other clickable elements
 
-  if (!confirm("Delete this comment?")) return;
+  const ok = window.fcConfirm ? await fcConfirm("Delete this comment?") : window.confirm("Delete this comment?");
+  if (!ok) return;
 
   const token = await getAuthToken();
-  if (!token) return alert("Login first");
+  if (!token) return window.fcToast && fcToast("Please login first", "error");
 
   try {
     const res = await fetch(`${API_BASE}/posts/${postId}/comment/${commentId}`, {
@@ -265,13 +271,14 @@ async function deleteComment(event, postId, commentId) {
     if (res.ok) {
       const commentElement = event.target.closest("div.border-t");
       if (commentElement) commentElement.remove();
+      if (window.fcToast) fcToast("Comment deleted", "success");
     } else {
       const err = await res.json().catch(() => ({}));
-      alert("❌ Failed to delete comment: " + (err.error || "Unknown error"));
+      if (window.fcToast) fcToast("Failed to delete comment: " + (err.error || "Unknown error"), "error");
     }
   } catch (err) {
     console.error("Error deleting comment:", err);
-    alert("Network error while deleting comment.");
+    if (window.fcToast) fcToast("Network error while deleting comment.", "error");
   }
 }
 
@@ -316,9 +323,7 @@ function shareToPlatform(platform) {
       )}`;
       break;
     case "instagram":
-      alert(
-        "Instagram doesn’t support direct web sharing — copy the link instead!"
-      );
+      if (window.fcToast) fcToast("Instagram doesn’t support direct web sharing — copy the link instead!", "info");
       return;
   }
 
@@ -331,7 +336,7 @@ function copyShareLink() {
   if (!currentSharePostId) return;
   const shareUrl = `${window.location.origin}/posts/${currentSharePostId}`;
   navigator.clipboard.writeText(shareUrl);
-  alert("Post link copied to clipboard!");
+  if (window.fcToast) fcToast("Post link copied to clipboard!", "success");
   recordShare(currentSharePostId);
   closeShareModal();
 }
@@ -390,18 +395,18 @@ async function editPost(postId) {
 
   // Prompt user for updated values
   const newTitle = prompt("Edit title:", title);
-  if (newTitle === null) return alert("Edit cancelled.");
+  if (newTitle === null) return;
 
   const newContent = prompt("Edit content:", content);
-  if (newContent === null) return alert("Edit cancelled.");
+  if (newContent === null) return;
 
   const newTags = prompt("Edit tags (comma-separated):", currentTags);
-  if (newTags === null) return alert("Edit cancelled.");
+  if (newTags === null) return;
 
   const newImage = prompt("Enter new image URL (leave blank to keep current):", "");
 
   const token = getAuthToken();
-  if (!token) return alert("Please login first.");
+  if (!token) return window.fcToast && fcToast("Please login first", "error");
 
   const body = { title: newTitle, content: newContent, tags: newTags };
   if (newImage.trim()) body.image = newImage.trim();
@@ -416,18 +421,19 @@ async function editPost(postId) {
   });
 
   if (res.ok) {
-    alert("✅ Post updated successfully!");
+    if (window.fcToast) fcToast("Post updated successfully", "success");
     loadPosts(); // reload posts to reflect changes
   } else {
     const err = await res.json().catch(() => ({}));
-    alert("❌ Failed to update post. " + (err.error || ""));
+    if (window.fcToast) fcToast("Failed to update post. " + (err.error || ""), "error");
   }
 }
 
 
 /* ---------------- DELETE POST ---------------- */
 async function deletePost(postId) {
-  if (!confirm("Are you sure you want to delete this post?")) return;
+  const ok = window.fcConfirm ? await fcConfirm("Are you sure you want to delete this post?") : window.confirm("Are you sure you want to delete this post?");
+  if (!ok) return;
   const token = getAuthToken();
   const res = await fetch(`${API_BASE}/posts/${postId}`, {
     method: "DELETE",
@@ -435,10 +441,10 @@ async function deletePost(postId) {
   });
 
   if (res.ok) {
-    alert("🗑️ Post deleted!");
+    if (window.fcToast) fcToast("Post deleted", "success");
     loadPosts();
   } else {
-    alert("❌ Failed to delete post.");
+    if (window.fcToast) fcToast("Failed to delete post.", "error");
   }
 }
 

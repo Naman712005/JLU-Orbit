@@ -374,24 +374,6 @@ body{
     height: 40px;
   }
 }
-
-/* -- FC animated background for auth -- */
-.fc-shell{ position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; isolation:isolate; }
-.fc-shell::before{ content:""; position:fixed; inset:0; background:
-  radial-gradient(circle at 15% 20%, rgba(14,165,233,.15), transparent 40%),
-  radial-gradient(circle at 85% 10%, rgba(59,130,246,.12), transparent 40%),
-  radial-gradient(circle at 50% 80%, rgba(6,182,212,.08), transparent 35%),
-  linear-gradient(135deg, #020617 0%, #0a1628 50%, #020617 100%);
-  background-size:200% 200%; animation:fcGradientFlow 20s ease-in-out infinite alternate; z-index:-2; }
-.fc-shell::after{ content:""; position:fixed; inset:0; background-image:
-  linear-gradient(rgba(56,189,248,.03) 1px, transparent 1px),
-  linear-gradient(90deg, rgba(56,189,248,.03) 1px, transparent 1px);
-  background-size:60px 60px,60px 60px; animation:fcGridFloat 30s linear infinite; opacity:1; z-index:-1; }
-@keyframes fcGradientFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-@keyframes fcGridFloat{0%{background-position:0 0,0 0}100%{background-position:60px 60px,-60px -60px}}
-.fc-code-float{ position:fixed; font-family: "Courier New", monospace; font-size:1.1rem; color:rgba(56,189,248,.32); pointer-events:none; z-index:-1; animation: fcFloatCode 8s ease-in-out infinite; }
-@keyframes fcFloatCode{0%,100%{transform:translateY(0) rotate(0deg);opacity:.15}50%{transform:translateY(-18px) rotate(4deg);opacity:.25}}
-@media (prefers-reduced-motion: reduce){ .fc-shell::before,.fc-shell::after,.fc-code-float{ animation:none !important } }
     </style>
 
     <!-- Font Awesome CDN -->
@@ -402,13 +384,7 @@ body{
   </head>
 
   <body>
-    <div class="fc-shell">
-      <div class="fc-code-float" style="top:15%;left:8%">&lt;/&gt;</div>
-      <div class="fc-code-float" style="top:35%;right:12%">{}</div>
-      <div class="fc-code-float" style="top:70%;left:10%">∑</div>
-      <div class="fc-code-float" style="top:55%;right:15%">λ</div>
-      <button id="authThemeToggle" type="button" style="position:fixed;top:18px;right:18px;width:40px;height:40px;border-radius:999px;border:1px solid rgba(56,189,248,.5);background:rgba(2,15,46,.6);color:#38bdf8;box-shadow:0 0 12px rgba(56,189,248,.25)"><i class="fa fa-moon"></i></button>
-      <div class="container" id="authContainer">
+    <div class="container" id="authContainer">
       <div class="curved-shape"></div>
       <div class="curved-shape2"></div>
 
@@ -532,15 +508,5 @@ body{
     </div>
 
     <script src="js/auth.js"></script>
-    <script>
-      // Minimal theme toggle for auth page (persist as fc-theme)
-      (function(){
-        const root=document.documentElement; const body=document.body; const btn=document.getElementById('authThemeToggle');
-        const stored=localStorage.getItem('fc-theme'); const initial=(stored==='dark'||stored==='light')?stored:'light';
-        function apply(t){ root.setAttribute('data-theme',t); body.setAttribute('data-theme',t); localStorage.setItem('fc-theme',t); if(btn){ const i=btn.querySelector('i'); if(i){ i.classList.remove(t==='dark'?'fa-moon':'fa-sun'); i.classList.add(t==='dark'?'fa-sun':'fa-moon'); } } }
-        apply(initial); btn&&btn.addEventListener('click',()=> apply((root.getAttribute('data-theme')==='dark')?'light':'dark'));
-      })();
-    </script>
-  </div>
   </body>
 </html>

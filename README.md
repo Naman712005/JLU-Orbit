@@ -1,10 +1,10 @@
-# 🚀 FastConnect
+# 🚀 JLU Orbit
 
 **Social Networking Platform for JLU Engineering Department**
 
 ## 📖 Overview
 
-FastConnect is a modern, feature-rich social networking and blogging platform designed specifically for the FAST (Faculty of Applied Sciences & Technology) community at JLU. It enables students, faculty, and staff to connect, collaborate, share knowledge, and stay updated with department activities.
+JLU Orbit is a modern, feature-rich social networking and blogging platform designed specifically for the FAST (Faculty of Applied Sciences & Technology) community at JLU. It enables students, faculty, and staff to connect, collaborate, share knowledge, and stay updated with department activities.
 
 ## ✨ Features
 

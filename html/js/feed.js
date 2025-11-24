@@ -26,12 +26,15 @@ function addPostToFeedFromAPI(post) {
     ? `<img src="${escapeHtml(post.image)}" class="rounded-lg mb-3">`
     : "";
 
-const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+  const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+  const currentUserId = String(currentUser.id || currentUser._id || "");
+  const postAuthorId = String(post.author?._id || post.author || "");
+  const isPostOwner = currentUserId && postAuthorId && currentUserId === postAuthorId;
 
-const commentsHTML = (post.comments || [])
-  .map((c) => {
-    const isOwner = c.user?._id === currentUser.id; // check if current user owns comment
-    return `
+  const commentsHTML = (post.comments || [])
+    .map((c) => {
+      const isOwner = String(c.user?._id || c.user || "") === currentUserId; // comment owner only
+      return `
       <div class="border-t pt-2 mt-2 flex justify-between items-center">
         <p class="text-sm">
           <span class="font-bold">${escapeHtml(c.user?.name || "Anon")}:</span> 
@@ -40,21 +43,37 @@ const commentsHTML = (post.comments || [])
         ${
           isOwner
             ? `<button onclick="deleteComment(event, '${post._id}', '${c._id}')"
-
                 class="text-red-500 hover:text-red-700 text-xs ml-3">
                 🗑️
               </button>`
             : ""
         }
       </div>`;
-  })
-  .join("");
+    })
+    .join("");
 
+  const ownerMenuHTML = isPostOwner
+    ? `
+    <!-- 🔸 Dropdown Menu Trigger (only for post owner) -->
+    <div class="relative">
+      <button onclick="toggleDropdown(this)" class="text-gray-500 hover:text-gray-800 focus:outline-none">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+
+      <!-- 🔽 Dropdown Menu -->
+      <div class="hidden absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-50 dropdown-menu">
+        <button onclick="editPost('${post._id}')" class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
+          <i class="fas fa-edit mr-2"></i>Edit
+        </button>
+        <button onclick="deletePost('${post._id}')" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+          <i class="fas fa-trash mr-2"></i>Delete
+        </button>
+      </div>
+    </div>`
+    : "";
 
   const postHTML = `
-      <div class="bg-white shadow rounded-lg p-4 mb-6 post-item" data-id="${
-        post._id
-      }">
+      <div class="bg-white shadow rounded-lg p-4 mb-6 post-item" data-id="${post._id}">
         <div class="flex items-center space-x-3 mb-3">
           <div class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">
             ${escapeHtml((author[0] || "U").toUpperCase())}
@@ -69,51 +88,25 @@ const commentsHTML = (post.comments || [])
         ${imageHTML}
         ${
           tags
-            ? `<p class="text-sm text-gray-500 mb-2">Tags: ${escapeHtml(
-                tags
-              )}</p>`
+            ? `<p class="text-sm text-gray-500 mb-2">Tags: ${escapeHtml(tags)}</p>`
             : ""
         }
 
-        <!-- Action Buttons -->
- <!-- Action Buttons + Dropdown -->
-<div class="flex items-center justify-between text-gray-600 text-sm mt-3">
-  <div class="flex space-x-4">
-    <button onclick="likePost('${post._id}')" class="hover:text-blue-600">
-      <i class="fa fa-thumbs-up"></i> Like (${post.likes?.length || 0})
-    </button>
-    <button onclick="toggleCommentBox('${
-      post._id
-    }')" class="hover:text-green-600">
-      <i class="fa fa-comment"></i> Comment
-    </button>
-    <button onclick="sharePost('${post._id}')" class="hover:text-purple-600">
-      <i class="fa fa-share"></i> Share (${post.shares || 0})
-    </button>
-  </div>
-
-  <!-- 🔸 Dropdown Menu Trigger -->
-  <div class="relative">
-    <button onclick="toggleDropdown(this)" class="text-gray-500 hover:text-gray-800 focus:outline-none">
-      <i class="fas fa-ellipsis-h"></i>
-    </button>
-
-    <!-- 🔽 Dropdown Menu -->
-    <div class="hidden absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-50 dropdown-menu">
-      <button onclick="editPost('${
-        post._id
-      }')" class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
-        <i class="fas fa-edit mr-2"></i>Edit
-      </button>
-      <button onclick="deletePost('${
-        post._id
-      }')" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
-        <i class="fas fa-trash mr-2"></i>Delete
-      </button>
-    </div>
-  </div>
-</div>
-
+        <!-- Action Buttons + optional owner menu -->
+        <div class="flex items-center justify-between text-gray-600 text-sm mt-3">
+          <div class="flex space-x-4">
+            <button onclick="likePost('${post._id}')" class="hover:text-blue-600">
+              <i class="fa fa-thumbs-up"></i> Like (${post.likes?.length || 0})
+            </button>
+            <button onclick="toggleCommentBox('${post._id}')" class="hover:text-green-600">
+              <i class="fa fa-comment"></i> Comment
+            </button>
+            <button onclick="sharePost('${post._id}')" class="hover:text-purple-600">
+              <i class="fa fa-share"></i> Share (${post.shares || 0})
+            </button>
+          </div>
+          ${ownerMenuHTML}
+        </div>
 
         <!-- Comments Section -->
         <div id="comments-${post._id}" class="hidden mt-3">

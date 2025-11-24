@@ -187,7 +187,103 @@ function addGroupCard(group) {
     </div>
   `;
 
+  // Open detail modal when clicking the card background (not the buttons)
+  card.addEventListener("click", (e) => {
+    if (e.target.closest("button")) return; // ignore clicks on action buttons
+    openGroupDetail(group._id);
+  });
+
   container.appendChild(card);
+}
+
+// ---------- GROUP DETAIL MODAL ----------
+function openGroupDetail(groupId) {
+  const modal = document.getElementById("group-detail-modal");
+  if (!modal) return;
+
+  const rawCurrentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+  const currentUserId = String(rawCurrentUser.id || rawCurrentUser._id || "");
+
+  fetch(`${API_BASE}/groups/${groupId}`)
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to load group details");
+      return res.json();
+    })
+    .then((group) => {
+      modal.dataset.groupId = group._id;
+
+      const createdById = String(group.createdBy?._id || group.createdBy || "");
+      const isCreator = createdById && currentUserId && createdById === currentUserId;
+      const isMember = Array.isArray(group.members) && group.members.some((m) => String(m._id || m) === currentUserId);
+
+      document.getElementById("groupDetailName").textContent = group.name || "";
+      document.getElementById("groupDetailDescription").textContent = group.description || "";
+      document.getElementById("groupDetailCategory").textContent = group.category || "";
+      document.getElementById("groupDetailVisibility").textContent = group.visibility || "";
+      document.getElementById("groupDetailCreator").textContent =
+        (group.createdBy && group.createdBy.name) || "Unknown";
+      document.getElementById("groupDetailMemberCount").textContent = String(group.members?.length || 0);
+
+      const list = document.getElementById("groupDetailMembersList");
+      list.innerHTML = "";
+      (group.members || []).forEach((m) => {
+        const li = document.createElement("li");
+        li.textContent = (m && m.name) || "Member";
+        list.appendChild(li);
+      });
+
+      const joinBtn = document.getElementById("groupDetailJoinBtn");
+      const leaveBtn = document.getElementById("groupDetailLeaveBtn");
+      const ownerActions = document.getElementById("groupDetailOwnerActions");
+      const editBtn = document.getElementById("groupDetailEditBtn");
+      const deleteBtn = document.getElementById("groupDetailDeleteBtn");
+
+      if (isCreator) {
+        joinBtn.classList.add("hidden");
+        leaveBtn.classList.add("hidden");
+        ownerActions.classList.remove("hidden");
+      } else {
+        ownerActions.classList.add("hidden");
+        if (isMember) {
+          joinBtn.classList.add("hidden");
+          leaveBtn.classList.remove("hidden");
+        } else {
+          joinBtn.classList.remove("hidden");
+          leaveBtn.classList.add("hidden");
+        }
+      }
+
+      joinBtn.onclick = async () => {
+        await joinGroup(group._id);
+        openGroupDetail(group._id);
+      };
+
+      leaveBtn.onclick = async () => {
+        await leaveGroup(group._id);
+        closeGroupDetail();
+      };
+
+      if (editBtn) {
+        editBtn.onclick = () => editGroup(group._id);
+      }
+      if (deleteBtn) {
+        deleteBtn.onclick = () => {
+          deleteGroup(group._id);
+          closeGroupDetail();
+        };
+      }
+
+      modal.classList.remove("hidden");
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Failed to load group details");
+    });
+}
+
+function closeGroupDetail() {
+  const modal = document.getElementById("group-detail-modal");
+  if (modal) modal.classList.add("hidden");
 }
 
 // ---------- GLOBAL ACTIONS (join/leave/edit/delete) ----------

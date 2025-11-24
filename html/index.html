@@ -32,18 +32,18 @@
         --fc-glow: rgba(56, 189, 248, 0.45);
       }
 
-      /* Light mode = slightly brighter surfaces, still techy blue */
+      /* Light mode = brighter, more visible surfaces */
       html[data-theme="light"],
       body[data-theme="light"] {
-        --fc-bg: #020617;
-        --fc-bg-soft: #020b27;
-        --fc-surface: #02122f;
-        --fc-surface-elevated: #051c40;
+        --fc-bg: #0a1628;
+        --fc-bg-soft: #0d1d35;
+        --fc-surface: #122847;
+        --fc-surface-elevated: #1a3557;
         --fc-text: #e8f5ff;
         --fc-text-muted: #8fb3e0;
       }
 
-      /* Dark mode = deeper blues and stronger contrast */
+      /* Dark mode = deeper blacks and blues for high contrast */
       html[data-theme="dark"],
       body[data-theme="dark"] {
         --fc-bg: #000814;
@@ -57,10 +57,11 @@
       body.fc-body {
         min-height: 100vh;
         margin: 0;
-        background: #020617;
+        background: var(--fc-bg);
         color: var(--fc-text);
         font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         overflow-x: hidden;
+        transition: background-color 0.3s ease;
       }
 
       h1, h2, h3, .fc-title {

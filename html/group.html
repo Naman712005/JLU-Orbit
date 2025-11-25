@@ -1,20 +1,20 @@
 <div class="flex justify-between items-center mb-8">
-  <h2 class="text-2xl fc-title font-semibold text-sky-100">Groups</h2>
+  <h2 class="text-2xl font-semibold text-gray-800">Groups</h2>
   <button
     onclick="document.getElementById('create-group-modal').classList.remove('hidden')"
-    class="fc-button-primary px-5 py-2 rounded-full font-medium"
+    class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md font-medium"
   >
-    <i class="fa fa-plus mr-1"></i> Create Group
+    + Create Group
   </button>
 </div>
 
 
 <!-- Filter Tabs -->
 <div class="flex flex-wrap gap-3 mb-8">
-  <button data-filter="all" class="filter-btn px-4 py-1.5 rounded-full font-medium text-sm transition-all duration-200" style="border:1px solid rgba(56,189,248,0.6); background:linear-gradient(135deg,#0ea5e9,#06b6d4); color:white; box-shadow:0 4px 15px rgba(14,165,233,0.4);">All Groups</button>
-  <button data-filter="public" class="filter-btn px-4 py-1.5 rounded-full font-medium text-sm transition-all duration-200" style="border:1px dashed rgba(148,163,184,0.5); background:rgba(15,23,42,0.6); color:rgba(229,243,255,0.8);">Public</button>
-  <button data-filter="private" class="filter-btn px-4 py-1.5 rounded-full font-medium text-sm transition-all duration-200" style="border:1px dashed rgba(148,163,184,0.5); background:rgba(15,23,42,0.6); color:rgba(229,243,255,0.8);">Private</button>
-  <button data-filter="mine" class="filter-btn px-4 py-1.5 rounded-full font-medium text-sm transition-all duration-200" style="border:1px dashed rgba(148,163,184,0.5); background:rgba(15,23,42,0.6); color:rgba(229,243,255,0.8);">My Groups</button>
+  <button data-filter="all" class="filter-btn px-4 py-1.5 bg-blue-600 text-white rounded-full font-medium text-sm">All Groups</button>
+  <button data-filter="public" class="filter-btn px-4 py-1.5 bg-gray-800 text-white rounded-full font-medium text-sm">Public</button>
+  <button data-filter="private" class="filter-btn px-4 py-1.5 bg-gray-800 text-white rounded-full font-medium text-sm">Private</button>
+  <button data-filter="mine" class="filter-btn px-4 py-1.5 bg-gray-800 text-white rounded-full font-medium text-sm">My Groups</button>
 </div>
 
 
@@ -29,8 +29,8 @@
   id="create-group-modal"
   class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
 >
-  <div class="fc-card p-6 w-full max-w-md">
-    <h3 class="text-xl font-semibold mb-5 text-sky-100">Create New Group</h3>
+  <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+    <h3 class="text-xl font-semibold mb-5 text-gray-800">Create New Group</h3>
 
     <form id="create-group-form" class="space-y-4">
       <div>
@@ -89,13 +89,13 @@
         <button
           type="button"
           onclick="document.getElementById('create-group-modal').classList.add('hidden')"
-          class="fc-button-ghost text-xs px-4 py-2"
+          class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
         >
           Cancel
         </button>
         <button
           type="submit"
-          class="fc-button-primary text-xs px-4 py-2"
+          class="px-5 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
         >
           Create
         </button>
@@ -109,63 +109,63 @@
   id="group-detail-modal"
   class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
 >
-  <div class="fc-card p-6 w-full max-w-md max-h-[80vh] overflow-y-auto">
+  <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md max-h-[80vh] overflow-y-auto">
     <div class="flex justify-between items-center mb-4">
-      <h3 id="groupDetailName" class="text-xl font-semibold text-sky-100"></h3>
-      <button type="button" onclick="closeGroupDetail()" class="fc-button-ghost text-xs px-3 py-1.5">
+      <h3 id="groupDetailName" class="text-xl font-semibold text-gray-800"></h3>
+      <button type="button" onclick="closeGroupDetail()" class="text-gray-500 hover:text-gray-700">
         <i class="fa fa-times"></i>
       </button>
     </div>
 
-    <p id="groupDetailDescription" class="text-sky-100/90 text-sm mb-3"></p>
-    <p class="text-sm text-sky-200/80 mb-1">
+    <p id="groupDetailDescription" class="text-gray-700 text-sm mb-3"></p>
+    <p class="text-sm text-gray-600 mb-1">
       <span class="font-semibold">Category:</span>
       <span id="groupDetailCategory"></span>
     </p>
-    <p class="text-sm text-sky-200/80 mb-1">
+    <p class="text-sm text-gray-600 mb-1">
       <span class="font-semibold">Visibility:</span>
       <span id="groupDetailVisibility"></span>
     </p>
-    <p class="text-sm text-sky-200/80 mb-1">
+    <p class="text-sm text-gray-600 mb-1">
       <span class="font-semibold">Created by:</span>
       <span id="groupDetailCreator"></span>
     </p>
-    <p class="text-sm text-sky-200/80 mb-3">
+    <p class="text-sm text-gray-600 mb-3">
       <span class="font-semibold">Members:</span>
       <span id="groupDetailMemberCount"></span>
     </p>
 
-    <ul id="groupDetailMembersList" class="text-sm text-sky-100 space-y-1 mb-4"></ul>
+    <ul id="groupDetailMembersList" class="text-sm text-gray-700 space-y-1 mb-4"></ul>
 
     <div class="flex items-center justify-between mt-4">
       <div class="flex gap-2">
         <button
           id="groupDetailJoinBtn"
           type="button"
-          class="hidden fc-button-primary text-xs px-4 py-1.5"
+          class="hidden bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-md text-sm"
         >
-          <i class="fa fa-plug mr-1"></i>Join
+          Join
         </button>
         <button
           id="groupDetailLeaveBtn"
           type="button"
-          class="hidden fc-button-ghost text-xs px-4 py-1.5"
+          class="hidden bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-md text-sm"
         >
-          <i class="fa fa-right-from-bracket mr-1"></i>Leave
+          Leave
         </button>
       </div>
       <div id="groupDetailOwnerActions" class="flex gap-2 hidden">
         <button
           id="groupDetailEditBtn"
           type="button"
-          class="fc-button-ghost text-xs px-3 py-1.5"
+          class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1.5 rounded-md text-sm"
         >
           <i class="fa fa-edit mr-1"></i>Edit
         </button>
         <button
           id="groupDetailDeleteBtn"
           type="button"
-          class="fc-button-ghost text-xs px-3 py-1.5"
+          class="bg-gray-800 hover:bg-gray-900 text-white px-3 py-1.5 rounded-md text-sm"
         >
           <i class="fa fa-trash mr-1"></i>Delete
         </button>

@@ -13,12 +13,9 @@ if (navUserEl) {
 (function initTheme() {
   const stored = localStorage.getItem("fc-theme");
   const root = document.documentElement;
-  const body = document.body;
   const initial = stored === "dark" || stored === "light" ? stored : "light";
-  
-  // Apply theme on load
   root.setAttribute("data-theme", initial);
-  body.setAttribute("data-theme", initial);
+  const body = document.body;
   if (!body.classList.contains("fc-body")) body.classList.add("fc-body");
 
   const btn = document.getElementById("themeToggleBtn");
@@ -37,28 +34,16 @@ if (navUserEl) {
   }
 
   function toggleTheme() {
-    const current = root.getAttribute("data-theme");
+    const current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
     const next = current === "dark" ? "light" : "dark";
-    
-    // Apply to both root and body
     root.setAttribute("data-theme", next);
-    body.setAttribute("data-theme", next);
     localStorage.setItem("fc-theme", next);
     syncIcon(next);
-    
-    // Show toast feedback
-    if (window.fcToast) {
-      fcToast(`Switched to ${next} mode`, "info");
-    }
   }
 
   syncIcon(initial);
-  if (btn) {
-    btn.addEventListener("click", toggleTheme);
-  }
-  if (mobileBtn) {
-    mobileBtn.addEventListener("click", toggleTheme);
-  }
+  btn && btn.addEventListener("click", toggleTheme);
+  mobileBtn && mobileBtn.addEventListener("click", toggleTheme);
 })();
 
 // ---------- TOAST & CONFIRM HELPERS ----------

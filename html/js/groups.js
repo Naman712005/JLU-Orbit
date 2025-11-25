@@ -54,19 +54,13 @@ function initGroupPage() {
         const filter = btn.dataset.filter;
         let filtered = [];
 
-        // Reset visual state
         buttons.forEach((b) => {
-          b.style.border = "1px dashed rgba(148, 163, 184, 0.5)";
-          b.style.background = "rgba(15, 23, 42, 0.6)";
-          b.style.color = "rgba(229, 243, 255, 0.8)";
-          b.style.boxShadow = "none";
+          b.classList.remove("bg-blue-600");
+          b.classList.add("bg-gray-800", "text-white");
         });
 
-        // Active state for clicked filter
-        btn.style.border = "1px solid rgba(56, 189, 248, 0.6)";
-        btn.style.background = "linear-gradient(135deg, #0ea5e9, #06b6d4)";
-        btn.style.color = "white";
-        btn.style.boxShadow = "0 4px 15px rgba(14, 165, 233, 0.4)";
+        btn.classList.remove("bg-gray-800");
+        btn.classList.add("bg-blue-600", "text-white");
 
         switch (filter) {
           case "public":
@@ -192,7 +186,7 @@ function addGroupCard(group) {
         </button>
         <button 
           onclick="deleteGroup('${group._id}')" 
-class=\"fc-button-ghost text-xs px-3 py-1.5\"
+          class="fc-button-ghost text-xs px-3 py-1.5 border-red-400/60 text-red-300">
           <i class="fa fa-trash mr-1"></i>Delete
         </button>
       </div>

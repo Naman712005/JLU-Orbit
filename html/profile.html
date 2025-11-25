@@ -1,5 +1,5 @@
 <!-- Profile Page -->
-<div class="fc-card p-6 text-sm">
+<div class="bg-white shadow rounded-lg p-6">
   <!-- Profile Info -->
   <div class="flex items-center space-x-4 mb-6">
     <img
@@ -22,21 +22,21 @@
     <p><strong>Bio:</strong> <span id="profileBio">Student | Enthusiast</span></p>
   </div>
 
-  <!-- ✅ Edit Profile Button -->
+  <!-- ✅ Edit Profile Button (was missing before) -->
   <button
     id="editProfileBtn"
-    class="fc-button-primary px-4 py-2 text-xs mt-1"
+    class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
   >
-    <i class="fa fa-pen mr-1"></i>Edit Profile
+    Edit Profile
   </button>
 </div>
 
 <!-- ✅ Edit Profile Modal -->
 <div
   id="editProfileModal"
-  class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
+  class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
 >
-  <div class="fc-card w-96 max-w-[95vw] p-6 relative">
+  <div class="bg-white rounded-lg shadow-lg w-96 p-6 relative">
     <h2 class="text-lg font-semibold mb-4">Edit Profile</h2>
 
     <div class="space-y-3">
@@ -74,13 +74,13 @@
     <div class="flex justify-end space-x-3 mt-6">
       <button
         id="cancelEditBtn"
-        class="fc-button-ghost text-xs px-4 py-2"
+        class="bg-gray-300 px-4 py-2 rounded-md hover:bg-gray-400"
       >
         Cancel
       </button>
       <button
         id="saveProfileBtn"
-        class="fc-button-primary text-xs px-4 py-2"
+        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
       >
         Save
       </button>

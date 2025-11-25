@@ -41,9 +41,9 @@ function initResearchPage() {
       .map((k) => k.trim());
     const original = document.getElementById("researchOriginal").checked;
 
-    if (!original) return window.fcToast && fcToast("Please confirm originality", "error");
+    if (!original) return alert("Please confirm originality!");
     const token = getAuthToken();
-    if (!token) return window.fcToast && fcToast("Please login first", "error");
+    if (!token) return alert("Login first");
 
     try {
       const res = await fetch(`${API_BASE}/research`, {
@@ -62,16 +62,16 @@ function initResearchPage() {
       });
       const data = await res.json();
       if (res.ok) {
-        if (window.fcToast) fcToast("Research added successfully", "success");
+        alert("Research added successfully!");
         researchModal.classList.add("hidden");
         researchForm.reset();
         loadResearchList();
       } else {
-        if (window.fcToast) fcToast(data.message || "Error adding research.", "error");
+        alert(data.message || "Error adding research.");
       }
     } catch (err) {
       console.error(err);
-      if (window.fcToast) fcToast("Server error while adding research", "error");
+      alert("Server error.");
     }
   });
 
@@ -97,12 +97,14 @@ async function loadResearchList() {
     list.forEach((r) => {
       const isOwner = r.author?._id === currentUser.id;
       researchContainer.innerHTML += `
-        <div class="fc-card p-4 mb-3 text-sm">
-          <p class="fc-heading mb-1">${(r.keywords || []).slice(0, 3).map(k => `#${k}`).join("  ")}</p>
-          <h3 class="font-semibold text-sky-50 text-base mb-1">${r.title}</h3>
-          <p class="text-xs text-sky-100/80 italic mb-2">${r.abstract}</p>
-          <p class="text-sky-100/90 text-xs leading-relaxed mb-2">${r.content}</p>
-          <p class="text-[0.7rem] text-sky-200/70">Submitted by: ${
+        <div class="bg-white p-4 rounded-lg shadow mb-4">
+          <h3 class="font-bold text-lg">${r.title}</h3>
+          <p class="text-gray-600 italic">${r.abstract}</p>
+          <p class="text-gray-700 mt-2">${r.content}</p>
+          <p class="text-sm text-gray-500 mt-2">Keywords: ${r.keywords.join(
+            ", "
+          )}</p>
+          <p class="text-xs text-gray-400 mt-2">Submitted by: ${
             r.author?.name || "User"
           }</p>
 
@@ -117,9 +119,9 @@ async function loadResearchList() {
                   /'/g,
                   "\\'"
                 )}', '${r.keywords.join(", ")}')" 
-                class="fc-button-ghost text-xs px-3 py-1.5">Edit</button>
+                class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Edit</button>
               <button onclick="deleteResearch('${r._id}')" 
-                class="fc-button-ghost text-xs px-3 py-1.5 border-red-400/60 text-red-300">Delete</button>
+                class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
             </div>`
               : ""
           }
@@ -148,7 +150,7 @@ async function editResearch(id, title, abstract, content, keywords) {
   if (newKeywords === null) return;
 
   const token = getAuthToken();
-  if (!token) return window.fcToast && fcToast("Please login first", "error");
+  if (!token) return alert("Login first");
 
   try {
     const res = await fetch(`${API_BASE}/research/${id}`, {
@@ -167,24 +169,23 @@ async function editResearch(id, title, abstract, content, keywords) {
 
     const data = await res.json();
     if (res.ok) {
-      if (window.fcToast) fcToast("Research updated successfully", "success");
+      alert("Research updated successfully!");
       loadResearchList();
     } else {
-      if (window.fcToast) fcToast(data.error || "Error updating research.", "error");
+      alert(data.error || "Error updating research.");
     }
   } catch (err) {
     console.error(err);
-    if (window.fcToast) fcToast("Server error while updating research.", "error");
+    alert("Server error while updating research.");
   }
 }
 
 /* ---------------- DELETE RESEARCH ---------------- */
 async function deleteResearch(id) {
-  const ok = window.fcConfirm ? await fcConfirm("Are you sure you want to delete this research?") : window.confirm("Are you sure you want to delete this research?");
-  if (!ok) return;
+  if (!confirm("Are you sure you want to delete this research?")) return;
 
   const token = getAuthToken();
-  if (!token) return window.fcToast && fcToast("Please login first", "error");
+  if (!token) return alert("Login first");
 
   try {
     const res = await fetch(`${API_BASE}/research/${id}`, {
@@ -194,13 +195,13 @@ async function deleteResearch(id) {
 
     const data = await res.json();
     if (res.ok) {
-      if (window.fcToast) fcToast("Research deleted successfully", "success");
+      alert("Research deleted successfully!");
       loadResearchList();
     } else {
-      if (window.fcToast) fcToast(data.error || "Error deleting research.", "error");
+      alert(data.error || "Error deleting research.");
     }
   } catch (err) {
     console.error(err);
-    if (window.fcToast) fcToast("Server error while deleting research.", "error");
+    alert("Server error while deleting research.");
   }
 }

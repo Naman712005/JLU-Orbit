@@ -111,7 +111,7 @@ async function initProfilePage() {
 /* ---------------- HELPER: Save Profile to Backend ---------------- */
 async function saveProfileToBackend(updateData) {
   const token = localStorage.getItem("authToken");
-  if (!token) return window.fcToast && fcToast("Please login first", "error");
+  if (!token) return alert("Please login first");
 
   try {
     const res = await fetch(`${API_BASE}/profile/update`, {
@@ -130,12 +130,12 @@ async function saveProfileToBackend(updateData) {
       const storedUser = JSON.parse(localStorage.getItem("currentUser")) || {};
       const updatedUser = { ...storedUser, ...data.profile };
       localStorage.setItem("currentUser", JSON.stringify(updatedUser));
-      if (window.fcToast) fcToast("Profile updated successfully", "success");
+      alert("✅ Profile updated successfully!");
     } else {
-      if (window.fcToast) fcToast(data.message || "Error updating profile", "error");
+      alert(data.message || "❌ Error updating profile");
     }
   } catch (err) {
     console.error("❌ Error saving profile:", err);
-    if (window.fcToast) fcToast("Failed to save profile", "error");
+    alert("❌ Failed to save profile");
   }
 }

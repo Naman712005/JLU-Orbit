@@ -92,13 +92,11 @@ function initGroupPage() {
       const category = document.getElementById("groupCategory").value;
       const visibility = document.querySelector('input[name="visibility"]:checked').value;
 
-      if (!name || !description || !category) {
-        return window.fcToast && fcToast("All fields are required", "error");
-      }
+      if (!name || !description || !category) return alert("All fields are required!");
 
       const groupData = { name, description, category, visibility };
       const token = getAuthToken();
-      if (!token) return window.fcToast && fcToast("Please login first", "error");
+      if (!token) return alert("Login first");
 
       try {
         const res = await fetch(`${API_BASE}/groups`, {
@@ -112,18 +110,18 @@ function initGroupPage() {
 
         const result = await res.json();
         if (res.ok) {
-          if (window.fcToast) fcToast("Group created successfully", "success");
+          alert("✅ Group created successfully!");
           document.getElementById("create-group-modal").classList.add("hidden");
           form.reset();
           // push into allGroups and render
           allGroups.unshift(result);
           addGroupCard(result);
         } else {
-          if (window.fcToast) fcToast(result.message || "Failed to create group", "error");
+          alert(result.message || "❌ Failed to create group");
         }
       } catch (err) {
         console.error(err);
-        if (window.fcToast) fcToast("Error creating group", "error");
+        alert("Error creating group");
       }
     });
   }
@@ -150,43 +148,39 @@ function addGroupCard(group) {
   const isCreator = createdById && currentUserId && (createdById === currentUserId);
 
   const card = document.createElement("div");
-  card.className = "fc-card p-5 text-sm hover:shadow-2xl transition post-item";
+  card.className = "bg-white p-6 rounded-xl shadow-md border border-gray-200 hover:shadow-lg transition";
   card.dataset.id = group._id;
 
   card.innerHTML = `
-    <div class="flex items-start justify-between mb-3">
-      <div>
-        <p class="fc-heading mb-1">${escapeHtml(group.category || "Group")}</p>
-        <h3 class="text-base font-semibold text-sky-50 mb-1">${escapeHtml(group.name)}</h3>
-        <p class="text-xs text-sky-100/80 mb-1">${escapeHtml(group.description)}</p>
-        <p class="text-[0.7rem] text-sky-200/60">Created by: ${escapeHtml(group.createdBy?.name || group.createdBy || 'Unknown')}</p>
-      </div>
-      <span class="fc-chip">${escapeHtml(group.visibility || "public")}</span>
-    </div>
+    <h3 class="text-lg font-semibold text-gray-800 mb-2">${escapeHtml(group.name)}</h3>
+    <p class="text-sm text-gray-600 mb-2">${escapeHtml(group.description)}</p>
+    <p class="text-xs text-gray-500 mb-1">Category: ${escapeHtml(group.category)}</p>
+    <p class="text-xs text-gray-500 mb-4">Visibility: ${escapeHtml(group.visibility)}</p>
+    <p class="text-xs text-gray-400 mb-4">Created by: ${escapeHtml(group.createdBy?.name || group.createdBy || 'Unknown')}</p>
 
-    <div class="flex justify-between items-center mt-2">
+    <div class="flex justify-between items-center">
       <div class="flex gap-2">
         <button 
           onclick="joinGroup('${group._id}')" 
-          class="join-btn fc-button-primary px-3 py-1.5 text-xs ${ (isMember || isCreator) ? 'hidden' : '' }">
-          <i class="fa fa-plug mr-1"></i>Join
+          class="join-btn bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md text-sm ${ (isMember || isCreator) ? 'hidden' : '' }">
+          Join
         </button>
         <button 
           onclick="leaveGroup('${group._id}')" 
-          class="leave-btn fc-button-ghost text-xs ${ !isMember ? 'hidden' : '' }">
-          <i class="fa fa-right-from-bracket mr-1"></i>Leave
+          class="leave-btn bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-sm ${ !isMember ? 'hidden' : '' }">
+          Leave
         </button>
       </div>
 
       <div class="flex gap-2 ${ isCreator ? '' : 'hidden' }">
         <button 
           onclick="editGroup('${group._id}')" 
-          class="fc-button-ghost text-xs px-3 py-1.5">
+          class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm">
           <i class="fa fa-edit mr-1"></i>Edit
         </button>
         <button 
           onclick="deleteGroup('${group._id}')" 
-          class="fc-button-ghost text-xs px-3 py-1.5 border-red-400/60 text-red-300">
+          class="bg-gray-800 hover:bg-gray-900 text-white px-3 py-1 rounded-md text-sm">
           <i class="fa fa-trash mr-1"></i>Delete
         </button>
       </div>
@@ -295,7 +289,7 @@ function closeGroupDetail() {
 // ---------- GLOBAL ACTIONS (join/leave/edit/delete) ----------
 async function joinGroup(groupId) {
   const token = getAuthToken();
-  if (!token) return window.fcToast && fcToast("Please login first", "error");
+  if (!token) return alert("Please login first");
   try {
 const res = await fetch(`${API_BASE}/groups/${groupId}/join`, {
       method: "POST",
@@ -303,7 +297,7 @@ const res = await fetch(`${API_BASE}/groups/${groupId}/join`, {
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      return window.fcToast && fcToast(err.message || "Failed to join group", "error");
+      return alert(err.message || "❌ Failed to join group");
     }
     const data = await res.json();
     // update UI: replace the card or refresh groups
@@ -312,16 +306,16 @@ const res = await fetch(`${API_BASE}/groups/${groupId}/join`, {
     addGroupCard(data);
     // also update cached state if present
     if (window.__fastconnect_groups_state) window.__fastconnect_groups_state.refresh();
-    if (window.fcToast) fcToast("Joined the group", "success");
+    alert("✅ Joined the group!");
   } catch (err) {
     console.error(err);
-    if (window.fcToast) fcToast("Failed to join group", "error");
+    alert("❌ Failed to join group");
   }
 }
 
 async function leaveGroup(groupId) {
   const token = getAuthToken();
-  if (!token) return window.fcToast && fcToast("Please login first", "error");
+  if (!token) return alert("Please login first");
   try {
 const res = await fetch(`${API_BASE}/groups/${groupId}/leave`, {
       method: "POST",
@@ -329,23 +323,23 @@ const res = await fetch(`${API_BASE}/groups/${groupId}/leave`, {
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      return window.fcToast && fcToast(err.message || "Failed to leave group", "error");
+      return alert(err.message || "❌ Failed to leave group");
     }
     const data = await res.json();
     // update UI
     document.querySelector(`[data-id="${groupId}"]`)?.remove();
     addGroupCard(data);
     if (window.__fastconnect_groups_state) window.__fastconnect_groups_state.refresh();
-    if (window.fcToast) fcToast("Left the group", "success");
+    alert("🚪 Left the group");
   } catch (err) {
     console.error(err);
-    if (window.fcToast) fcToast("Failed to leave group", "error");
+    alert("❌ Failed to leave group");
   }
 }
 
 async function editGroup(groupId) {
   const token = getAuthToken();
-  if (!token) return window.fcToast && fcToast("Please login first", "error");
+  if (!token) return alert("Please login first");
 
   const newName = prompt("Enter new group name:");
   if (newName === null) return; // cancelled
@@ -371,7 +365,7 @@ const res = await fetch(`${API_BASE}/groups/${groupId}`, {
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      return window.fcToast && fcToast(err.message || "Failed to update group", "error");
+      return alert(err.message || "❌ Failed to update group");
     }
     const updated = await res.json();
     // reflect update in UI
@@ -379,18 +373,17 @@ const res = await fetch(`${API_BASE}/groups/${groupId}`, {
     oldCard?.remove();
     addGroupCard(updated);
     if (window.__fastconnect_groups_state) window.__fastconnect_groups_state.refresh();
-    if (window.fcToast) fcToast("Group updated successfully", "success");
+    alert("✅ Group updated successfully!");
   } catch (err) {
     console.error(err);
-    if (window.fcToast) fcToast("Failed to update group", "error");
+    alert("❌ Failed to update group");
   }
 }
 
 async function deleteGroup(groupId) {
   const token = getAuthToken();
-  if (!token) return window.fcToast && fcToast("Please login first", "error");
-  const ok = window.fcConfirm ? await fcConfirm("Are you sure you want to delete this group?") : window.confirm("Are you sure you want to delete this group?");
-  if (!ok) return;
+  if (!token) return alert("Please login first");
+  if (!confirm("Are you sure you want to delete this group?")) return;
   try {
    const res = await fetch(`${API_BASE}/groups/${groupId}`, {
       method: "DELETE",
@@ -398,14 +391,14 @@ async function deleteGroup(groupId) {
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      return window.fcToast && fcToast(err.message || "Failed to delete group", "error");
+      return alert(err.message || "❌ Failed to delete group");
     }
     document.querySelector(`[data-id="${groupId}"]`)?.remove();
     if (window.__fastconnect_groups_state) window.__fastconnect_groups_state.refresh();
-    if (window.fcToast) fcToast("Group deleted successfully", "success");
+    alert("🗑️ Group deleted successfully!");
   } catch (err) {
     console.error(err);
-    if (window.fcToast) fcToast("Failed to delete group", "error");
+    alert("❌ Failed to delete group");
   }
 }
 

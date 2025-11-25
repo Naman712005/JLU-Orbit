@@ -11,7 +11,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
   </head>
-  <body class="fc-body" data-theme="light">
+  <body class="bg-gradient-to-br from-gray-50 via-blue-50 to-cyan-50 min-h-screen">
     <script>
       // Redirect to auth if not logged in
       const token = localStorage.getItem("authToken");
@@ -19,8 +19,8 @@
     </script>
 
     <!-- MAIN APP -->
-    <div id="mainApp" class="min-h-screen fc-shell">
-    <nav class="fc-navbar px-4 md:px-6 py-3 sticky top-0 z-50">
+    <div id="mainApp" class="min-h-screen">
+    <nav class="bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-700 px-4 md:px-6 py-3 shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
           <div class="flex items-center space-x-2 text-white font-bold text-lg md:text-xl">
             <i class="fas fa-rocket"></i><span>FAST-Connect</span>
@@ -61,13 +61,6 @@
           </ul>
           
           <div class="flex items-center space-x-2 md:space-x-4">
-            <button
-              id="themeToggleBtn"
-              class="hidden md:flex items-center justify-center w-9 h-9 rounded-full border border-white/30 text-white/80 hover:text-white hover:border-white/60 transition-colors"
-              type="button"
-            >
-              <i class="fas fa-moon"></i>
-            </button>
             <div class="relative">
               <button id="notifBtn" class="relative text-white">
                 <i class="fas fa-bell text-xl cursor-pointer"></i>
@@ -114,12 +107,6 @@
               </button>
             </div>
             <ul class="space-y-4">
-              <li class="flex items-center justify-between text-white text-sm mb-4">
-                <span class="flex items-center gap-2"><i class="fas fa-circle-half-stroke w-5"></i>Theme</span>
-                <button id="mobileThemeToggleBtn" type="button" class="w-9 h-9 flex items-center justify-center rounded-full border border-white/30 text-white/80">
-                  <i class="fas fa-moon"></i>
-                </button>
-              </li>
               <li onclick="showTab('feed'); closeMobileMenu()" class="text-white text-lg font-medium cursor-pointer hover:text-cyan-200 flex items-center space-x-3">
                 <i class="fas fa-stream w-6"></i><span>Feed</span>
               </li>
@@ -407,17 +394,6 @@
         class="overflow-y-auto h-[calc(100%-60px)] p-4 space-y-3 bg-gray-50"
       >
         <!-- Notifications will load here -->
-      </div>
-    </div>
-    <!-- Toast & Confirm containers -->
-    <div id="fc-toast-container"></div>
-    <div id="fc-confirm-backdrop">
-      <div id="fc-confirm-modal">
-        <p id="fc-confirm-message" class="mb-4"></p>
-        <div class="flex justify-end gap-3 mt-2">
-          <button id="fc-confirm-cancel" class="fc-button-ghost text-xs">Cancel</button>
-          <button id="fc-confirm-ok" class="fc-button-primary text-xs">Confirm</button>
-        </div>
       </div>
     </div>
     <script src="/config.js"></script>

@@ -2,106 +2,11 @@
 var API_BASE = (window.__CONFIG__ && window.__CONFIG__.API_BASE) || (location.origin + '/api') || '/api';
 
 const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
-const navUserEl = document.getElementById("navUser");
-if (navUserEl) {
-  navUserEl.textContent = (currentUser.username || currentUser.name || "U")
-    .slice(0, 2)
-    .toUpperCase();
-}
+document.getElementById("navUser").textContent = (currentUser.username || "U")
+  .slice(0, 2)
+  .toUpperCase();
 
-// ---------- THEME TOGGLE ----------
-(function initTheme() {
-  const stored = localStorage.getItem("fc-theme");
-  const root = document.documentElement;
-  const initial = stored === "dark" || stored === "light" ? stored : "light";
-  root.setAttribute("data-theme", initial);
-  const body = document.body;
-  if (!body.classList.contains("fc-body")) body.classList.add("fc-body");
-
-  const btn = document.getElementById("themeToggleBtn");
-  const mobileBtn = document.getElementById("mobileThemeToggleBtn");
-
-  function syncIcon(theme) {
-    const iconClass = theme === "dark" ? "fa-sun" : "fa-moon";
-    const oppositeClass = theme === "dark" ? "fa-moon" : "fa-sun";
-    [btn, mobileBtn].forEach((el) => {
-      if (!el) return;
-      const i = el.querySelector("i");
-      if (!i) return;
-      i.classList.remove(oppositeClass);
-      i.classList.add(iconClass);
-    });
-  }
-
-  function toggleTheme() {
-    const current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
-    const next = current === "dark" ? "light" : "dark";
-    root.setAttribute("data-theme", next);
-    localStorage.setItem("fc-theme", next);
-    syncIcon(next);
-  }
-
-  syncIcon(initial);
-  btn && btn.addEventListener("click", toggleTheme);
-  mobileBtn && mobileBtn.addEventListener("click", toggleTheme);
-})();
-
-// ---------- TOAST & CONFIRM HELPERS ----------
-window.fcToast = function fcToast(message, type = "info") {
-  const container = document.getElementById("fc-toast-container");
-  if (!container) return;
-  const el = document.createElement("div");
-  el.className = "fc-toast " + (type === "success" ? "fc-toast--success" : type === "error" ? "fc-toast--error" : "");
-  const icon = type === "success" ? "fa-check-circle" : type === "error" ? "fa-circle-xmark" : "fa-circle-info";
-  el.innerHTML = `<i class="fa ${icon} mt-0.5 text-sky-300"></i><div>${escapeHtml(String(message))}</div>`;
-  container.appendChild(el);
-  setTimeout(() => {
-    el.style.opacity = "0";
-    el.style.transform = "translateY(6px) scale(0.97)";
-    setTimeout(() => el.remove(), 180);
-  }, 2600);
-};
-
-window.fcConfirm = function fcConfirm(message) {
-  return new Promise((resolve) => {
-    const backdrop = document.getElementById("fc-confirm-backdrop");
-    const msgEl = document.getElementById("fc-confirm-message");
-    const okBtn = document.getElementById("fc-confirm-ok");
-    const cancelBtn = document.getElementById("fc-confirm-cancel");
-    if (!backdrop || !msgEl || !okBtn || !cancelBtn) {
-      const fallback = window.confirm(message);
-      return resolve(!!fallback);
-    }
-    msgEl.textContent = message;
-    backdrop.classList.add("active");
-
-    function cleanup(result) {
-      backdrop.classList.remove("active");
-      okBtn.removeEventListener("click", onOk);
-      cancelBtn.removeEventListener("click", onCancel);
-      backdrop.removeEventListener("click", onBackdrop);
-      resolve(result);
-    }
-
-    function onOk(e) {
-      e.stopPropagation();
-      cleanup(true);
-    }
-    function onCancel(e) {
-      e.stopPropagation();
-      cleanup(false);
-    }
-    function onBackdrop(e) {
-      if (e.target === backdrop) cleanup(false);
-    }
-
-    okBtn.addEventListener("click", onOk);
-    cancelBtn.addEventListener("click", onCancel);
-    backdrop.addEventListener("click", onBackdrop);
-  });
-};
-
-/* ---------------- HELPER: GET VALID AUTH TOKEN ---------------- */
+  /* ---------------- HELPER: GET VALID AUTH TOKEN ---------------- */
 function getAuthToken() {
   return localStorage.getItem("authToken") || null;
 }

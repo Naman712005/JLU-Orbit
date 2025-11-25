@@ -53,13 +53,16 @@ body{
     padding: 0 40px;
 }
 
-.form-box.Login .login-btn i{
-      position: absolute;
+.form-box.Login .login-btn {
+    position: relative;
+}
+
+.form-box.Login .login-btn i {
+    position: absolute;
+    right: 20px;       /* FIXED: previously 150px */
     top: 50%;
-    right: 150px;
-    font-size: 18px;
     transform: translateY(-50%);
-    transition: .5s;
+    font-size: 18px;
 }
 
 
@@ -422,6 +425,17 @@ body{
         </p>
       </div>
 
+            <!-- INFO PANEL FOR REGISTER (left) -->
+      <div class="info-content Register">
+        <h2 class="animation" style="--li: 17; --S: 0">
+          WELCOME TO JLU Orbit
+        </h2>
+        <p class="animation" style="--li: 18; --S: 1">
+          Sign up today and be a part of the official digital hub of the FAST
+          community.
+        </p>
+      </div>
+
       <!-- REGISTER FORM (right) -->
       <div class="form-box Register">
         <h2 class="animation" style="--li: 17; --S: 0">Register</h2>
@@ -480,16 +494,7 @@ body{
         </form>
       </div>
 
-      <!-- INFO PANEL FOR REGISTER (left) -->
-      <div class="info-content Register">
-        <h2 class="animation" style="--li: 17; --S: 0">
-          WELCOME TO JLU Orbit
-        </h2>
-        <p class="animation" style="--li: 18; --S: 1">
-          Sign up today and be a part of the official digital hub of the FAST
-          community.
-        </p>
-      </div>
+
 
       <!-- OTP FORM (centered overlay style, hidden until needed) -->
       <div class="form-box OTP" id="otpBox" style="display:none; z-index: 10;">

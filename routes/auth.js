@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const sendOTP = require("../utils/sendOTP");
-
+const { sendForgotOtp, verifyForgotOtp, resetPassword } = require("../controllers/forgotController");
 const router = express.Router();
 
 /* -------------------- SIGNUP WITH OTP -------------------- */
@@ -145,5 +145,10 @@ router.post("/login", async (req, res) => {
 router.post("/logout", (req, res) => {
   res.json({ message: "Logged out successfully" });
 });
+
+
+router.post("/send-forgot-otp", sendForgotOtp);
+router.post("/verify-forgot-otp", verifyForgotOtp);
+router.post("/reset-password", resetPassword);
 
 module.exports = router;

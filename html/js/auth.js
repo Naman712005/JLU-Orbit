@@ -176,5 +176,80 @@ otpForm.addEventListener("submit", async (e) => {
   }
 });
 
+function showForgetPassword() {
+  document.querySelector(".form-box.Login").style.display = "none";
+  document.querySelector(".form-box.Register").style.display = "none";
+  document.querySelector(".otp-box").style.display = "none";
+  document.querySelector(".form-box.forget-password").style.display = "block";
+}
+
+/* -------------------- FORGOT PASSWORD STEP 1 --------------------- */
+document.getElementById("forgotPasswordForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById("fpEmail").value;
+
+  const res = await fetch("/auth/send-forgot-otp", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+
+  const data = await res.json();
+
+  if (!data.success) return alert(data.message);
+
+  alert("OTP sent to your email!");
+
+  document.getElementById("forgotPasswordForm").style.display = "none";
+  document.getElementById("forgotOtpForm").style.display = "block";
+});
+
+/* -------------------- FORGOT PASSWORD STEP 2 --------------------- */
+document.getElementById("forgotOtpForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById("fpEmail").value;
+  const otp = document.getElementById("fpOtp").value;
+
+  const res = await fetch("/auth/verify-forgot-otp", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, otp }),
+  });
+
+  const data = await res.json();
+  if (!data.success) return alert(data.message);
+
+  alert("OTP Verified!");
+
+  document.getElementById("forgotOtpForm").style.display = "none";
+  document.getElementById("resetPasswordForm").style.display = "block";
+});
+
+/* -------------------- FORGOT PASSWORD STEP 3 --------------------- */
+document.getElementById("resetPasswordForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById("fpEmail").value;
+  const newPassword = document.getElementById("newPass").value;
+  const confirmPassword = document.getElementById("confirmPass").value;
+
+  if (newPassword !== confirmPassword) return alert("Passwords do not match!");
+
+  const res = await fetch("/auth/reset-password", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, newPassword }),
+  });
+
+  const data = await res.json();
+  if (!data.success) return alert(data.message);
+
+  alert("Password reset successful!");
+  location.reload();
+});
+
+
 // Optional: prefill for dev/testing if desired
 // document.getElementById('signupEmail').value = 'test@example.com';

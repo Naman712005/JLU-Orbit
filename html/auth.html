@@ -1,414 +1,382 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JLU Orbit — Auth</title>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-        color: #fff;
-      }
+      @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    color: #fff;
+}
 
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background: linear-gradient(
-          135deg,
-          #1a1a2e 0%,
-          #16213e 50%,
-          #0f3460 100%
-        );
-        padding: 20px;
-      }
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 20px;
+}
 
-      /* ---------- container ---------- */
-      .container {
-        position: relative;
-        width: 100%;
-        max-width: 1150px;
-        height: auto;
-        min-height: 690px;
-        border: 2px solid #00d4ff;
-        box-shadow: 0 0 35px rgba(0, 212, 255, 0.5);
-        overflow: hidden;
-        border-radius: 20px;
-      }
+/* ---------- container ---------- */
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 1150px;
+    height: auto;
+    min-height: 690px;
+    border: 2px solid #00d4ff;
+    box-shadow: 0 0 35px rgba(0, 212, 255, 0.5);
+    overflow: hidden;
+    border-radius: 20px;
+}
 
-      /* the left and right form box */
-      .container .form-box {
-        position: absolute;
-        top: 0;
-        width: 50%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        z-index: 3;
-      }
+/* the left and right form box */
+.container .form-box{
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 3;
+}
 
-      .form-box.Login {
-        left: 0;
-        padding: 0 40px;
-      }
+.form-box.Login{
+    left: 0;
+    padding: 0 40px;
+}
 
-      .form-box.Login .login-btn {
-        position: relative;
-      }
+.form-box.Login .login-btn {
+    position: relative;
+}
 
-      .form-box.Login .login-btn i {
-        position: absolute;
-        right: 20px; /* FIXED: previously 150px */
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 18px;
-      }
+.form-box.Login .login-btn i {
+    position: absolute;
+    right: 20px;       /* FIXED: previously 150px */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+}
 
-      .form-box.Login .animation {
-        transform: translateX(0%);
-        transition: 0.7s;
-        opacity: 1;
-        transition-delay: calc(0.1s * var(--S));
-      }
 
-      .container.active .form-box.Login .animation {
-        transform: translateX(-120%);
-        opacity: 0;
-        transition-delay: calc(0.1s * var(--D));
-      }
+.form-box.Login .animation{
+    transform: translateX(0%);
+    transition: .7s;
+    opacity: 1;
+    transition-delay: calc(.1s * var(--S));
+}
 
-      .form-box.Register {
-        right: 0;
-        padding: 0 60px;
-      }
+.container.active .form-box.Login .animation{
+    transform: translateX(-120%);
+    opacity: 0;
+    transition-delay: calc(.1s * var(--D));
+}
 
-      .form-box.Register .animation {
-        transform: translateX(120%);
-        transition: 0.7s ease;
-        opacity: 0;
-        filter: blur(10px);
-        transition-delay: calc(0.1s * var(--S));
-      }
+.form-box.Register{
+    right: 0;
+    padding: 0 60px;
+}
 
-      .container.active .form-box.Register .animation {
-        transform: translateX(0%);
-        opacity: 1;
-        filter: blur(0px);
-        transition-delay: calc(0.1s * var(--li));
-      }
+.form-box.Register .animation{
+    transform: translateX(120%);
+    transition: .7s ease;
+    opacity: 0;
+    filter: blur(10px);
+    transition-delay: calc(.1s * var(--S));
+}
 
-      /* OTP form sits on left center when visible */
-      .form-box.OTP {
-        left: 25%;
-        width: 50%;
-        padding: 0 40px;
-        display: none; /* toggled by JS */
-      }
+.container.active .form-box.Register .animation{
+    transform: translateX(0%);
+    opacity: 1;
+    filter: blur(0px);
+    transition-delay: calc(.1s * var(--li));
+}
 
-      /* form text and inputs */
-      .form-box h2 {
-        font-size: 32px;
-        text-align: center;
-      }
+/* OTP form sits on left center when visible */
+.form-box.OTP {
+  left: 25%;
+  width: 50%;
+  padding: 0 40px;
+  display: none; /* toggled by JS */
+}
 
-      .form-box .input-box {
-        position: relative;
-        width: 100%;
-        height: 50px;
-        margin-top: 15px;
-      }
+/* form text and inputs */
+.form-box h2{
+    font-size: 32px;
+    text-align: center;
+}
 
-      .input-box input {
-        width: 100%;
-        height: 100%;
-        background: transparent;
-        border: none;
-        outline: none;
-        font-size: 16px;
-        color: #fff;
-        font-weight: 600;
-        border-bottom: 2px solid #fff;
-        padding-right: 23px;
-        transition: 0.5s;
-      }
+.form-box .input-box{
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin-top: 15px;
+}
 
-      .input-box input:focus,
-      .input-box input:valid {
-        border-bottom: 2px solid #00d4ff;
-      }
+.input-box input{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: #fff;
+    font-weight: 600;
+    border-bottom: 2px solid #fff;
+    padding-right: 23px;
+    transition: .5s;
+}
 
-      .input-box label {
-        position: absolute;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        font-size: 16px;
-        color: #fff;
-        transition: 0.5s;
-        pointer-events: none;
-      }
+.input-box input:focus,
+.input-box input:valid{
+    border-bottom: 2px solid #00d4ff;
+}
 
-      .input-box input:focus ~ label,
-      .input-box input:valid ~ label {
-        top: -5px;
-        color: #00d4ff;
-      }
+.input-box label{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #fff;
+    transition: .5s;
+    pointer-events: none;
+}
 
-      .input-box i {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        font-size: 18px;
-        transform: translateY(-50%);
-        transition: 0.5s;
-      }
+.input-box input:focus ~ label,
+.input-box input:valid ~ label{
+    top: -5px;
+    color: #00d4ff;
+}
 
-      .input-box input:focus ~ i,
-      .input-box input:valid ~ i {
-        color: #00d4ff;
-      }
+.input-box i{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    font-size: 18px;
+    transform: translateY(-50%);
+    transition: .5s;
+}
 
-      /* button styles */
-      .login-btn {
-        position: relative;
-        width: 100%;
-        height: 45px;
-        background: transparent;
-        border-radius: 40px;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: 600;
-        border: 2px solid #00d4ff;
-        overflow: hidden;
-        z-index: 1;
-        color: #fff;
-        transition: all 0.3s ease;
-      }
+.input-box input:focus ~ i,
+.input-box input:valid ~ i{
+    color: #00d4ff;
+}
 
-      .login-btn::before {
-        content: "";
-        position: absolute;
-        height: 300%;
-        width: 100%;
-        background: linear-gradient(135deg, #0f3460, #00d4ff, #0f3460, #00d4ff);
-        top: -100%;
-        left: 0;
-        z-index: -1;
-        transition: 0.5s;
-      }
+/* button styles */
+.login-btn{
+    position: relative;
+    width: 100%;
+    height: 45px;
+    background: transparent;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    border: 2px solid #00d4ff;
+    overflow: hidden;
+    z-index: 1;
+    color: #fff;
+    transition: all 0.3s ease;
+}
 
-      .login-btn:hover:before {
-        top: 0;
-      }
+.login-btn::before{
+    content: "";
+    position: absolute;
+    height: 300%;
+    width: 100%;
+    background: linear-gradient(135deg, #0f3460, #00d4ff, #0f3460, #00d4ff);
+    top: -100%;
+    left: 0;
+    z-index: -1;
+    transition: .5s;
+}
 
-      .regi-link {
-        font-size: 14px;
-        text-align: center;
-        margin: 20px 0 10px;
-      }
+.login-btn:hover:before{
+    top: 0;
+}
 
-      .regi-link a {
-        text-decoration: none;
-        color: #00d4ff;
-        font-weight: 600;
-      }
+.regi-link{
+    font-size: 14px;
+    text-align: center;
+    margin: 20px 0 10px;
+}
 
-      .regi-link a:hover {
-        text-decoration: underline;
-      }
+.regi-link a{
+    text-decoration: none;
+    color: #00d4ff;
+    font-weight: 600;
+}
 
-      /* info content blocks on sides */
-      .info-content {
-        position: absolute;
-        top: 0;
-        height: 100%;
-        width: 50%;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        z-index: 2;
-      }
+.regi-link a:hover{
+    text-decoration: underline;
+}
 
-      .info-content.Login {
-        right: 0;
-        text-align: left;
-        padding: 0 40px 60px 150px;
-      }
+/* info content blocks on sides */
+.info-content{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 2;
+}
 
-      .info-content.Login .animation {
-        transform: translateX(0%);
-        transition: 0.7s ease;
-        transition-delay: calc(0.1s * var(--S));
-        opacity: 1;
-        filter: blur(0px);
-      }
+.info-content.Login{
+    right: 0;
+    text-align: left;
+    padding: 0 40px 60px 150px;
+}
 
-      .container.active .info-content.Login .animation {
-        transform: translateX(120%);
-        opacity: 0;
-        filter: blur(10px);
-        transition-delay: calc(0.1s * var(--D));
-      }
+.info-content.Login .animation{
+   transform: translateX(0%);
+   transition: .7s ease;
+   transition-delay: calc(.1s * var(--S));
+   opacity: 1;
+   filter: blur(0px);
+}
 
-      .info-content.Register {
-        left: 0;
-        text-align: left;
-        padding: 0 150px 60px 40px;
-        pointer-events: none;
-      }
+.container.active .info-content.Login .animation{
+    transform: translateX(120%);
+    opacity: 0;
+    filter: blur(10px);
+    transition-delay: calc(.1s * var(--D));
+}
 
-      .info-content.Register .animation {
-        transform: translateX(-120%);
-        transition: 0.7s ease;
-        opacity: 0;
-        filter: blur(10px);
-        transition-delay: calc(0.1s * var(--S));
-      }
+.info-content.Register{
+    left: 0;
+    text-align: left;
+    padding: 0 150px 60px 40px;
+    pointer-events: none;
+}
 
-      .container.active .info-content.Register .animation {
-        transform: translateX(0%);
-        opacity: 1;
-        filter: blur(0px);
-        transition-delay: calc(0.1s * var(--li));
-      }
+.info-content.Register .animation{
+   transform: translateX(-120%);
+   transition: .7s ease;
+   opacity: 0;
+   filter: blur(10px);
+   transition-delay: calc(.1s * var(--S));
+}
 
-      .info-content h2 {
-        text-transform: uppercase;
-        font-size: 36px;
-        line-height: 1.3;
-      }
+.container.active .info-content.Register .animation{
+    transform: translateX(0%);
+    opacity: 1;
+    filter: blur(0px);
+    transition-delay: calc(.1s * var(--li));
+}
 
-      .info-content p {
-        font-size: 16px;
-      }
+.info-content h2{
+    text-transform: uppercase;
+    font-size: 36px;
+    line-height: 1.3;
+}
 
-      /* curved background shapes */
-      .container .curved-shape {
-        position: absolute;
-        right: -1px;
-        top: -5px;
-        height: 920px;
-        width: 1320px;
-        background: linear-gradient(45deg, #0f3460, #00d4ff);
-        transform: rotate(10deg) skewY(40deg);
-        transform-origin: bottom right;
-        transition: 1.5s ease;
-        transition-delay: 1.6s;
-      }
-      .container.active .curved-shape {
-        transform: rotate(0deg) skewY(0deg);
-        transition-delay: 0.5s;
-      }
+.info-content p{
+    font-size: 16px;
+}
 
-      .container .curved-shape2 {
-        position: absolute;
-        left: 335px;
-        top: 100%;
-        height: 1035px;
-        width: 1320px;
-        background: #0f3460;
-        border-top: 3px solid #00d4ff;
-        transform: rotate(0deg) skewY(0deg);
-        transform-origin: bottom left;
-        transition: 1.5s ease;
-        transition-delay: 0.5s;
-      }
+/* curved background shapes */
+.container .curved-shape {
+    position: absolute;
+    right: -1px;
+    top: -5px;
+    height: 920px;
+    width: 1320px;
+    background: linear-gradient(45deg, #0f3460, #00d4ff);
+    transform: rotate(10deg) skewY(40deg);
+    transform-origin: bottom right;
+    transition: 1.5s ease;
+    transition-delay: 1.6s;
+}
+.container.active .curved-shape{
+    transform: rotate(0deg) skewY(0deg);
+    transition-delay: .5s;
+}
 
-      .container.active .curved-shape2 {
-        transform: rotate(-11deg) skewY(-41deg);
-        transition-delay: 1.2s;
-      }
+.container .curved-shape2 {
+    position: absolute;
+    left: 335px;
+    top: 100%;
+    height: 1035px;
+    width: 1320px;
+    background: #0f3460;
+    border-top: 3px solid #00d4ff;
+    transform: rotate(0deg) skewY(0deg);
+    transform-origin: bottom left;
+    transition: 1.5s ease;
+    transition-delay: .5s;
+}
 
-      /* Enhanced responsiveness */
-      @media (max-width: 1200px) {
-        .container {
-          width: 95%;
-          max-width: 900px;
-        }
-      }
+.container.active .curved-shape2{
+    transform: rotate(-11deg) skewY(-41deg);
+    transition-delay: 1.2s;
+}
 
-      @media (max-width: 1100px) {
-        .container {
-          width: 95%;
-          height: auto;
-          display: block;
-        }
-        .form-box,
-        .info-content {
-          position: relative;
-          width: 100%;
-          padding: 30px 20px;
-        }
-        .info-content.Login,
-        .info-content.Register {
-          padding: 30px 20px;
-        }
-        .curved-shape,
-        .curved-shape2 {
-          display: none;
-        }
-        .info-content h2 {
-          font-size: 28px;
-        }
-      }
+/* Enhanced responsiveness */
+@media (max-width: 1200px) {
+  .container { width: 95%; max-width: 900px; }
+}
 
-      @media (max-width: 768px) {
-        body {
-          padding: 10px;
-          align-items: flex-start;
-        }
-        .container {
-          border: 2px solid #00d4ff;
-          box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
-          margin: 10px auto;
-          max-width: 480px;
-          min-height: auto;
-        }
-        .container .form-box,
-        .container .info-content {
-          position: relative;
-          width: 100%;
-          padding: 20px 15px;
-        }
-        .form-box.OTP {
-          left: 0;
-          width: 100%;
-          padding: 20px 15px;
-        }
-        .form-box h2 {
-          font-size: 24px;
-        }
-        .info-content h2 {
-          font-size: 22px;
-        }
-        .input-box {
-          margin-top: 12px;
-        }
-      }
+@media (max-width: 1100px) {
+  .container { width: 95%; height: auto; display:block; }
+  .form-box, .info-content { position: relative; width: 100%; padding: 30px 20px; }
+  .info-content.Login, .info-content.Register { padding: 30px 20px; }
+  .curved-shape, .curved-shape2 { display:none; }
+  .info-content h2 { font-size: 28px; }
+}
 
-      @media (max-width: 480px) {
-        body {
-          padding: 8px;
-        }
-        .container {
-          margin: 0;
-          border-radius: 16px;
-        }
-        .form-box,
-        .info-content {
-          padding: 16px 12px;
-        }
-        .login-btn {
-          font-size: 14px;
-          height: 40px;
-        }
-      }
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+    align-items: flex-start;
+  }
+  .container {
+    border: 2px solid #00d4ff;
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
+    margin: 10px auto;
+    max-width: 480px;
+    min-height: auto;
+  }
+  .container .form-box,
+  .container .info-content {
+    position: relative;
+    width: 100%;
+    padding: 20px 15px;
+  }
+  .form-box.OTP {
+    left: 0;
+    width: 100%;
+    padding: 20px 15px;
+  }
+  .form-box h2 { font-size: 24px; }
+  .info-content h2 { font-size: 22px; }
+  .input-box { margin-top: 12px; }
+}
+
+@media (max-width: 480px) {
+  body { padding: 8px; }
+  .container {
+    margin: 0;
+    border-radius: 16px;
+  }
+  .form-box,
+  .info-content {
+    padding: 16px 12px;
+  }
+  .login-btn {
+    font-size: 14px;
+    height: 40px;
+  }
+}
     </style>
 
     <!-- Font Awesome CDN -->
@@ -438,9 +406,7 @@
             <i class="fa-solid fa-lock"></i>
           </div>
           <div class="input-box animation" style="--D: 3; --S: 24">
-            <button class="login-btn" type="submit">
-              <i class="fa-solid fa-right-to-bracket"></i> &nbsp; Login
-            </button>
+            <button class="login-btn" type="submit"><i class="fa-solid fa-right-to-bracket"></i> &nbsp; Login</button>
           </div>
 
           <div class="regi-link animation" style="--D: 4; --S: 25">
@@ -448,10 +414,6 @@
               Don't have an account? <a href="#" class="SignUpLink">Sign Up</a>
             </p>
           </div>
-      <p style="margin-top: 10px;">
-  <a href="/html/forgotpassword.html">Forgot Password?</a>
-</p>
-
         </form>
       </div>
 
@@ -463,9 +425,11 @@
         </p>
       </div>
 
-      <!-- INFO PANEL FOR REGISTER (left) -->
+            <!-- INFO PANEL FOR REGISTER (left) -->
       <div class="info-content Register">
-        <h2 class="animation" style="--li: 17; --S: 0">WELCOME TO JLU Orbit</h2>
+        <h2 class="animation" style="--li: 17; --S: 0">
+          WELCOME TO JLU Orbit
+        </h2>
         <p class="animation" style="--li: 18; --S: 1">
           Sign up today and be a part of the official digital hub of the FAST
           community.
@@ -501,13 +465,7 @@
           </div>
 
           <div class="input-box animation" style="--li: 22; --S: 5">
-            <input
-              id="signupJluid"
-              type="text"
-              required
-              pattern="jlu0[0-9]{4}"
-              title="Format: jlu0 followed by 4 digits (e.g., JLU01111)"
-            />
+            <input id="signupJluid" type="text" required pattern="jlu0[0-9]{4}" title="Format: jlu0 followed by 4 digits (e.g., JLU01111)" />
             <label for="signupJluid">JLU ID</label>
             <i class="fa-solid fa-id-card-clip"></i>
           </div>
@@ -530,15 +488,16 @@
 
           <div class="regi-link animation" style="--li: 26; --S: 9">
             <p>
-              Already have an account?
-              <a href="#" class="SignInLink">Sign In</a>
+              Already have an account? <a href="#" class="SignInLink">Sign In</a>
             </p>
           </div>
         </form>
       </div>
 
+
+
       <!-- OTP FORM (centered overlay style, hidden until needed) -->
-      <div class="form-box OTP" id="otpBox" style="display: none; z-index: 10">
+      <div class="form-box OTP" id="otpBox" style="display:none; z-index: 10;">
         <h2 class="animation" style="--D: 0; --S: 21">Verify OTP</h2>
         <form id="otpForm" action="#">
           <div class="input-box animation" style="--D: 1; --S: 22">
@@ -547,9 +506,7 @@
             <i class="fa-solid fa-key"></i>
           </div>
           <div class="input-box animation" style="--D: 3; --S: 24">
-            <button class="login-btn" type="submit">
-              <i class="fa-solid fa-check"></i> &nbsp; Verify OTP
-            </button>
+            <button class="login-btn" type="submit"><i class="fa-solid fa-check"></i> &nbsp; Verify OTP</button>
           </div>
         </form>
       </div>

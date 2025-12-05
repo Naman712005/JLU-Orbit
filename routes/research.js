@@ -1,10 +1,29 @@
 const express = require('express');
+const path = require('path');
+const fs = require('fs');
+const multer = require('multer');
 const Research = require('../models/research');
 const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
 
+// Dedicated storage for research attachments (allows images, PDFs, docs, etc.)
+const researchStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadDir = path.join(__dirname, '..', 'uploads', 'research');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
 
-
+const uploadAttachments = multer({
+  storage: researchStorage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB per file
+});
 
 /* =========================================================
    GET /api/research
@@ -27,7 +46,7 @@ router.get('/', async (req, res) => {
    POST /api/research
    Protected — create new research
 ========================================================= */
-router.post('/', authMiddleware, async (req, res) => {
+router.post('/', authMiddleware, uploadAttachments.array('attachments', 6), async (req, res) => {
   try {
     const { title, abstract, content, keywords, confirmOriginal } = req.body;
 
@@ -46,6 +65,12 @@ router.post('/', authMiddleware, async (req, res) => {
           .map((k) => k.trim().toLowerCase())
           .filter(Boolean);
 
+    const attachments = (req.files || []).map((file) => ({
+      url: `/uploads/research/${file.filename}`,
+      filename: file.originalname,
+      mimetype: file.mimetype,
+    }));
+
     const research = await Research.create({
       author: req.user.id,
       title,
@@ -53,6 +78,7 @@ router.post('/', authMiddleware, async (req, res) => {
       content,
       keywords: normalizedKeywords,
       confirmOriginal: true,
+      attachments,
     });
 
     const populated = await Research.findById(research._id).populate(

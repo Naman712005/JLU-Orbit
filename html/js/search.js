@@ -29,14 +29,19 @@ async function performSearch(query) {
     resultsContainer.innerHTML = data.results
       .map(
         (post) => `
-      <li class="border-b pb-2">
-        <h4 class="font-semibold">${post.title}</h4>
-        <p class="text-sm text-gray-500">by ${post.author?.name || 'Unknown'}</p>
-        <p class="text-xs text-gray-400 mt-1">${(post.tags || []).map(t => `#${t}`).join(' ')}</p>
+      <li class="border-b pb-2 last:border-b-0">
+        <button type="button" data-post-id="${post._id}"
+          class="w-full text-left -mx-2 px-2 py-1.5 rounded-md hover:bg-slate-900/10">
+          <h4 class="font-semibold">${post.title}</h4>
+          <p class="text-sm text-gray-500">by ${post.author?.name || 'Unknown'}</p>
+          <p class="text-xs text-gray-400 mt-1">${(post.tags || []).map(t => `#${t}`).join(' ')}</p>
+        </button>
       </li>
     `
       )
       .join('');
+
+    wireSearchResultClicks();
   } catch (err) {
     console.error('Search error:', err);
     resultsContainer.innerHTML = `<li class="text-red-500">Error while searching</li>`;
@@ -58,7 +63,35 @@ if (searchInput) {
   });
 }
 
+function wireSearchResultClicks() {
+  if (!resultsContainer) return;
+  const buttons = resultsContainer.querySelectorAll('[data-post-id]');
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const postId = btn.getAttribute('data-post-id');
+      if (postId) goToPostFromSearch(postId);
+    });
+  });
+}
 
+function goToPostFromSearch(postId) {
+  if (!postId) return;
 
+  if (typeof showTab === 'function') {
+    showTab('feed');
+  }
 
-
+  if (typeof loadPosts === 'function') {
+    // Reload posts, then scroll to the specific one
+    loadPosts(null).then(() => {
+      const el = document.querySelector(`[data-id="${postId}"]`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        el.classList.add('ring-2', 'ring-[#1f6feb]');
+        setTimeout(() => {
+          el.classList.remove('ring-2', 'ring-[#1f6feb]');
+        }, 2000);
+      }
+    });
+  }
+}

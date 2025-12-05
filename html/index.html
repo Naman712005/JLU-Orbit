@@ -1,17 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>FastConnect</title>
+    <title>JLU Orbit</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
+    <style>
+      :root {
+        --orbit-bg: #0d1117;
+        --orbit-surface: #161b22;
+        --orbit-surface-subtle: #1b222c;
+        --orbit-primary: #1f6feb;
+        --orbit-primary-soft: #58a6ff;
+        --orbit-text: #c9d1d9;
+        --orbit-muted: #8b949e;
+        --orbit-border: #30363d;
+        --orbit-danger: #f97373;
+        --orbit-success: #2ea043;
+      }
+
+      html[data-theme="light"] {
+        --orbit-bg: #f3f2ef;
+        --orbit-surface: #ffffff;
+        --orbit-surface-subtle: #f3f4f6;
+        --orbit-text: #111827;
+        --orbit-muted: #4b5563;
+        --orbit-border: #d1d5db;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-height: 100vh;
+        background-color: var(--orbit-bg);
+        color: var(--orbit-text);
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      .orbit-card {
+        background-color: var(--orbit-surface);
+        border-radius: 0.75rem;
+        border: 1px solid var(--orbit-border);
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.45);
+        transition: transform 150ms ease, box-shadow 150ms ease,
+          border-color 150ms ease;
+      }
+
+      .orbit-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 22px 55px rgba(15, 23, 42, 0.65);
+        border-color: rgba(88, 166, 255, 0.5);
+      }
+
+      .orbit-chip {
+        border-radius: 999px;
+        border: 1px solid var(--orbit-border);
+        background-color: rgba(31, 111, 235, 0.08);
+      }
+
+      a {
+        color: var(--orbit-primary-soft);
+      }
+
+      a:hover {
+        color: #7fb9ff;
+      }
+
+      html[data-theme="dark"] .bg-white {
+        background-color: var(--orbit-surface) !important;
+      }
+
+      html[data-theme="dark"] .bg-gray-50 {
+        background-color: #020617 !important;
+      }
+
+      html[data-theme="dark"] .text-gray-700 {
+        color: var(--orbit-text) !important;
+      }
+
+      html[data-theme="dark"] .text-gray-600,
+      html[data-theme="dark"] .text-gray-500 {
+        color: var(--orbit-muted) !important;
+      }
+
+      html[data-theme="dark"] .text-gray-800,
+      html[data-theme="dark"] .text-gray-900 {
+        color: var(--orbit-text) !important;
+      }
+
+      html[data-theme="dark"] .border-gray-200,
+      html[data-theme="dark"] .border-gray-300 {
+        border-color: var(--orbit-border) !important;
+      }
+
+      html[data-theme="dark"] .shadow,
+      html[data-theme="dark"] .shadow-lg {
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.65) !important;
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        color: var(--orbit-muted);
+        opacity: 1;
+      }
+
+      html[data-theme="light"] input::placeholder,
+      html[data-theme="light"] textarea::placeholder {
+        color: #6b7280;
+      }
+
+      html[data-theme="dark"] input,
+      html[data-theme="dark"] textarea,
+      html[data-theme="dark"] select {
+        color: #000000 !important;
+        background-color: #ffffff !important;
+      }
+
+      /* Light mode adjustments */
+      html[data-theme="light"] nav {
+        background-color: #ffffff !important;
+        border-bottom-color: #e5e7eb !important;
+      }
+
+      html[data-theme="light"] footer {
+        background-color: #f9fafb !important;
+        border-top-color: #e5e7eb !important;
+        color: #111827;
+      }
+
+      html[data-theme="light"] .filter-btn {
+        background-color: #e5e7eb !important;
+        color: #111827 !important;
+        border-color: #d1d5db !important;
+      }
+
+      html[data-theme="light"] .filter-btn[data-type="All"] {
+        background-image: linear-gradient(90deg, #1f6feb, #58a6ff) !important;
+        color: #ffffff !important;
+        border-color: #1f6feb !important;
+      }
+
+      html[data-theme="light"] .bg-slate-900\/80 {
+        background-color: #111827 !important;
+        color: #f9fafb !important;
+        border-color: #111827 !important;
+      }
+
+      html[data-theme="light"] #navSearchInput {
+        background-color: #ffffff !important;
+        color: #111827 !important;
+        border-color: #d1d5db !important;
+      }
+
+      html[data-theme="light"] .border-slate-900\/80.bg-\[\#020617\].orbit-footer-bottom {
+        background-color: #e5e7eb !important;
+        border-top-color: #d1d5db !important;
+        color: #374151 !important;
+      }
+
+      #themeToggle {
+        background-color: #020617;
+      }
+
+      html[data-theme="light"] #themeToggle {
+        background-color: #e5e7eb;
+      }
+
+      #themeToggleKnob {
+        transform: translateX(0.25rem);
+      }
+
+      html[data-theme="light"] #themeToggleKnob {
+        transform: translateX(1.45rem);
+      }
+    </style>
   </head>
-  <body class="bg-gradient-to-br from-gray-50 via-blue-50 to-cyan-50 min-h-screen">
+  <body class="min-h-screen antialiased">
     <script>
       // Redirect to auth if not logged in
       const token = localStorage.getItem("authToken");
@@ -19,111 +206,180 @@
     </script>
 
     <!-- MAIN APP -->
-    <div id="mainApp" class="min-h-screen">
-    <nav class="bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-700 px-4 md:px-6 py-3 shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-          <div class="flex items-center space-x-2 text-white font-bold text-lg md:text-xl">
-            <i class="fas fa-rocket"></i><span>FAST-Connect</span>
+    <div id="mainApp" class="min-h-screen flex flex-col">
+      <nav
+        class="border-b border-slate-800 bg-[#0d1117]/95 backdrop-blur sticky top-0 z-50"
+      >
+        <div
+          class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 py-3 gap-3"
+        >
+          <div class="flex items-center gap-2 text-[var(--orbit-text)]">
+            <div
+              class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#1f6feb] to-[#58a6ff] flex items-center justify-center text-white shadow-lg"
+            >
+              <i class="fas fa-code-branch text-sm"></i>
+            </div>
+            <div class="leading-tight">
+              <p class="font-semibold text-sm md:text-base tracking-wide">
+                JLU Orbit
+              </p>
+              <p class="text-[10px] md:text-xs text-[var(--orbit-muted)]">
+                Engineering • Research • Community
+              </p>
+            </div>
           </div>
-          
+
           <!-- Desktop Navigation -->
-          <ul class="hidden lg:flex space-x-6 text-white font-medium">
+          <ul
+            class="hidden lg:flex items-center gap-4 text-sm text-[var(--orbit-muted)]"
+          >
             <li
               onclick="showTab('feed')"
-              class="hover:text-cyan-200 cursor-pointer transition-colors duration-200"
+              class="cursor-pointer px-3 py-1.5 rounded-full hover:bg-slate-800/80 hover:text-white transition-colors duration-150 flex items-center gap-2 text-xs font-medium"
             >
-              <i class="fas fa-stream"></i> Feed
+              <i class="fas fa-stream text-[11px]"></i>
+              <span>Feed</span>
             </li>
             <li
               onclick="showTab('profile')"
-              class="hover:text-cyan-200 cursor-pointer transition-colors duration-200"
+              class="cursor-pointer px-3 py-1.5 rounded-full hover:bg-slate-800/80 hover:text-white transition-colors duration-150 flex items-center gap-2 text-xs font-medium"
             >
-              <i class="fas fa-user"></i> Profile
+              <i class="fas fa-user text-[11px]"></i>
+              <span>Profile</span>
             </li>
             <li
               onclick="showTab('groups')"
-              class="hover:text-cyan-200 cursor-pointer transition-colors duration-200"
+              class="cursor-pointer px-3 py-1.5 rounded-full hover:bg-slate-800/80 hover:text-white transition-colors duration-150 flex items-center gap-2 text-xs font-medium"
             >
-              <i class="fas fa-users"></i> Groups
+              <i class="fas fa-users text-[11px]"></i>
+              <span>Groups</span>
             </li>
             <li
               onclick="showTab('research')"
-              class="hover:text-cyan-200 cursor-pointer transition-colors duration-200"
+              class="cursor-pointer px-3 py-1.5 rounded-full hover:bg-slate-800/80 hover:text-white transition-colors duration-150 flex items-center gap-2 text-xs font-medium"
             >
-              <i class="fas fa-flask"></i> Research
+              <i class="fas fa-flask text-[11px]"></i>
+              <span>Research</span>
             </li>
             <li
               onclick="showTab('search')"
-              class="hover:text-cyan-200 cursor-pointer transition-colors duration-200"
+              class="cursor-pointer px-3 py-1.5 rounded-full hover:bg-slate-800/80 hover:text-white transition-colors duration-150 flex items-center gap-2 text-xs font-medium"
             >
-              <i class="fas fa-search"></i> Search
+              <i class="fas fa-search text-[11px]"></i>
+              <span>Search</span>
             </li>
           </ul>
-          
-          <div class="flex items-center space-x-2 md:space-x-4">
+
+          <div class="flex items-center gap-2 md:gap-4">
             <div class="relative">
-              <button id="notifBtn" class="relative text-white">
-                <i class="fas fa-bell text-xl cursor-pointer"></i>
+              <button id="notifBtn" class="relative text-[var(--orbit-muted)]">
+                <i class="fas fa-bell text-lg cursor-pointer"></i>
                 <span
                   id="notifBadge"
-                  class="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center hidden"
+                  class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center hidden"
                   >0</span
                 >
               </button>
             </div>
 
             <div
+              class="flex items-center gap-2 text-[10px] text-[var(--orbit-muted)]"
+            >
+              <i class="fa-regular fa-moon"></i>
+              <button
+                id="themeToggle"
+                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--orbit-primary-soft)] focus:ring-offset-2 focus:ring-offset-slate-900"
+              >
+                <span class="sr-only">Toggle dark / light theme</span>
+                <span
+                  id="themeToggleKnob"
+                  class="inline-block h-4 w-4 rounded-full bg-white shadow transform transition-transform duration-300"
+                ></span>
+              </button>
+            </div>
+
+            <div
               id="navUser"
-              class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-cyan-400 text-white font-bold cursor-pointer shadow-md hover:scale-110 transition-transform"
+              class="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full bg-gradient-to-br from-[#1f6feb] to-[#58a6ff] text-white text-xs md:text-sm font-semibold cursor-pointer shadow-md hover:scale-110 transition-transform"
             >
               U
             </div>
             <button
               id="logoutBtn"
               onclick="logout()"
-              class="hidden md:block bg-red-500 text-white px-3 py-1.5 rounded-lg hover:bg-red-600 transition-colors font-medium"
+              class="hidden md:inline-flex items-center px-3 py-1.5 rounded-lg bg-red-500/90 text-xs font-medium text-white hover:bg-red-600 transition-colors"
             >
               Logout
             </button>
-            
+
             <!-- Mobile Menu Button -->
             <button
               id="mobileMenuBtn"
-              class="lg:hidden text-white text-2xl focus:outline-none"
+              class="lg:hidden text-[var(--orbit-text)] text-2xl focus:outline-none"
               onclick="toggleMobileMenu()"
             >
               <i class="fas fa-bars"></i>
             </button>
           </div>
         </div>
-        
+
         <!-- Mobile Menu Overlay -->
-        <div id="mobileMenu" class="hidden lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40" onclick="closeMobileMenu()">
-          <div class="bg-gradient-to-b from-cyan-600 to-indigo-700 w-64 h-full shadow-2xl p-6" onclick="event.stopPropagation()">
+        <div
+          id="mobileMenu"
+          class="hidden lg:hidden fixed inset-0 bg-black bg-opacity-60 z-40"
+          onclick="closeMobileMenu()"
+        >
+          <div
+            class="bg-[#0d1117] w-64 h-full shadow-2xl p-6 border-r border-slate-800"
+            onclick="event.stopPropagation()"
+          >
             <div class="flex justify-between items-center mb-8">
-              <h3 class="text-white font-bold text-lg">Menu</h3>
+              <h3 class="text-white font-semibold text-base">Navigate</h3>
               <button onclick="closeMobileMenu()" class="text-white text-2xl">
                 <i class="fas fa-times"></i>
               </button>
             </div>
-            <ul class="space-y-4">
-              <li onclick="showTab('feed'); closeMobileMenu()" class="text-white text-lg font-medium cursor-pointer hover:text-cyan-200 flex items-center space-x-3">
-                <i class="fas fa-stream w-6"></i><span>Feed</span>
+            <ul class="space-y-4 text-sm">
+              <li
+                onclick="showTab('feed'); closeMobileMenu()"
+                class="text-white font-medium cursor-pointer hover:text-[var(--orbit-primary-soft)] flex items-center gap-3"
+              >
+                <i class="fas fa-stream w-5 text-[var(--orbit-muted)]"></i
+                ><span>Feed</span>
               </li>
-              <li onclick="showTab('profile'); closeMobileMenu()" class="text-white text-lg font-medium cursor-pointer hover:text-cyan-200 flex items-center space-x-3">
-                <i class="fas fa-user w-6"></i><span>Profile</span>
+              <li
+                onclick="showTab('profile'); closeMobileMenu()"
+                class="text-white font-medium cursor-pointer hover:text-[var(--orbit-primary-soft)] flex items-center gap-3"
+              >
+                <i class="fas fa-user w-5 text-[var(--orbit-muted)]"></i
+                ><span>Profile</span>
               </li>
-              <li onclick="showTab('groups'); closeMobileMenu()" class="text-white text-lg font-medium cursor-pointer hover:text-cyan-200 flex items-center space-x-3">
-                <i class="fas fa-users w-6"></i><span>Groups</span>
+              <li
+                onclick="showTab('groups'); closeMobileMenu()"
+                class="text-white font-medium cursor-pointer hover:text-[var(--orbit-primary-soft)] flex items-center gap-3"
+              >
+                <i class="fas fa-users w-5 text-[var(--orbit-muted)]"></i
+                ><span>Groups</span>
               </li>
-              <li onclick="showTab('research'); closeMobileMenu()" class="text-white text-lg font-medium cursor-pointer hover:text-cyan-200 flex items-center space-x-3">
-                <i class="fas fa-flask w-6"></i><span>Research</span>
+              <li
+                onclick="showTab('research'); closeMobileMenu()"
+                class="text-white font-medium cursor-pointer hover:text-[var(--orbit-primary-soft)] flex items-center gap-3"
+              >
+                <i class="fas fa-flask w-5 text-[var(--orbit-muted)]"></i
+                ><span>Research</span>
               </li>
-              <li onclick="showTab('search'); closeMobileMenu()" class="text-white text-lg font-medium cursor-pointer hover:text-cyan-200 flex items-center space-x-3">
-                <i class="fas fa-search w-6"></i><span>Search</span>
+              <li
+                onclick="showTab('search'); closeMobileMenu()"
+                class="text-white font-medium cursor-pointer hover:text-[var(--orbit-primary-soft)] flex items-center gap-3"
+              >
+                <i class="fas fa-search w-5 text-[var(--orbit-muted)]"></i
+                ><span>Search</span>
               </li>
-              <li onclick="logout()" class="text-red-300 text-lg font-medium cursor-pointer hover:text-red-200 flex items-center space-x-3 mt-8 pt-8 border-t border-white border-opacity-20">
-                <i class="fas fa-sign-out-alt w-6"></i><span>Logout</span>
+              <li
+                onclick="logout()"
+                class="text-red-300 font-medium cursor-pointer hover:text-red-200 flex items-center gap-3 mt-8 pt-6 border-t border-white/10"
+              >
+                <i class="fas fa-sign-out-alt w-5"></i><span>Logout</span>
               </li>
             </ul>
           </div>
@@ -131,106 +387,375 @@
       </nav>
 
       <!-- FEED -->
-      <section id="feed" class="p-4 md:p-6 max-w-4xl mx-auto">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
-          <h2 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent">Community Feed</h2>
-          <button
-            id="createPostBtn"
-            onclick="openPostModal()"
-            class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center space-x-2 font-medium w-full sm:w-auto justify-center"
+      <section
+        id="feed"
+        class="px-4 md:px-6 py-6 max-w-7xl mx-auto w-full lg:h-[calc(100vh-6rem)] lg:overflow-hidden"
+      >
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 xl:gap-8 h-full">
+          <!-- Left rail: profile + navigation -->
+          <aside
+            class="space-y-4 lg:col-span-1 order-2 lg:order-1 lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto"
           >
-            <i class="fas fa-pencil-alt"></i> <span>Create Post</span>
-          </button>
-        </div>
+            <div class="orbit-card p-4">
+              <p
+                class="text-[11px] uppercase tracking-[0.12em] text-[var(--orbit-muted)] mb-2"
+              >
+                Your orbit
+              </p>
+              <div class="flex items-center gap-3 mb-3">
+                <div
+                  class="w-10 h-10 rounded-full bg-gradient-to-br from-[#1f6feb] to-[#58a6ff] flex items-center justify-center text-white font-semibold text-sm"
+                >
+                  <span id="feedInitials">U</span>
+                </div>
+                <div class="space-y-0.5">
+                  <p class="text-sm font-medium" id="feedUserName">Student</p>
+                  <p class="text-[11px] text-[var(--orbit-muted)]">
+                    Jagran School of Computer Application
+                  </p>
+                </div>
+              </div>
+              <div
+                class="flex flex-col gap-1 text-xs text-[var(--orbit-muted)]"
+              >
+                <button
+                  onclick="showTab('profile')"
+                  class="flex items-center justify-between px-2 py-1.5 rounded-md hover:bg-slate-800/80 hover:text-white transition-colors"
+                >
+                  <span class="flex items-center gap-2">
+                    <i class="fas fa-id-card-alt text-[11px]"></i>
+                    Profile &amp; skills
+                  </span>
+                  <i class="fas fa-chevron-right text-[9px]"></i>
+                </button>
+                <button
+                  onclick="showTab('research')"
+                  class="flex items-center justify-between px-2 py-1.5 rounded-md hover:bg-slate-800/80 hover:text-white transition-colors"
+                >
+                  <span class="flex items-center gap-2">
+                    <i class="fas fa-flask text-[11px]"></i>
+                    Research hub
+                  </span>
+                  <i class="fas fa-chevron-right text-[9px]"></i>
+                </button>
+                <button
+                  onclick="showTab('groups')"
+                  class="flex items-center justify-between px-2 py-1.5 rounded-md hover:bg-slate-800/80 hover:text-white transition-colors"
+                >
+                  <span class="flex items-center gap-2">
+                    <i class="fas fa-users text-[11px]"></i>
+                    Project groups
+                  </span>
+                  <i class="fas fa-chevron-right text-[9px]"></i>
+                </button>
+              </div>
+            </div>
 
-        <div id="filters" class="flex flex-wrap gap-2 mb-6">
-          <button
-            data-type="All"
-            class="filter-btn px-3 md:px-4 py-1.5 border rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-medium text-sm transition-all duration-300 hover:shadow-md"
-          >
-            All Posts
-          </button>
-          <button
-            data-type="Discussion"
-            class="filter-btn px-3 md:px-4 py-1.5 border rounded-full bg-gray-700 text-white font-medium text-sm transition-all duration-300 hover:shadow-md hover:bg-gray-600"
-          >
-            Discussions
-          </button>
-          <button
-            data-type="Question"
-            class="filter-btn px-3 md:px-4 py-1.5 border rounded-full bg-gray-700 text-white font-medium text-sm transition-all duration-300 hover:shadow-md hover:bg-gray-600"
-          >
-            Questions
-          </button>
-          <button
-            data-type="Announcement"
-            class="filter-btn px-3 md:px-4 py-1.5 border rounded-full bg-gray-700 text-white font-medium text-sm transition-all duration-300 hover:shadow-md hover:bg-gray-600"
-          >
-            Announcements
-          </button>
-          <button
-            data-type="Project Work"
-            class="filter-btn px-3 md:px-4 py-1.5 border rounded-full bg-gray-700 text-white font-medium text-sm transition-all duration-300 hover:shadow-md hover:bg-gray-600"
-          >
-            Project Work
-          </button>
-        </div>
+            <div class="orbit-card p-4 space-y-3">
+              <p
+                class="text-[11px] uppercase tracking-[0.12em] text-[var(--orbit-muted)]"
+              >
+                Shortcuts
+              </p>
+              <div class="flex flex-wrap gap-2 text-[11px]">
+                <span class="orbit-chip px-3 py-1">#hackathon</span>
+                <span class="orbit-chip px-3 py-1">#placement</span>
+                <span class="orbit-chip px-3 py-1">#open-source</span>
+                <span class="orbit-chip px-3 py-1">#research</span>
+              </div>
+            </div>
+          </aside>
 
-        <div id="postsContainer"></div>
+          <!-- Center column: main feed -->
+          <div
+            class="space-y-4 lg:col-span-2 order-1 lg:order-2 lg:h-full lg:overflow-y-auto lg:pr-2"
+          >
+            <div
+              class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+            >
+              <div>
+                <h2
+                  class="text-2xl md:text-3xl font-semibold bg-gradient-to-r from-[#58a6ff] to-[#1f6feb] bg-clip-text text-transparent"
+                >
+                  Community Feed
+                </h2>
+                <p class="text-xs md:text-sm text-[var(--orbit-muted)] mt-1">
+                  Share projects, questions and breakthroughs with your cohort.
+                </p>
+              </div>
+              <button
+                id="createPostBtn"
+                onclick="openPostModal()"
+                class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:shadow-lg hover:brightness-110 transition-all duration-200 w-full sm:w-auto"
+              >
+                <i class="fas fa-pencil-alt text-xs"></i>
+                <span>Create post</span>
+              </button>
+            </div>
+
+            <!-- Quick composer surface -->
+            <div class="orbit-card p-3 md:p-4 flex items-center gap-3">
+              <div
+                class="hidden sm:flex w-9 h-9 rounded-full bg-slate-800 items-center justify-center text-xs text-[var(--orbit-muted)]"
+              >
+                <i class="fas fa-terminal"></i>
+              </div>
+              <button
+                onclick="openPostModal()"
+                class="flex-1 text-left text-xs md:text-sm px-3 py-2 rounded-xl bg-slate-900/60 border border-dashed border-slate-700 text-[var(--orbit-muted)] hover:border-[var(--orbit-primary-soft)] hover:text-[var(--orbit-text)] transition-colors"
+              >
+                Share what you're building, debugging or researching...
+              </button>
+            </div>
+
+            <!-- Feed filters -->
+            <div id="filters" class="flex flex-wrap gap-2 mb-2">
+              <button
+                data-type="All"
+                class="filter-btn orbit-chip px-3 md:px-4 py-1.5 text-[11px] md:text-xs font-medium bg-gradient-to-r from-[#1f6feb] to-[#58a6ff] text-white border-0 shadow-sm"
+              >
+                All posts
+              </button>
+              <button
+                data-type="Discussion"
+                class="filter-btn orbit-chip px-3 md:px-4 py-1.5 text-[11px] md:text-xs font-medium text-[var(--orbit-text)] bg-slate-900/70"
+              >
+                Discussions
+              </button>
+              <button
+                data-type="Question"
+                class="filter-btn orbit-chip px-3 md:px-4 py-1.5 text-[11px] md:text-xs font-medium text-[var(--orbit-text)] bg-slate-900/70"
+              >
+                Questions
+              </button>
+              <button
+                data-type="Announcement"
+                class="filter-btn orbit-chip px-3 md:px-4 py-1.5 text-[11px] md:text-xs font-medium text-[var(--orbit-text)] bg-slate-900/70"
+              >
+                Announcements
+              </button>
+              <button
+                data-type="Project Work"
+                class="filter-btn orbit-chip px-3 md:px-4 py-1.5 text-[11px] md:text-xs font-medium text-[var(--orbit-text)] bg-slate-900/70"
+              >
+                Project work
+              </button>
+            </div>
+
+            <div id="postsContainer" class="space-y-4"></div>
+          </div>
+
+          <!-- Right rail: events & trends -->
+          <aside
+            class="space-y-4 lg:col-span-1 order-3 lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto"
+          >
+            <div class="orbit-card p-4">
+              <div class="flex items-center justify-between mb-3">
+                <p
+                  class="text-[11px] uppercase tracking-[0.12em] text-[var(--orbit-muted)]"
+                >
+                  Engineering events
+                </p>
+                <span
+                  class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
+                >
+                  Live
+                </span>
+              </div>
+              <ul class="space-y-3 text-xs md:text-[13px]">
+                <li>
+                  <p class="font-medium">
+                    Smart India Hackathon - Campus Round
+                  </p>
+                  <p class="text-[11px] text-[var(--orbit-muted)]">
+                    12 Jan · Innovation Lab · Team registrations open
+                  </p>
+                </li>
+                <li>
+                  <p class="font-medium">JLU DevSprint: 24hr Coding Marathon</p>
+                  <p class="text-[11px] text-[var(--orbit-muted)]">
+                    28 Feb · Labs &amp; Online · Web, ML, Blockchain tracks
+                  </p>
+                </li>
+                <li>
+                  <p class="font-medium">
+                    Research Colloquium: AI &amp; Cyber Security
+                  </p>
+                  <p class="text-[11px] text-[var(--orbit-muted)]">
+                    05 Mar · CS Auditorium · Submit abstracts by 15 Feb
+                  </p>
+                </li>
+              </ul>
+            </div>
+
+            <div class="orbit-card p-4 space-y-3">
+              <p
+                class="text-[11px] uppercase tracking-[0.12em] text-[var(--orbit-muted)]"
+              >
+                Trending topics
+              </p>
+              <div class="flex flex-wrap gap-2 text-[11px]">
+                <span class="orbit-chip px-3 py-1">#GenAI</span>
+                <span class="orbit-chip px-3 py-1">#DataStructures</span>
+                <span class="orbit-chip px-3 py-1">#Flutter</span>
+                <span class="orbit-chip px-3 py-1">#CyberSecurity</span>
+                <span class="orbit-chip px-3 py-1">#OpenSource</span>
+              </div>
+            </div>
+
+            <div class="orbit-card p-4 hidden xl:block">
+              <p
+                class="text-[11px] uppercase tracking-[0.12em] text-[var(--orbit-muted)] mb-2"
+              >
+                Grow your network
+              </p>
+              <p class="text-xs md:text-[13px] mb-3 text-[var(--orbit-muted)]">
+                Join interest-based groups for projects, competitive programming
+                and research collaborations.
+              </p>
+              <button
+                onclick="showTab('groups')"
+                class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900/80 hover:bg-slate-800 text-[var(--orbit-text)] border border-slate-700/80 transition-colors"
+              >
+                <i class="fas fa-users text-[11px]"></i>
+                Explore groups
+              </button>
+            </div>
+          </aside>
+        </div>
       </section>
 
       <!-- Profile/Groups/Research/Search -->
-      <section id="profile" class="hidden p-4 md:p-6 max-w-4xl mx-auto">
-        <h2 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent mb-6">My Profile</h2>
+      <section
+        id="profile"
+        class="hidden px-4 md:px-6 py-6 max-w-7xl mx-auto w-full"
+      >
         <!-- profile.html will be loaded here dynamically -->
       </section>
 
-      <section id="groups" class="hidden p-4 md:p-6 max-w-6xl mx-auto">
-        <div id="groupContent" class="text-center text-gray-500">
+      <section
+        id="groups"
+        class="hidden px-4 md:px-6 py-6 max-w-7xl mx-auto w-full"
+      >
+        <div id="groupContent" class="text-center text-[var(--orbit-muted)]">
           Loading groups...
         </div>
       </section>
 
-      <section id="research" class="hidden p-4 md:p-6 max-w-6xl mx-auto">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
-          <h2 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent">Research Hub</h2>
-          <button
-            id="addResearchBtn"
-            onclick="openResearchModal()"
-            class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center space-x-2 font-medium w-full sm:w-auto justify-center"
-          >
-            <i class="fas fa-plus"></i> <span>Add Research</span>
-          </button>
-        </div>
-
-        <div id="researchContainer" class="space-y-4">
-          <!-- Research posts will be dynamically loaded here -->
-        </div>
+      <section
+        id="research"
+        class="hidden px-4 md:px-6 py-6 max-w-7xl mx-auto w-full"
+      >
+        <!-- research.html will be injected here -->
       </section>
 
-      <section id="search" class="hidden p-4 md:p-6 max-w-4xl mx-auto">
-        <h2 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent mb-6">Search & Discover</h2>
+      <section
+        id="search"
+        class="hidden px-4 md:px-6 py-6 max-w-7xl mx-auto w-full"
+      >
+        <div class="flex flex-col gap-4 mb-4">
+          <div class="flex items-start justify-between gap-3 flex-wrap">
+            <div>
+              <h2
+                class="text-2xl md:text-3xl font-semibold bg-gradient-to-r from-[#58a6ff] to-[#1f6feb] bg-clip-text text-transparent"
+              >
+                Search &amp; Discover
+              </h2>
+              <p
+                class="text-xs md:text-sm text-[var(--orbit-muted)] mt-1 max-w-xl"
+              >
+                Find posts, research updates and groups across JLU Orbit using
+                keywords, tags or author names.
+              </p>
+            </div>
+          </div>
 
-        <!-- Search Input and Button -->
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 mb-6">
-          <input
-            id="navSearchInput"
-            type="text"
-            placeholder="Search posts..."
-            class="flex-1 rounded-xl px-4 py-2.5 text-sm border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
-          />
-          <button
-            id="navSearchBtn"
-            class="bg-gradient-to-r from-blue-600 to-cyan-600 hover:shadow-lg text-white px-6 py-2.5 rounded-xl text-sm transition-all duration-300 font-medium"
-          >
-            <i class="fas fa-search mr-2"></i>Search
-          </button>
-        </div>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Search form + results -->
+            <div class="lg:col-span-2 space-y-4">
+              <div
+                class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3"
+              >
+                <input
+                  id="navSearchInput"
+                  type="text"
+                  placeholder="Search by title, tag, or author..."
+                  class="flex-1 rounded-xl px-4 py-2.5 text-sm bg-slate-900/80 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-[var(--orbit-primary-soft)] focus:border-transparent transition-all"
+                />
+                <button
+                  id="navSearchBtn"
+                  class="bg-gradient-to-r from-[#1f6feb] to-[#58a6ff] hover:shadow-lg text-white px-6 py-2.5 rounded-xl text-sm transition-all duration-200 font-medium flex items-center justify-center gap-2"
+                >
+                  <i class="fas fa-search text-xs"></i>
+                  <span>Search</span>
+                </button>
+              </div>
 
-        <!-- Search Results -->
-        <div class="bg-white shadow-lg rounded-2xl p-4 md:p-6">
-          <h3 class="font-bold mb-4 text-lg md:text-xl">Results</h3>
-          <ul id="searchResults" class="space-y-3 text-gray-700"></ul>
+              <div class="flex flex-wrap gap-2 text-[11px] md:text-xs">
+                <button
+                  class="orbit-chip px-3 py-1 text-[var(--orbit-text)]"
+                  data-search-filter=""
+                >
+                  All content
+                </button>
+                <button
+                  class="orbit-chip px-3 py-1 text-[var(--orbit-text)]"
+                  data-search-filter="type:post"
+                >
+                  Posts
+                </button>
+                <button
+                  class="orbit-chip px-3 py-1 text-[var(--orbit-text)]"
+                  data-search-filter="type:research"
+                >
+                  Research
+                </button>
+                <button
+                  class="orbit-chip px-3 py-1 text-[var(--orbit-text)]"
+                  data-search-filter="type:group"
+                >
+                  Groups
+                </button>
+              </div>
+
+              <div class="orbit-card p-4 md:p-5">
+                <h3 class="font-semibold mb-3 text-sm md:text-base">Results</h3>
+                <ul id="searchResults" class="space-y-3 text-sm"></ul>
+              </div>
+            </div>
+
+            <!-- Helper panel -->
+            <aside class="space-y-4">
+              <div class="orbit-card p-4 space-y-2 text-xs md:text-[13px]">
+                <p class="font-semibold">Search tips</p>
+                <ul
+                  class="list-disc list-inside text-[var(--orbit-muted)] space-y-1"
+                >
+                  <li>
+                    Use tags like <span class="font-mono">#ml</span> or
+                    <span class="font-mono">#web</span> in your query.
+                  </li>
+                  <li>
+                    Combine author name with topic, e.g.
+                    <span class="font-mono">"Ananya React"</span>.
+                  </li>
+                  <li>
+                    Search research keywords such as
+                    <span class="font-mono">"federated learning"</span>.
+                  </li>
+                </ul>
+              </div>
+              <div class="orbit-card p-4 space-y-2 text-xs md:text-[13px]">
+                <p class="font-semibold">Popular this week</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="orbit-chip px-3 py-1">#placement-prep</span>
+                  <span class="orbit-chip px-3 py-1">#devops</span>
+                  <span class="orbit-chip px-3 py-1">#cloud-native</span>
+                  <span class="orbit-chip px-3 py-1">#datascience</span>
+                </div>
+              </div>
+            </aside>
+          </div>
         </div>
       </section>
     </div>
@@ -240,8 +765,14 @@
       id="postModal"
       class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
     >
-      <div class="bg-white rounded-2xl w-full max-w-md p-6 relative shadow-2xl max-h-[90vh] overflow-y-auto">
-        <h2 class="text-xl md:text-2xl font-bold text-center mb-4 bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent">Create a Post</h2>
+      <div
+        class="bg-white rounded-2xl w-full max-w-md p-6 relative shadow-2xl max-h-[90vh] overflow-y-auto"
+      >
+        <h2
+          class="text-xl md:text-2xl font-bold text-center mb-4 bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent"
+        >
+          Create a Post
+        </h2>
         <form id="postForm" class="space-y-4">
           <div>
             <label class="block text-gray-700 font-medium mb-1 text-sm"
@@ -259,7 +790,9 @@
             </select>
           </div>
           <div>
-            <label class="block text-gray-700 font-medium mb-1 text-sm">Title</label>
+            <label class="block text-gray-700 font-medium mb-1 text-sm"
+              >Title</label
+            >
             <input
               id="postTitle"
               type="text"
@@ -269,7 +802,9 @@
             />
           </div>
           <div>
-            <label class="block text-gray-700 font-medium mb-1 text-sm">Content</label>
+            <label class="block text-gray-700 font-medium mb-1 text-sm"
+              >Content</label
+            >
             <textarea
               id="postContent"
               placeholder="Write your content..."
@@ -319,7 +854,7 @@
             <button
               type="button"
               onclick="closePostModal()"
-              class="flex-1 px-4 py-2.5 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors font-medium"
+              class="flex-1 px-4 py-2.5 bg-gray-200 text-black rounded-xl hover:bg-gray-300 transition-colors font-medium"
             >
               Cancel
             </button>
@@ -370,7 +905,7 @@
 
         <button
           onclick="closeShareModal()"
-          class="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400"
+          class="bg-black px-4 py-2 rounded-lg hover:bg-gray-400"
         >
           Cancel
         </button>
@@ -382,8 +917,12 @@
       id="notifDrawer"
       class="hidden fixed top-0 right-0 h-full w-80 max-w-[90vw] bg-white shadow-2xl z-50 transition-transform duration-300 transform translate-x-full"
     >
-      <div class="flex items-center justify-between p-4 border-b bg-gradient-to-r from-cyan-600 to-indigo-600">
-        <h2 class="text-lg font-semibold text-white"><i class="fas fa-bell mr-2"></i>Notifications</h2>
+      <div
+        class="flex items-center justify-between p-4 border-b bg-gradient-to-r from-cyan-600 to-indigo-600"
+      >
+        <h2 class="text-lg font-semibold text-white">
+          <i class="fas fa-bell mr-2"></i>Notifications
+        </h2>
         <button id="closeNotifBtn" class="text-white hover:text-cyan-200">
           <i class="fa-solid fa-xmark text-xl"></i>
         </button>
@@ -396,21 +935,102 @@
         <!-- Notifications will load here -->
       </div>
     </div>
+
+    <!-- Global footer -->
+    <footer
+      class="mt-10 border-t border-slate-800 bg-[#050814] text-[var(--orbit-muted)]"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 md:px-6 py-6 flex flex-col md:flex-row gap-6 md:gap-10 text-xs md:text-[13px]"
+      >
+        <div class="md:w-1/2 space-y-2">
+          <div class="flex items-center gap-2 text-[var(--orbit-text)]">
+            <div
+              class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#1f6feb] to-[#58a6ff] flex items-center justify-center text-white"
+            >
+              <i class="fas fa-rocket text-[11px]"></i>
+            </div>
+            <span class="font-semibold text-sm">JLU Orbit</span>
+          </div>
+          <p>
+            An internal networking and knowledge platform for the Faculty of
+            Science &amp; Technology, Jagran Lakecity University.
+          </p>
+          <p class="text-[11px]">
+            &copy; <span id="orbitYear"></span> Jagran School of Computer
+            Application. All rights reserved.
+          </p>
+        </div>
+        <div class="flex-1 grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="space-y-2">
+            <p class="font-semibold text-[var(--orbit-text)]">Quick links</p>
+            <button
+              onclick="showTab('feed')"
+              class="block text-left hover:text-[var(--orbit-primary-soft)]"
+            >
+              Feed
+            </button>
+            <button
+              onclick="showTab('research')"
+              class="block text-left hover:text-[var(--orbit-primary-soft)]"
+            >
+              Research hub
+            </button>
+            <button
+              onclick="showTab('groups')"
+              class="block text-left hover:text-[var(--orbit-primary-soft)]"
+            >
+              Groups
+            </button>
+          </div>
+          <div class="space-y-2">
+            <p class="font-semibold text-[var(--orbit-text)]">Institution</p>
+            <p>Jagran Lakecity University</p>
+            <p>Faculty of Science &amp; Technology</p>
+            <a
+              href="mailto:support@jluorbit.in"
+              class="hover:text-[var(--orbit-primary-soft)]"
+              >support@jluorbit.in</a
+            >
+          </div>
+          <div class="space-y-2 hidden md:block">
+            <p class="font-semibold text-[var(--orbit-text)]">Policies</p>
+            <p>Community guidelines</p>
+            <p>Privacy &amp; data usage</p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="orbit-footer-bottom border-t border-slate-900/80 bg-[#020617] px-4 md:px-6 py-3 text-[10px] md:text-xs text-center text-[var(--orbit-muted)]"
+      >
+        Built for the JLU FAST community.
+        <button
+          class="underline-offset-2 hover:text-[var(--orbit-primary-soft)] underline"
+          onclick="window.location.href='about.html'"
+        >
+          About developers &amp; project
+        </button>
+      </div>
+    </footer>
+
     <script src="/config.js"></script>
     <!-- Socket.IO client for realtime notifications -->
     <script src="/socket.io/socket.io.js"></script>
-<script>
-  // Wait for config.js to load
-  document.addEventListener("DOMContentLoaded", () => {
-    if (window.__CONFIG__ && window.__CONFIG__.API_BASE) {
-      window.API_BASE = window.__CONFIG__.API_BASE;
-      console.log("Using API_BASE from config.js:", window.API_BASE);
-    } else {
-      window.API_BASE = window.location.origin + "/api";
-      console.warn("config.js missing — using fallback API_BASE:", window.API_BASE);
-    }
-  });
-</script>
+    <script>
+      // Wait for config.js to load
+      document.addEventListener("DOMContentLoaded", () => {
+        if (window.__CONFIG__ && window.__CONFIG__.API_BASE) {
+          window.API_BASE = window.__CONFIG__.API_BASE;
+          console.log("Using API_BASE from config.js:", window.API_BASE);
+        } else {
+          window.API_BASE = window.location.origin + "/api";
+          console.warn(
+            "config.js missing — using fallback API_BASE:",
+            window.API_BASE
+          );
+        }
+      });
+    </script>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -423,12 +1043,52 @@
           // first + last initial
         } else {
           initials = parts[0][0]; // only first name
-        } // Uppercase + apply to the div
+        }
+        // Uppercase + apply to the div
         const navUser = document.getElementById("navUser");
         if (navUser) navUser.textContent = initials.toUpperCase();
+
+        const feedInitials = document.getElementById("feedInitials");
+        const feedUserName = document.getElementById("feedUserName");
+        if (feedInitials) feedInitials.textContent = initials.toUpperCase();
+        if (feedUserName) feedUserName.textContent = name || "Student";
+
+        const yearSpan = document.getElementById("orbitYear");
+        if (yearSpan) yearSpan.textContent = new Date().getFullYear();
       });
     </script>
 
+    <script>
+      (function () {
+        const root = document.documentElement;
+        const stored = localStorage.getItem("orbit-theme");
+        const prefersDark =
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const initial = stored || (prefersDark ? "dark" : "light");
+        root.dataset.theme = initial;
+
+        const btn = document.getElementById("themeToggle");
+        if (btn) {
+          btn.addEventListener("click", () => {
+            const next = root.dataset.theme === "dark" ? "light" : "dark";
+            root.dataset.theme = next;
+            localStorage.setItem("orbit-theme", next);
+          });
+        }
+
+        // Search filter helpers
+        document.querySelectorAll("[data-search-filter]").forEach((chip) => {
+          chip.addEventListener("click", () => {
+            const input = document.getElementById("navSearchInput");
+            if (!input) return;
+            const value = chip.getAttribute("data-search-filter") || "";
+            input.value = value ? value + " " : "";
+            input.focus();
+          });
+        });
+      })();
+    </script>
 
     <script src="js/feed.js"></script>
     <script src="js/groups.js"></script>

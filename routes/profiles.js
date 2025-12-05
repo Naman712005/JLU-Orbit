@@ -55,6 +55,10 @@ router.get("/", authMiddleware, async (req, res) => {
       semester: user.semester,
       bio: profile.bio,
       profileImage: profile.profileImage,
+      phone: profile.phone || "",
+      location: profile.location || "",
+      linkedin: profile.linkedin || "",
+      github: profile.github || "",
     };
 
     res.status(200).json({ success: true, profile: mergedProfile });
@@ -67,7 +71,18 @@ router.get("/", authMiddleware, async (req, res) => {
 /* ---------------- POST: Update logged-in user profile ---------------- */
 router.post("/update", authMiddleware, async (req, res) => {
   try {
-    const { name, bio, profileImage, course, specialization, semester } = req.body;
+    const {
+      name,
+      bio,
+      profileImage,
+      course,
+      specialization,
+      semester,
+      phone,
+      location,
+      linkedin,
+      github,
+    } = req.body;
 
     // 1️⃣ Update user info (if any)
     const updatedUser = await User.findByIdAndUpdate(
@@ -92,6 +107,10 @@ router.post("/update", authMiddleware, async (req, res) => {
         username: updatedUser.name,
         ...(bio && { bio }),
         ...(profileImage && { profileImage }),
+        ...(phone !== undefined && { phone }),
+        ...(location !== undefined && { location }),
+        ...(linkedin !== undefined && { linkedin }),
+        ...(github !== undefined && { github }),
       },
       { new: true, upsert: true } // create if not exists
     );
@@ -107,6 +126,10 @@ router.post("/update", authMiddleware, async (req, res) => {
       semester: updatedUser.semester,
       bio: updatedProfile.bio,
       profileImage: updatedProfile.profileImage,
+      phone: updatedProfile.phone || "",
+      location: updatedProfile.location || "",
+      linkedin: updatedProfile.linkedin || "",
+      github: updatedProfile.github || "",
     };
 
     res.status(200).json({

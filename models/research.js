@@ -7,6 +7,13 @@ const researchSchema = new mongoose.Schema({
   content: { type: String, required: true },
   keywords: [{ type: String }],
   confirmOriginal: { type: Boolean, default: false },
+  attachments: [
+    {
+      url: { type: String },
+      filename: { type: String },
+      mimetype: { type: String },
+    },
+  ],
 }, { timestamps: true });
 
 module.exports = mongoose.model('Research', researchSchema);

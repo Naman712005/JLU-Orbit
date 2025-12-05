@@ -8,15 +8,19 @@ async function loadPosts(type = null) {
     const res = await fetch(`${API_BASE}/posts${q}`);
     if (!res.ok) return console.error("Failed to load posts", res.status);
     const posts = await res.json();
-    document.getElementById("postsContainer").innerHTML = "";
-    posts.forEach((p) => addPostToFeedFromAPI(p));
+    const container = document.getElementById("postsContainer");
+    container.innerHTML = "";
+
+    // Backend already returns posts sorted by createdAt DESC.
+    // Append in that order so newest naturally appear at the top.
+    posts.forEach((p) => addPostToFeedFromAPI(p, false));
   } catch (err) {
     console.error(err);
   }
 }
 
 /* ---------------- RENDER POST ---------------- */
-function addPostToFeedFromAPI(post) {
+function addPostToFeedFromAPI(post, prepend = false) {
   const author = post.author && post.author.name ? post.author.name : "User";
   const dataType = post.type || "General";
   const title = escapeHtml(post.title || "");
@@ -125,9 +129,12 @@ function addPostToFeedFromAPI(post) {
         </div>
       </div>
     `;
-  document
-    .getElementById("postsContainer")
-    .insertAdjacentHTML("afterbegin", postHTML);
+  const container = document.getElementById("postsContainer");
+  if (!container) return;
+
+  // If prepend is true (just-created post), put it at the very top.
+  // Otherwise append in natural order coming from the API.
+  container.insertAdjacentHTML(prepend ? "afterbegin" : "beforeend", postHTML);
 }
 
 /* ---------------- CREATE POST ---------------- */
@@ -187,7 +194,8 @@ res = await fetch(`${API_BASE}/posts/create`, {
     }
 
     const created = await res.json();
-    addPostToFeedFromAPI(created);
+    // Newly created post should appear at the top of the feed
+    addPostToFeedFromAPI(created, true);
     closePostModal();
     e.target.reset();
     if (fileInput) fileInput.value = "";

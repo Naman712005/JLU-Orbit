@@ -64,9 +64,6 @@ app.use('/api/profile', require('./routes/profiles'));
 app.use('/api/search', require('./routes/search'));
 app.use('/api/notifications', require('./routes/notifications'));
 
-/********************* HEALTH CHECK *********************/
-app.get('/health', (req, res) => res.send('OK'));
-app.get('/', (req, res) => res.send('✅ FastConnect backend is running'));
 
 /********************* SOCKET.IO *********************/
 const io = new Server(server, {

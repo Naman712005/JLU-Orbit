@@ -1,41 +1,86 @@
-<div class="flex items-center justify-between mb-4">
-  <h2 class="text-2xl font-bold">Research Hub</h2>
-  <button id="addResearchBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center space-x-2">
-    <i class="fas fa-plus"></i> Add Research
-  </button>
-</div>
+<div class="max-w-6xl mx-auto space-y-5">
+  <div class="flex items-start justify-between gap-3 flex-wrap">
+    <div>
+      <h2 class="text-2xl md:text-3xl font-semibold mb-1">Research Hub</h2>
+      <p class="text-xs md:text-sm text-[var(--orbit-muted)] max-w-2xl">
+        Capture and showcase student and faculty research with a clean,
+        Medium-style reading experience optimised for long-form content.
+      </p>
+    </div>
+    <button
+      id="addResearchBtn"
+      class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-xl text-xs md:text-sm hover:shadow-lg transition-all duration-200"
+    >
+      <i class="fas fa-plus text-[11px]"></i>
+      <span>Add research</span>
+    </button>
+  </div>
 
-<div id="researchContainer">Loading research...</div>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <main class="lg:col-span-2 space-y-4">
+      <div id="researchContainer" class="space-y-4">
+        Loading research...
+      </div>
+    </main>
+
+    <aside class="space-y-4 text-xs md:text-[13px]">
+      <div class="orbit-card p-4 space-y-2">
+        <p class="font-semibold">Submission checklist</p>
+        <ul class="list-disc list-inside text-[var(--orbit-muted)] space-y-1">
+          <li>Include a clear abstract (3–5 lines).</li>
+          <li>Mention datasets, tools or libraries used.</li>
+          <li>Add 3–6 keywords to help discovery.</li>
+          <li>Use proper citation style where applicable.</li>
+        </ul>
+      </div>
+      <div class="orbit-card p-4 space-y-2">
+        <p class="font-semibold">Featured areas</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="orbit-chip px-3 py-1">AI &amp; ML</span>
+          <span class="orbit-chip px-3 py-1">Cyber Security</span>
+          <span class="orbit-chip px-3 py-1">IoT &amp; Robotics</span>
+          <span class="orbit-chip px-3 py-1">Cloud &amp; DevOps</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
 
 <!-- Research Form Modal -->
 <div id="researchModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-  <div class="bg-white rounded-2xl w-96 p-6 relative shadow-lg">
-    <h2 class="text-xl font-bold text-center mb-4">Add Research</h2>
-    <form id="researchForm" class="space-y-4">
+  <div class="bg-white rounded-2xl w-full max-w-md p-6 relative shadow-lg max-h-[90vh] overflow-y-auto">
+    <h2 class="text-xl font-semibold text-center mb-4">Add Research</h2>
+    <form id="researchForm" class="space-y-4 text-sm">
       <div>
-        <label>Title</label>
-        <input id="researchTitle" type="text" class="w-full border rounded-lg p-2" required>
+        <label class="block text-xs font-medium mb-1">Title</label>
+        <input id="researchTitle" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1f6feb]" required>
       </div>
       <div>
-        <label>Abstract</label>
-        <textarea id="researchAbstract" class="w-full border rounded-lg p-2" required></textarea>
+        <label class="block text-xs font-medium mb-1">Abstract</label>
+        <textarea id="researchAbstract" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1f6feb]" rows="3" required></textarea>
       </div>
       <div>
-        <label>Content</label>
-        <textarea id="researchContent" class="w-full border rounded-lg p-2" required></textarea>
+        <label class="block text-xs font-medium mb-1">Content</label>
+        <textarea id="researchContent" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1f6feb]" rows="5" required></textarea>
       </div>
       <div>
-        <label>Keywords (comma separated)</label>
-        <input id="researchKeywords" type="text" class="w-full border rounded-lg p-2">
+        <label class="block text-xs font-medium mb-1">Keywords (comma separated)</label>
+        <input id="researchKeywords" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1f6feb]">
       </div>
-      <div>
-        <label>
-          <input id="researchOriginal" type="checkbox"> I confirm this is my original work
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <label class="inline-flex items-center gap-2 text-xs">
+          <input id="researchOriginal" type="checkbox">
+          <span>I confirm this is my original work</span>
+        </label>
+        <label class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-dashed border-gray-300 text-xs text-gray-600 hover:bg-gray-100 cursor-pointer">
+          <i class="fa-solid fa-paperclip text-[11px]"></i>
+          <span>Attach files</span>
+          <input id="researchAttachments" name="attachments" type="file" multiple class="hidden" />
         </label>
       </div>
-      <div class="flex justify-end space-x-2">
-        <button type="button" id="cancelResearchBtn" class="px-4 py-2 bg-gray-300 rounded-lg">Cancel</button>
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Submit</button>
+      <div class="flex justify-end space-x-2 pt-1">
+        <button type="button" id="cancelResearchBtn" class="px-4 py-2 bg-gray-200 text-black rounded-lg text-xs hover:bg-gray-300">Cancel</button>
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-700">Submit</button>
       </div>
     </form>
   </div>

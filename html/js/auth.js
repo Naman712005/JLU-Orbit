@@ -65,7 +65,7 @@ loginForm.addEventListener("submit", async (e) => {
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("currentUser", JSON.stringify(data.user));
       localStorage.setItem("userName", data.user?.name || "User");
-      window.location.href = "index.html";
+      window.location.href = "loading.html";
     } else {
       alert(data.error || "Login failed");
     }
@@ -126,7 +126,7 @@ signupForm.addEventListener("submit", async (e) => {
           localStorage.setItem("authToken", data.token);
           localStorage.setItem("currentUser", JSON.stringify(data.user));
           localStorage.setItem("userName", data.user?.name || "User");
-          window.location.href = "index.html";
+          window.location.href = "loading.html";
           return;
         }
 
@@ -166,7 +166,7 @@ otpForm.addEventListener("submit", async (e) => {
       localStorage.setItem("currentUser", JSON.stringify(data.user));
 
       localStorage.setItem("userName", data.user?.name || "User");
-      window.location.href = "index.html";
+      window.location.href = "loading.html";
     } else {
       alert(data.error || "OTP verification failed");
     }

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About JLU Orbit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        min-height: 100vh;
+        background: #0d1117;
+        color: #c9d1d9;
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <header class="border-b border-slate-800 bg-[#020617]/95 backdrop-blur">
+      <div
+        class="max-w-5xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between gap-3"
+      >
+        <div class="flex items-center gap-2">
+          <div
+            class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#1f6feb] to-[#58a6ff] flex items-center justify-center text-white shadow-lg"
+          >
+            <i class="fas fa-rocket text-sm"></i>
+          </div>
+          <div>
+            <p class="text-sm font-semibold">JLU Orbit</p>
+            <p class="text-[10px] text-slate-400">Project &amp; Developers</p>
+          </div>
+        </div>
+        <button
+          onclick="window.location.href='index.html'"
+          class="text-xs px-3 py-1.5 rounded-lg border border-slate-600 text-slate-200 hover:bg-slate-800"
+        >
+          Back to platform
+        </button>
+      </div>
+    </header>
+
+    <main class="flex-1 max-w-5xl mx-auto px-4 md:px-6 py-6 space-y-8">
+      <section class="space-y-3">
+        <h1 class="text-2xl md:text-3xl font-semibold">About the project</h1>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          JLU Orbit is a final-year engineering project built for the Faculty of
+          Science &amp; Technology at Jagran Lakecity University. It brings
+          together a LinkedIn-style professional network with a developer-first
+          blogging and research hub, designed specifically for students,
+          faculty, and project collaborators.
+        </p>
+      </section>
+
+      <section class="grid md:grid-cols-2 gap-6 text-sm">
+        <div class="space-y-2">
+          <h2 class="text-lg font-semibold">Developers</h2>
+          <ul class="space-y-1 text-slate-300">
+            <li>&bull; Naman Sah (Backend Developer)</li>
+            <li>&bull; Samuel Dennis David (Frontend Developer)</li>
+            <li>&bull; Mradul Yadav (Backend Developer)</li>
+            <li>&bull; Final-year BCA students, JLU FAST</li>
+
+          </ul>
+        </div>
+        <div class="space-y-2">
+          <h2 class="text-lg font-semibold">Goals</h2>
+          <ul class="space-y-1 text-slate-300">
+            <li>&bull; Central hub for projects, research and groups</li>
+            <li>&bull; Encourage open, engineering-focused knowledge sharing</li>
+            <li>&bull; Prepare students for modern developer workflows</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="space-y-3 text-sm">
+        <h2 class="text-lg font-semibold">How it was built</h2>
+        <p class="text-slate-300">
+          The system follows a classic web application architecture with a
+          Node.js backend, REST APIs and a modern frontend built using HTML,
+          Tailwind CSS, and vanilla JavaScript. Socket.IO is used to enable
+          realtime notifications for user interactions.
+        </p>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <h3 class="text-sm font-semibold text-slate-100">Backend</h3>
+            <ul class="text-slate-300 space-y-1">
+              <li>&bull; Node.js / Express</li>
+              <li>&bull; RESTful API design</li>
+              <li>&bull; JWT-based authentication</li>
+              <li>&bull; MongoDB</li>
+            </ul>
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-sm font-semibold text-slate-100">Frontend</h3>
+            <ul class="text-slate-300 space-y-1">
+              <li>&bull; HTML5 with modular views (feed, profile, groups, research)</li>
+              <li>&bull; Tailwind CSS for responsive layouts</li>
+              <li>&bull; Vanilla JavaScript for all interactions</li>
+              <li>&bull; Font Awesome for iconography</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-3 text-sm">
+        <h2 class="text-lg font-semibold">Key features</h2>
+        <ul class="space-y-1 text-slate-300">
+          <li>&bull; Community feed with posts, likes, comments and shares</li>
+          <li>&bull; Profile pages with academic and project context</li>
+          <li>&bull; Groups for project teams, hackathons and study circles</li>
+          <li>&bull; Research hub for abstracts, content and keywords</li>
+          <li>&bull; Search across posts and contributors</li>
+          <li>&bull; Realtime notifications for activity</li>
+        </ul>
+      </section>
+
+      <section class="space-y-3 text-sm">
+        <h2 class="text-lg font-semibold">Technologies used</h2>
+        <div class="flex flex-wrap gap-2 text-xs">
+          <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-100">
+            Node.js / Express
+          </span>
+          <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-100">
+            MongoDB (NoSQL)
+          </span>
+          <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-100">
+            Socket.IO
+          </span>
+          <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-100">
+            Tailwind CSS
+          </span>
+          <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-100">
+            Vanilla JavaScript
+          </span>
+          <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-100">
+            HTML5
+          </span>
+        </div>
+      </section>
+
+      <section class="space-y-2 text-xs text-slate-500">
+        <p>
+          This page is informational and does not affect the core
+          functionality of the system. It exists to document the project for
+          evaluation, contributors and future maintainers.
+        </p>
+      </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
+  </body>
+</html>

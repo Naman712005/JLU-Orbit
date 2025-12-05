@@ -40,25 +40,32 @@ function initResearchPage() {
       .value.split(",")
       .map((k) => k.trim());
     const original = document.getElementById("researchOriginal").checked;
+    const attachmentsInput = document.getElementById("researchAttachments");
 
     if (!original) return alert("Please confirm originality!");
     const token = getAuthToken();
     if (!token) return alert("Login first");
 
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("abstract", abstract);
+    formData.append("content", content);
+    formData.append("keywords", keywords.join(","));
+    formData.append("confirmOriginal", "true");
+
+    if (attachmentsInput && attachmentsInput.files) {
+      Array.from(attachmentsInput.files).forEach((file) => {
+        formData.append("attachments", file);
+      });
+    }
+
     try {
       const res = await fetch(`${API_BASE}/research`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          title,
-          abstract,
-          content,
-          keywords,
-          confirmOriginal: true,
-        }),
+        body: formData,
       });
       const data = await res.json();
       if (res.ok) {
@@ -96,6 +103,18 @@ async function loadResearchList() {
 
     list.forEach((r) => {
       const isOwner = r.author?._id === currentUser.id;
+      const attachmentsHtml = (r.attachments && r.attachments.length)
+        ? `<div class="mt-2 flex flex-wrap gap-2 text-xs">
+             ${r.attachments
+               .map(
+                 (a) => `<a href="${a.url}" target="_blank" class="text-blue-600 hover:underline">${
+                   a.filename || 'Attachment'
+                 }</a>`
+               )
+               .join('')}
+           </div>`
+        : '';
+
       researchContainer.innerHTML += `
         <div class="bg-white p-4 rounded-lg shadow mb-4">
           <h3 class="font-bold text-lg">${r.title}</h3>
@@ -104,6 +123,7 @@ async function loadResearchList() {
           <p class="text-sm text-gray-500 mt-2">Keywords: ${r.keywords.join(
             ", "
           )}</p>
+          ${attachmentsHtml}
           <p class="text-xs text-gray-400 mt-2">Submitted by: ${
             r.author?.name || "User"
           }</p>

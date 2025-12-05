@@ -1,37 +1,167 @@
 <!-- Profile Page -->
-<div class="bg-white shadow rounded-lg p-6">
-  <!-- Profile Info -->
-  <div class="flex items-center space-x-4 mb-6">
-    <img
-      id="profileImage"
-      src="https://via.placeholder.com/100"
-      class="w-24 h-24 rounded-full border object-cover"
-      alt="Profile"
-    >
-    <div>
-      <h3 id="profileName" class="text-xl font-bold">You</h3>
-      <p id="profileEmail" class="text-gray-500"></p>
+<div class="max-w-5xl mx-auto">
+  <!-- Cover + identity -->
+  <section class="orbit-card p-0 overflow-hidden mb-4">
+    <div class="h-28 md:h-32 bg-gradient-to-r from-[#1f6feb] via-[#58a6ff] to-[#1f6feb]"></div>
+    <div class="px-5 pb-5 -mt-8 flex flex-col md:flex-row md:items-end gap-4">
+      <div class="flex items-end gap-4">
+        <img
+          id="profileImage"
+          src="https://via.placeholder.com/120"
+          class="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-[#0d1117] object-cover bg-[#0d1117]"
+          alt="Profile"
+        >
+        <div class="space-y-1">
+          <h3 id="profileName" class="text-xl md:text-2xl font-semibold">You</h3>
+          <p id="profileEmail" class="text-xs md:text-sm text-[var(--orbit-muted)]"></p>
+          <p class="text-[11px] md:text-xs text-[var(--orbit-muted)]">
+            Jagran School of Computer Application · Student
+          </p>
+        </div>
+      </div>
+      <div class="flex-1 flex items-center justify-start md:justify-end gap-3 mt-2 md:mt-0">
+        <button
+          id="editProfileBtn"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900/80 hover:bg-slate-800 text-xs md:text-sm font-medium border border-slate-700/80"
+        >
+          <i class="fas fa-pen text-[11px]"></i>
+          Edit profile
+        </button>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="space-y-2 mb-6">
-    <p><strong>Course:</strong> <span id="profileCourse"></span></p>
-    <p><strong>Specialization:</strong> <span id="profileSpecialization"></span></p>
-    <p><strong>Semester:</strong> <span id="profileSemester"></span></p>
-    <p><strong>JLU ID:</strong> <span id="profileJluid"></span></p>
-    <p><strong>Bio:</strong> <span id="profileBio">Student | Enthusiast</span></p>
-  </div>
+  <!-- Meta + tabs -->
+  <section class="orbit-card p-4 md:p-5">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs md:text-[13px] mb-4">
+      <div>
+        <p class="text-[var(--orbit-muted)] mb-0.5">Course</p>
+        <p class="font-medium" id="profileCourse"></p>
+      </div>
+      <div>
+        <p class="text-[var(--orbit-muted)] mb-0.5">Specialization</p>
+        <p class="font-medium" id="profileSpecialization"></p>
+      </div>
+      <div>
+        <p class="text-[var(--orbit-muted)] mb-0.5">Semester</p>
+        <p class="font-medium" id="profileSemester"></p>
+      </div>
+      <div>
+        <p class="text-[var(--orbit-muted)] mb-0.5">JLU ID</p>
+        <p class="font-medium" id="profileJluid"></p>
+      </div>
+      <div>
+        <p class="text-[var(--orbit-muted)] mb-0.5">Phone</p>
+        <p class="font-medium" id="profilePhone"></p>
+      </div>
+      <div>
+        <p class="text-[var(--orbit-muted)] mb-0.5">Location</p>
+        <p class="font-medium" id="profileLocation"></p>
+      </div>
+      <div>
+        <p class="text-[var(--orbit-muted)] mb-0.5">LinkedIn</p>
+        <p class="font-medium" id="profileLinkedin"></p>
+      </div>
+      <div>
+        <p class="text-[var(--orbit-muted)] mb-0.5">GitHub</p>
+        <p class="font-medium" id="profileGithub"></p>
+      </div>
+    </div>
 
-  <!-- ✅ Edit Profile Button (was missing before) -->
-  <button
-    id="editProfileBtn"
-    class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-  >
-    Edit Profile
-  </button>
+    <p class="text-xs md:text-[13px] text-[var(--orbit-muted)] mb-4">
+      <span class="font-semibold">Bio:</span>
+      <span id="profileBio">Student | Enthusiast</span>
+    </p>
+
+    <!-- Profile tab navigation -->
+    <div class="border-t border-slate-700/70 pt-3 mt-2">
+      <div class="flex flex-wrap gap-2 text-[11px] md:text-xs mb-3">
+        <button
+          class="orbit-chip px-3 py-1 font-medium bg-slate-900/80 text-[var(--orbit-text)] profile-tab active"
+          data-profile-tab="overview"
+          onclick="switchProfileTab('overview')"
+        >
+          Overview
+        </button>
+        <button
+          class="orbit-chip px-3 py-1 font-medium text-[var(--orbit-text)] profile-tab"
+          data-profile-tab="posts"
+          onclick="switchProfileTab('posts')"
+        >
+          Posts
+        </button>
+        <button
+          class="orbit-chip px-3 py-1 font-medium text-[var(--orbit-text)] profile-tab"
+          data-profile-tab="research"
+          onclick="switchProfileTab('research')"
+        >
+          Research
+        </button>
+        <button
+          class="orbit-chip px-3 py-1 font-medium text-[var(--orbit-text)] profile-tab"
+          data-profile-tab="skills"
+          onclick="switchProfileTab('skills')"
+        >
+          Skills &amp; stacks
+        </button>
+        <button
+          class="orbit-chip px-3 py-1 font-medium text-[var(--orbit-text)] profile-tab"
+          data-profile-tab="achievements"
+          onclick="switchProfileTab('achievements')"
+        >
+          Achievements
+        </button>
+      </div>
+
+      <!-- Tab panels -->
+      <div class="space-y-4 text-xs md:text-[13px]">
+        <div id="profileTab-overview" class="profile-tab-panel">
+          <p class="text-[var(--orbit-muted)] mb-2">
+            This is your public profile inside JLU Orbit. Your posts, research
+            contributions and group memberships help faculty and peers discover
+            your work.
+          </p>
+        </div>
+
+        <div id="profileTab-posts" class="profile-tab-panel hidden">
+          <div id="profilePostsList" class="space-y-3 text-[var(--orbit-muted)] text-xs md:text-[13px]">
+            <p>Posts you publish in the community feed will be listed here.</p>
+          </div>
+        </div>
+
+        <div id="profileTab-research" class="profile-tab-panel hidden">
+          <div id="profileResearchList" class="space-y-3 text-[var(--orbit-muted)] text-xs md:text-[13px]">
+            <p>
+              Research items you author in the Research Hub will be grouped here
+              for easier review during evaluations and mentorship.
+            </p>
+          </div>
+        </div>
+
+        <div id="profileTab-skills" class="profile-tab-panel hidden">
+          <p class="text-[var(--orbit-muted)] mb-2">
+            Capture the technologies you are comfortable with so teams can
+            quickly understand how you work.
+          </p>
+          <div id="profileSkillsList" class="flex flex-wrap gap-2 text-[11px] md:text-xs">
+            <span class="orbit-chip px-3 py-1">No skills added yet</span>
+          </div>
+        </div>
+
+        <div id="profileTab-achievements" class="profile-tab-panel hidden">
+          <div id="profileAchievementsList" class="space-y-2 text-[var(--orbit-muted)] text-xs md:text-[13px]">
+            <p>
+              Add highlights such as hackathons, publications, internships and
+              certifications to make your profile stand out during placements.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
 
-<!-- ✅ Edit Profile Modal -->
+<!-- Edit Profile Modal -->
 <div
   id="editProfileModal"
   class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -45,7 +175,7 @@
         <input
           id="editProfileName"
           type="text"
-          class="w-full border rounded-md px-3 py-2 mt-1"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-[#1f6feb]"
           placeholder="Enter your name"
         />
       </div>
@@ -54,10 +184,52 @@
         <label class="block text-sm font-medium">Bio</label>
         <textarea
           id="editProfileBio"
-          class="w-full border rounded-md px-3 py-2 mt-1"
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-[#1f6feb]"
           rows="3"
           placeholder="Enter a short bio"
         ></textarea>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium">Phone</label>
+          <input
+            id="editProfilePhone"
+            type="text"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-[#1f6feb]"
+            placeholder="e.g. +91 98765 43210"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Location</label>
+          <input
+            id="editProfileLocation"
+            type="text"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-[#1f6feb]"
+            placeholder="City, Country"
+          />
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-sm font-medium">LinkedIn URL</label>
+          <input
+            id="editProfileLinkedin"
+            type="url"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-[#1f6feb]"
+            placeholder="https://www.linkedin.com/in/username"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">GitHub URL</label>
+          <input
+            id="editProfileGithub"
+            type="url"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-[#1f6feb]"
+            placeholder="https://github.com/username"
+          />
+        </div>
       </div>
 
       <div>
@@ -66,7 +238,7 @@
           id="editProfileImage"
           type="file"
           accept="image/*"
-          class="w-full mt-1"
+          class="w-full mt-1 text-sm"
         />
       </div>
     </div>
@@ -74,7 +246,7 @@
     <div class="flex justify-end space-x-3 mt-6">
       <button
         id="cancelEditBtn"
-        class="bg-gray-300 px-4 py-2 rounded-md hover:bg-gray-400"
+        class="bg-gray-300 text-black px-4 py-2 rounded-md hover:bg-gray-400"
       >
         Cancel
       </button>
@@ -87,3 +259,17 @@
     </div>
   </div>
 </div>
+
+<script>
+  function switchProfileTab(tabKey) {
+    const tabs = document.querySelectorAll('.profile-tab');
+    const panels = document.querySelectorAll('.profile-tab-panel');
+    tabs.forEach((btn) => {
+      const isActive = btn.getAttribute('data-profile-tab') === tabKey;
+      btn.classList.toggle('bg-slate-900/80', isActive);
+    });
+    panels.forEach((panel) => {
+      panel.classList.toggle('hidden', panel.id !== `profileTab-${tabKey}`);
+    });
+  }
+</script>

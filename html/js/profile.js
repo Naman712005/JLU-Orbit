@@ -23,7 +23,10 @@ async function loadProfilePage() {
 /* ---------------- INIT PROFILE PAGE ---------------- */
 async function initProfilePage() {
   const token = localStorage.getItem("authToken");
-  if (!token) return alert("Please login first");
+  if (!token) {
+    alert("Please login first");
+    return;
+  }
 
   try {
     // 🔹 Fetch combined profile from backend (User + Profile)
@@ -46,11 +49,19 @@ async function initProfilePage() {
     const profileSpecialization = document.getElementById("profileSpecialization");
     const profileSemester = document.getElementById("profileSemester");
     const profileJluid = document.getElementById("profileJluid");
+    const profilePhone = document.getElementById("profilePhone");
+    const profileLocation = document.getElementById("profileLocation");
+    const profileLinkedin = document.getElementById("profileLinkedin");
+    const profileGithub = document.getElementById("profileGithub");
 
     const editBtn = document.getElementById("editProfileBtn");
     const modal = document.getElementById("editProfileModal");
     const editName = document.getElementById("editProfileName");
     const editBio = document.getElementById("editProfileBio");
+    const editPhone = document.getElementById("editProfilePhone");
+    const editLocation = document.getElementById("editProfileLocation");
+    const editLinkedin = document.getElementById("editProfileLinkedin");
+    const editGithub = document.getElementById("editProfileGithub");
     const editImage = document.getElementById("editProfileImage");
     const saveBtn = document.getElementById("saveProfileBtn");
     const cancelBtn = document.getElementById("cancelEditBtn");
@@ -68,12 +79,23 @@ async function initProfilePage() {
     profileSemester.textContent = currentUser.semester || "N/A";
     profileJluid.textContent = currentUser.jluid || "N/A";
     profileBio.textContent = currentUser.bio || "Student | Enthusiast";
+    if (profilePhone) profilePhone.textContent = currentUser.phone || "Not added";
+    if (profileLocation)
+      profileLocation.textContent = currentUser.location || "Not added";
+    if (profileLinkedin)
+      profileLinkedin.textContent = currentUser.linkedin || "Not added";
+    if (profileGithub)
+      profileGithub.textContent = currentUser.github || "Not added";
     if (currentUser.profileImage) profileImage.src = currentUser.profileImage;
 
     // --- Modal Controls ---
     editBtn.addEventListener("click", () => {
       editName.value = currentUser.name || "";
       editBio.value = currentUser.bio || "";
+      if (editPhone) editPhone.value = currentUser.phone || "";
+      if (editLocation) editLocation.value = currentUser.location || "";
+      if (editLinkedin) editLinkedin.value = currentUser.linkedin || "";
+      if (editGithub) editGithub.value = currentUser.github || "";
       modal.classList.remove("hidden");
     });
 
@@ -83,29 +105,143 @@ async function initProfilePage() {
       const updatedBio = editBio.value.trim();
       const file = editImage.files[0];
 
+      const payload = {
+        bio: updatedBio,
+        phone: editPhone ? editPhone.value.trim() : undefined,
+        location: editLocation ? editLocation.value.trim() : undefined,
+        linkedin: editLinkedin ? editLinkedin.value.trim() : undefined,
+        github: editGithub ? editGithub.value.trim() : undefined,
+      };
+
       let updatedProfileImage = currentUser.profileImage;
 
       if (file) {
         const reader = new FileReader();
         reader.onload = async (e) => {
           updatedProfileImage = e.target.result;
-          await saveProfileToBackend({ bio: updatedBio, profileImage: updatedProfileImage });
+          payload.profileImage = updatedProfileImage;
+          await saveProfileToBackend(payload);
           profileImage.src = updatedProfileImage;
           profileBio.textContent = updatedBio;
+          if (profilePhone && payload.phone)
+            profilePhone.textContent = payload.phone;
+          if (profileLocation && payload.location)
+            profileLocation.textContent = payload.location;
+          if (profileLinkedin && payload.linkedin)
+            profileLinkedin.textContent = payload.linkedin;
+          if (profileGithub && payload.github)
+            profileGithub.textContent = payload.github;
           modal.classList.add("hidden");
         };
         reader.readAsDataURL(file);
       } else {
-        await saveProfileToBackend({ bio: updatedBio, profileImage: updatedProfileImage });
+        await saveProfileToBackend(payload);
         profileBio.textContent = updatedBio;
+        if (profilePhone && payload.phone)
+          profilePhone.textContent = payload.phone;
+        if (profileLocation && payload.location)
+          profileLocation.textContent = payload.location;
+        if (profileLinkedin && payload.linkedin)
+          profileLinkedin.textContent = payload.linkedin;
+        if (profileGithub && payload.github)
+          profileGithub.textContent = payload.github;
         modal.classList.add("hidden");
       }
     });
+
+    // After base profile is ready, load tab content (posts, research)
+    await loadProfileTabContent();
 
     console.log("✅ Profile page initialized and filled.");
   } catch (err) {
     console.error("❌ Error loading profile:", err);
   }
+}
+
+async function loadProfileTabContent() {
+  const token = localStorage.getItem("authToken");
+  if (!token) return;
+
+  try {
+    const [postsRes, researchRes] = await Promise.all([
+      fetch(`${API_BASE}/posts/my-posts`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+      fetch(`${API_BASE}/research/my-research`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    ]);
+
+    const posts = postsRes.ok ? await postsRes.json() : [];
+    const research = researchRes.ok ? await researchRes.json() : [];
+
+    renderProfilePosts(posts);
+    renderProfileResearch(research);
+  } catch (err) {
+    console.error("❌ Error loading profile tab content:", err);
+  }
+}
+
+function renderProfilePosts(posts) {
+  const list = document.getElementById("profilePostsList");
+  if (!list) return;
+
+  if (!posts || posts.length === 0) {
+    list.innerHTML =
+      '<p class="text-[var(--orbit-muted)]">You have not posted anything yet.</p>';
+    return;
+  }
+
+  list.innerHTML = posts
+    .map(
+      (p) => `
+      <article class="orbit-card p-3 md:p-4">
+        <h3 class="font-semibold mb-1 text-sm md:text-base">${escapeHtml(
+          p.title || "Untitled post"
+        )}</h3>
+        <p class="text-[11px] md:text-xs text-[var(--orbit-muted)] mb-1">
+          Type: ${escapeHtml(p.type || "Post")} · ${new Date(
+        p.createdAt
+      ).toLocaleDateString()}
+        </p>
+        <p class="text-xs md:text-[13px] text-[var(--orbit-muted)] line-clamp-3">
+          ${escapeHtml((p.content || "").slice(0, 220))}
+        </p>
+      </article>
+    `
+    )
+    .join("");
+}
+
+function renderProfileResearch(items) {
+  const list = document.getElementById("profileResearchList");
+  if (!list) return;
+
+  if (!items || items.length === 0) {
+    list.innerHTML =
+      '<p class="text-[var(--orbit-muted)]">No research has been added yet.</p>';
+    return;
+  }
+
+  list.innerHTML = items
+    .map(
+      (r) => `
+      <article class="orbit-card p-3 md:p-4">
+        <h3 class="font-semibold mb-1 text-sm md:text-base">${escapeHtml(
+          r.title || "Untitled research"
+        )}</h3>
+        <p class="text-[11px] md:text-xs text-[var(--orbit-muted)] mb-1">
+          ${new Date(r.createdAt).toLocaleDateString()} · ${escapeHtml(
+        (r.keywords || []).join(", ")
+      )}
+        </p>
+        <p class="text-xs md:text-[13px] text-[var(--orbit-muted)] line-clamp-3">
+          ${escapeHtml((r.abstract || "").slice(0, 220))}
+        </p>
+      </article>
+    `
+    )
+    .join("");
 }
 
 /* ---------------- HELPER: Save Profile to Backend ---------------- */

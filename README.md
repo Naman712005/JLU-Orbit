@@ -127,28 +127,3 @@ Visit: https://jlu-orbit-production.up.railway.app/
 ├── server.js         # Main server file
 └── package.json
 ```
-
-## 🌐 Deployment
-
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
-
-- ✅ Railway.app
-
-## 📄 License
-
-MIT License
-
-## 👥 Contributors
-
-JLU FAST Department
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
----
-
-Made with ❤️ for JLU FAST Community
-
-# JLU-Orbit
-JLU Orbit is a modern, feature-rich social networking and blogging platform designed specifically for the FAST (Faculty of Applied Sciences &amp; Technology) community at JLU. It enables students, faculty, and staff to connect, collaborate, share knowledge, and stay updated with department activities.

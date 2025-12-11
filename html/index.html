@@ -200,7 +200,7 @@
   </head>
   <body class="min-h-screen antialiased">
     <script>
-      // Redirect to auth if not logged in
+
       const token = localStorage.getItem("authToken");
       if (!token) window.location.href = "auth.html";
     </script>
@@ -392,7 +392,7 @@
         class="px-4 md:px-6 py-6 max-w-7xl mx-auto w-full lg:h-[calc(100vh-6rem)] lg:overflow-hidden"
       >
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 xl:gap-8 h-full">
-          <!-- Left rail: profile + navigation -->
+
           <aside
             class="space-y-4 lg:col-span-1 order-2 lg:order-1 lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto"
           >
@@ -630,7 +630,7 @@
         id="profile"
         class="hidden px-4 md:px-6 py-6 max-w-7xl mx-auto w-full"
       >
-        <!-- profile.html will be loaded here dynamically -->
+    
       </section>
 
       <section
@@ -932,7 +932,7 @@
         id="notifList"
         class="overflow-y-auto h-[calc(100%-60px)] p-4 space-y-3 bg-gray-50"
       >
-        <!-- Notifications will load here -->
+
       </div>
     </div>
 
@@ -1014,10 +1014,10 @@
     </footer>
 
     <script src="/config.js"></script>
-    <!-- Socket.IO client for realtime notifications -->
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      // Wait for config.js to load
+  
       document.addEventListener("DOMContentLoaded", () => {
         if (window.__CONFIG__ && window.__CONFIG__.API_BASE) {
           window.API_BASE = window.__CONFIG__.API_BASE;
@@ -1035,16 +1035,16 @@
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const name = localStorage.getItem("userName") || "User";
-        // Split into parts (handle single names too)
+    
         const parts = name.trim().split(" ");
         let initials = "";
         if (parts.length >= 2) {
           initials = parts[0][0] + parts[1][0];
-          // first + last initial
+      
         } else {
-          initials = parts[0][0]; // only first name
+          initials = parts[0][0]; 
         }
-        // Uppercase + apply to the div
+    
         const navUser = document.getElementById("navUser");
         if (navUser) navUser.textContent = initials.toUpperCase();
 

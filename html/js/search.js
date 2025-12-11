@@ -15,7 +15,7 @@ async function performSearch(query) {
   resultsContainer.innerHTML = `<li class="text-gray-400">Searching for "${query}"...</li>`;
 
   try {
-    // ✅ Use the API_BASE constant
+
     const res = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}`);
     if (!res.ok) throw new Error(`Server returned ${res.status}`);
 
@@ -49,7 +49,7 @@ async function performSearch(query) {
 }
 
 
-// ✅ Attach event listeners safely
+
 if (searchBtn) {
   searchBtn.addEventListener('click', () => {
     const query = searchInput.value;
@@ -82,7 +82,7 @@ function goToPostFromSearch(postId) {
   }
 
   if (typeof loadPosts === 'function') {
-    // Reload posts, then scroll to the specific one
+
     loadPosts(null).then(() => {
       const el = document.querySelector(`[data-id="${postId}"]`);
       if (el) {

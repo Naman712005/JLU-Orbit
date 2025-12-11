@@ -112,7 +112,7 @@ router.post("/update", authMiddleware, async (req, res) => {
         ...(linkedin !== undefined && { linkedin }),
         ...(github !== undefined && { github }),
       },
-      { new: true, upsert: true } // create if not exists
+      { new: true, upsert: true } 
     );
 
     // 3️⃣ Merge updated data

@@ -28,12 +28,12 @@ router.post("/signup", async (req, res) => {
       course,
       specialization,
       semester,
-      jluid, // just store it
+      jluid, 
       email,
       password: hashedPassword,
       isVerified: false,
       otp,
-      otpExpiry: Date.now() + 10 * 60 * 1000, // 10 mins validity
+      otpExpiry: Date.now() + 10 * 60 * 1000,
     });
 
     await user.save();
@@ -48,10 +48,10 @@ router.post("/signup", async (req, res) => {
         userId: user._id,
       });
     } catch (emailError) {
-      // If email fails, still allow user to continue but log the error
+   
       console.error('❌ Failed to send OTP email:', emailError.message);
       
-      // Delete the user since they can't verify without OTP
+    
       await User.findByIdAndDelete(user._id);
       
       return res.status(500).json({ 
@@ -77,13 +77,13 @@ router.post("/verify-otp", async (req, res) => {
     if (Date.now() > user.otpExpiry)
       return res.status(400).json({ error: "OTP expired" });
 
-    // Mark user verified
+ 
     user.isVerified = true;
     user.otp = null;
     user.otpExpiry = null;
     await user.save();
 
-    // Generate JWT
+   
     const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });

@@ -19,7 +19,7 @@ function showTab(tab) {
 
   if (tab === "groups") loadGroups();
   if (tab === "research") loadResearchPage();
-  if (tab === "profile") loadProfilePage(); // ✅ load profile dynamically
+  if (tab === "profile") loadProfilePage(); 
 }
 
 showTab("feed");
@@ -77,21 +77,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const profileBtn = document.getElementById("profileBtn");
   if (profileBtn) {
     profileBtn.addEventListener("click", () => {
-      // Switch to profile tab (the tab where profile.html is loaded dynamically)
+
       showTab("profile");
-      loadProfilePage(); // fetch and display profile.html
+      loadProfilePage(); 
     });
   }
 });
 
-// Connect socket.io to same origin if the client library is loaded.
-// This avoids runtime errors when /socket.io/socket.io.js is not included.
+
 let socket = null;
 if (typeof io !== 'undefined') {
   const socketOrigin = (window.__CONFIG__ && window.__CONFIG__.API_BASE)
     ? window.__CONFIG__.API_BASE.replace(/\/api\/?$/, '')
     : '';
-  socket = socketOrigin ? io(socketOrigin) : io(); // io() => same origin
+  socket = socketOrigin ? io(socketOrigin) : io(); 
 
   socket.on("connect", () => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
@@ -99,22 +98,22 @@ if (typeof io !== 'undefined') {
   });
 
   socket.on("notification", payload => {
-    // Refresh notifications list and update badge in realtime
+
     console.log("notification", payload);
     if (typeof loadNotifications === "function") {
       loadNotifications();
     }
     const badge = document.getElementById("notifBadge");
     if (badge) {
-      // If badge is hidden or empty, set to 1; otherwise increment
+    
       const current = parseInt(badge.textContent || "0", 10) || 0;
       badge.textContent = String(current + 1);
       badge.classList.remove("hidden");
     }
   });
 
-  socket.on("postUpdated", post => { /* update feed DOM if desired */ });
-  socket.on("likeUpdate", data => { /* update like count if desired */ });
+  socket.on("postUpdated", post => {});
+  socket.on("likeUpdate", data => {});
 } else {
   console.warn('Socket.io client not loaded; realtime features disabled.');
 }

@@ -1,7 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const path = require("path");
-const authMiddleware = require("../middleware/authMiddleware"); // adjust path
+const authMiddleware = require("../middleware/authMiddleware"); 
 const Post = require("../models/Post");
 const User = require("../models/User");
 const Notification = require("../models/Notification");

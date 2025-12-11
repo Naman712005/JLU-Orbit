@@ -176,5 +176,3 @@ otpForm.addEventListener("submit", async (e) => {
   }
 });
 
-// Optional: prefill for dev/testing if desired
-// document.getElementById('signupEmail').value = 'test@example.com';

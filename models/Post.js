@@ -1,4 +1,4 @@
-// models/Post.js
+
 const mongoose = require("mongoose");
 
 const CommentSchema = new mongoose.Schema({
@@ -10,19 +10,17 @@ const CommentSchema = new mongoose.Schema({
 const PostSchema = new mongoose.Schema(
   {
     author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    type: { type: String, required: true }, // blog, achievement, event, etc.
+    type: { type: String, required: true }, 
     title: { type: String, required: true },
     content: { type: String, required: true },
-    image: { type: String }, // saved path from multer
-    tags: [{ type: String }], // searchable tags
+    image: { type: String }, 
+    tags: [{ type: String }], 
 
-    // Like system
+
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 
-    // Comments system
     comments: [CommentSchema],
 
-    // Share system
 shares: {
     type: Number,
     default: 0

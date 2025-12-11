@@ -11,8 +11,6 @@ async function loadPosts(type = null) {
     const container = document.getElementById("postsContainer");
     container.innerHTML = "";
 
-    // Backend already returns posts sorted by createdAt DESC.
-    // Append in that order so newest naturally appear at the top.
     posts.forEach((p) => addPostToFeedFromAPI(p, false));
   } catch (err) {
     console.error(err);
@@ -37,7 +35,7 @@ function addPostToFeedFromAPI(post, prepend = false) {
 
   const commentsHTML = (post.comments || [])
     .map((c) => {
-      const isOwner = String(c.user?._id || c.user || "") === currentUserId; // comment owner only
+      const isOwner = String(c.user?._id || c.user || "") === currentUserId; 
       return `
       <div class="border-t pt-2 mt-2 flex justify-between items-center">
         <p class="text-sm">
@@ -132,8 +130,6 @@ function addPostToFeedFromAPI(post, prepend = false) {
   const container = document.getElementById("postsContainer");
   if (!container) return;
 
-  // If prepend is true (just-created post), put it at the very top.
-  // Otherwise append in natural order coming from the API.
   container.insertAdjacentHTML(prepend ? "afterbegin" : "beforeend", postHTML);
 }
 
@@ -194,7 +190,7 @@ res = await fetch(`${API_BASE}/posts/create`, {
     }
 
     const created = await res.json();
-    // Newly created post should appear at the top of the feed
+
     addPostToFeedFromAPI(created, true);
     closePostModal();
     e.target.reset();
@@ -255,7 +251,7 @@ async function commentPost(e, postId) {
 
 /* ---------------- DELETE COMMENT ---------------- */
 async function deleteComment(event, postId, commentId) {
-  event.stopPropagation(); // stop bubbling in case it's inside other clickable elements
+  event.stopPropagation(); 
 
   if (!confirm("Delete this comment?")) return;
 
@@ -425,7 +421,7 @@ async function editPost(postId) {
 
   if (res.ok) {
     alert("✅ Post updated successfully!");
-    loadPosts(); // reload posts to reflect changes
+    loadPosts(); 
   } else {
     const err = await res.json().catch(() => ({}));
     alert("❌ Failed to update post. " + (err.error || ""));
@@ -470,16 +466,15 @@ document.querySelectorAll(".filter-btn").forEach((button) => {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Make sure "feed" tab is visible
+
   showTab("feed");
 
-  // Mark "All" filter as active
+
   const allBtn = document.querySelector('.filter-btn[data-type="All"]');
   if (allBtn) {
     allBtn.classList.remove("bg-gray-800");
     allBtn.classList.add("bg-blue-600", "text-white");
   }
 
-  // ✅ Finally load all posts after DOM + scripts ready
   loadPosts(null);
 });

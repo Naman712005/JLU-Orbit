@@ -20,7 +20,7 @@ async function loadGroups() {
 // ---------- REPLACE initGroupPage() and helpers with this ----------
 function initGroupPage() {
   const rawCurrentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
-  // Normalize user id (backend might return `id` or `_id`)
+
   const currentUserId = String(rawCurrentUser.id || rawCurrentUser._id || "");
   let allGroups = [];
 
@@ -81,7 +81,7 @@ function initGroupPage() {
     });
   }
 
-  // Create Group handler (unchanged except update UI via addGroupCard)
+
   const form = document.getElementById("create-group-form");
   if (form) {
     form.addEventListener("submit", async (e) => {
@@ -113,7 +113,7 @@ function initGroupPage() {
           alert("✅ Group created successfully!");
           document.getElementById("create-group-modal").classList.add("hidden");
           form.reset();
-          // push into allGroups and render
+        
           allGroups.unshift(result);
           addGroupCard(result);
         } else {
@@ -126,7 +126,7 @@ function initGroupPage() {
     });
   }
 
-  // Expose for other functions that rely on it
+
   window.__fastconnect_groups_state = { allGroups, currentUserId, API_BASE, refresh: fetchGroups };
 }
 
@@ -187,9 +187,9 @@ function addGroupCard(group) {
     </div>
   `;
 
-  // Open detail modal when clicking the card background (not the buttons)
+
   card.addEventListener("click", (e) => {
-    if (e.target.closest("button")) return; // ignore clicks on action buttons
+    if (e.target.closest("button")) return; 
     openGroupDetail(group._id);
   });
 
@@ -300,11 +300,11 @@ const res = await fetch(`${API_BASE}/groups/${groupId}/join`, {
       return alert(err.message || "❌ Failed to join group");
     }
     const data = await res.json();
-    // update UI: replace the card or refresh groups
+   
     document.querySelector(`[data-id="${groupId}"]`)?.remove();
-    // prepend updated group for immediate feedback
+
     addGroupCard(data);
-    // also update cached state if present
+
     if (window.__fastconnect_groups_state) window.__fastconnect_groups_state.refresh();
     alert("✅ Joined the group!");
   } catch (err) {

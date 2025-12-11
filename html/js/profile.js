@@ -4,8 +4,7 @@ var API_BASE = (window.__CONFIG__ && window.__CONFIG__.API_BASE) || (location.or
 async function loadProfilePage() {
   try {
     console.log("✅ Loading profile.html dynamically...");
-    // In production, index.html and profile.html are served from the same /html root,
-    // so we just fetch "profile.html" relative to the current page.
+
     const res = await fetch("profile.html");
     const html = await res.text();
 
@@ -29,7 +28,7 @@ async function initProfilePage() {
   }
 
   try {
-    // 🔹 Fetch combined profile from backend (User + Profile)
+
     const res = await fetch(`${API_BASE}/profile`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -149,7 +148,7 @@ async function initProfilePage() {
       }
     });
 
-    // After base profile is ready, load tab content (posts, research)
+
     await loadProfileTabContent();
 
     console.log("✅ Profile page initialized and filled.");
@@ -262,7 +261,7 @@ async function saveProfileToBackend(updateData) {
     const data = await res.json();
 
     if (res.ok && data.profile) {
-      // Merge updated profile with current user
+
       const storedUser = JSON.parse(localStorage.getItem("currentUser")) || {};
       const updatedUser = { ...storedUser, ...data.profile };
       localStorage.setItem("currentUser", JSON.stringify(updatedUser));

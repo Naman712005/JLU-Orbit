@@ -1,5 +1,4 @@
-// — dynamic API base that gets set by the server via /config.js — fallback to relative path
-var API_BASE = (window.__CONFIG__ && window.__CONFIG__.API_BASE) || (location.origin + '/api') || '/api';
+
 
 /* ---------------- LOAD POSTS ---------------- */
 async function loadPosts(type = null) {

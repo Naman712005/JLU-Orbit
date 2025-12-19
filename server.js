@@ -13,17 +13,25 @@ const path = require('path');
 const http = require('http');
 const { Server } = require("socket.io");
 
+/********************* URL NORMALIZER *********************/
+const normalizeUrl = (url) => {
+  if (!url) return null;
+  return url.startsWith('http://') || url.startsWith('https://')
+    ? url
+    : `https://${url}`;
+};
+
 /********************* APP + SERVER *********************/
 const app = express();
 const server = http.createServer(app);
 
 /********************* CORS *********************/
-// Auto-detect FRONTEND_URL: Use env var, or Render URL, or accept all origins
 const FRONTEND_URL =
   process.env.FRONTEND_URL ||
-  (process.env.RENDER_EXTERNAL_URL ? `https://${process.env.RENDER_EXTERNAL_URL}` : null);
+  (process.env.RENDER_EXTERNAL_URL
+    ? normalizeUrl(process.env.RENDER_EXTERNAL_URL)
+    : null);
 
-// Allow all origins in development/when not configured
 app.use(cors({
   origin: FRONTEND_URL || "*",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -41,10 +49,11 @@ app.use(express.static(path.join(__dirname, 'html')));
 
 /********************* DYNAMIC FRONTEND CONFIG *********************/
 app.get('/config.js', (req, res) => {
-  // Auto-detect API base URL
   const apiBase =
     process.env.API_BASE ||
-    (process.env.RENDER_EXTERNAL_URL ? `https://${process.env.RENDER_EXTERNAL_URL}/api` : '/api');
+    (process.env.RENDER_EXTERNAL_URL
+      ? normalizeUrl(process.env.RENDER_EXTERNAL_URL) + '/api'
+      : '/api');
 
   const cfg = {
     API_BASE: apiBase,
@@ -63,7 +72,6 @@ app.use('/api/research', require('./routes/research'));
 app.use('/api/profile', require('./routes/profiles'));
 app.use('/api/search', require('./routes/search'));
 app.use('/api/notifications', require('./routes/notifications'));
-
 
 /********************* SOCKET.IO *********************/
 const io = new Server(server, {
@@ -88,8 +96,8 @@ io.on("connection", (socket) => {
   });
 });
 
-/********************* SPA FALLBACK (Express 5 SAFE) *********************/
-app.use((req, res, next) => {
+/********************* SPA FALLBACK *********************/
+app.use((req, res) => {
   if (
     req.path.startsWith('/api') ||
     req.path.startsWith('/uploads') ||
@@ -97,10 +105,8 @@ app.use((req, res, next) => {
   ) {
     return res.status(404).json({ error: 'Not found' });
   }
-
   res.sendFile(path.join(__dirname, 'html', 'index.html'));
 });
-
 
 /********************* DB + SERVER START *********************/
 const PORT = process.env.PORT || 4000;
@@ -109,7 +115,6 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ MongoDB connected');
-
     server.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });

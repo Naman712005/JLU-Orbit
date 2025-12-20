@@ -6,22 +6,43 @@ document.getElementById("navUser").textContent = (currentUser.username || "U")
   .slice(0, 2)
   .toUpperCase();
 
-  /* ---------------- HELPER: GET VALID AUTH TOKEN ---------------- */
+/* ---------------- HELPER: GET VALID AUTH TOKEN ---------------- */
 function getAuthToken() {
   return localStorage.getItem("authToken") || null;
 }
 
+// Track which tabs have already done their one-time HTML + data bootstrapping
+let groupsInitialized = false;
+let researchInitialized = false;
+let profileInitialized = false;
+
 function showTab(tab) {
   ["feed", "profile", "groups", "research", "search"].forEach((id) => {
-    document.getElementById(id).classList.add("hidden");
+    const section = document.getElementById(id);
+    if (section) section.classList.add("hidden");
   });
-  document.getElementById(tab).classList.remove("hidden");
 
-  if (tab === "groups") loadGroups();
-  if (tab === "research") loadResearchPage();
-  if (tab === "profile") loadProfilePage(); 
+  const activeSection = document.getElementById(tab);
+  if (activeSection) activeSection.classList.remove("hidden");
+
+  // Only do heavy HTML injection + API calls the first time a tab is opened
+  if (tab === "groups" && !groupsInitialized) {
+    loadGroups();
+    groupsInitialized = true;
+  }
+
+  if (tab === "research" && !researchInitialized) {
+    loadResearchPage();
+    researchInitialized = true;
+  }
+
+  if (tab === "profile" && !profileInitialized) {
+    loadProfilePage();
+    profileInitialized = true;
+  }
 }
 
+// Default landing tab
 showTab("feed");
 
 function openPostModal() {
@@ -63,23 +84,13 @@ function escapeHtml(str = "") {
     .replace(/'/g, "&#039;");
 }
 
-// Hook navbar click
-document
-  .querySelector("li[onclick*='research']")
-  .addEventListener("click", () => {
-    showTab("research");
-    loadResearchPage();
-  });
-
-
-  // Wait for DOM to load before attaching listeners
+// Wait for DOM to load before attaching listeners
 document.addEventListener("DOMContentLoaded", () => {
   const profileBtn = document.getElementById("profileBtn");
   if (profileBtn) {
     profileBtn.addEventListener("click", () => {
-
+      // Let showTab handle one-time initialization logic
       showTab("profile");
-      loadProfilePage(); 
     });
   }
 });

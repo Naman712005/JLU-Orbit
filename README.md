@@ -155,26 +155,3 @@ npm run dev
 
 # OR run production server
 npm start
-
-📁 Project Structure
-.
-├── html/                 # Frontend files
-│   ├── js/               # JavaScript modules
-│   ├── auth.html         # Authentication page
-│   ├── index.html        # Main application
-│   └── ...               # Other UI pages
-├── models/               # MongoDB schemas
-│   ├── User.js
-│   ├── Post.js
-│   ├── Group.js
-│   └── ...
-├── routes/               # API endpoints
-│   ├── auth.js
-│   ├── posts.js
-│   ├── groups.js
-│   └── ...
-├── middleware/           # Express middleware
-├── uploads/              # User uploaded files
-├── utils/                # Helper functions
-├── server.js             # Main server file
-└── package.json

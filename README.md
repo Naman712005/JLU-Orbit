@@ -134,24 +134,3 @@ Node.js v18+
 MongoDB (Local or Atlas)
 
 Email account for OTP services
-
-Installation
-# Clone the repository
-git clone <repository-url>
-
-# Navigate to project directory
-cd 3
-
-# Install dependencies
-npm install
-
-# Create environment file
-cp .env.example .env
-
-# Update .env with your credentials
-
-# Run development server
-npm run dev
-
-# OR run production server
-npm start

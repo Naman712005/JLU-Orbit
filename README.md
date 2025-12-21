@@ -194,12 +194,14 @@ npm start
 └── package.json
 
 ```
+---
 
 ### 💻 How to Run
 
 click on this link (The project is deployed on render.com)
 https://jlu-orbit.onrender.com/
 
+---
 
 ### 🧠 Design Philosophy
 

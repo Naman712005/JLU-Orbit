@@ -193,7 +193,9 @@ npm start
 ├── server.js              # Main server entry point
 └── package.json
 
-🧠 Design Philosophy
+```
+
+### 🧠 Design Philosophy
 
 Academic-first social networking
 

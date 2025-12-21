@@ -1,136 +1,205 @@
-🚀 JLU Orbit
+<!-- ============================== -->
+<!--        JLU ORBIT README        -->
+<!-- ============================== -->
 
-Social Networking Platform for JLU Engineering Department
+# 🚀 JLU Orbit
+### Social Networking Platform for JLU Engineering Department
 
-📖 Overview
+---
 
-JLU Orbit is a modern, feature-rich social networking and blogging platform designed specifically for the FAST (Faculty of Applied Sciences & Technology) community at JLU.
+## 📌 Overview
 
-It enables students, faculty, and staff to connect, collaborate, share knowledge, and stay updated with department activities — without the noise of generic social platforms.
+**JLU Orbit** is a modern, feature-rich **social networking and academic collaboration platform** built exclusively for the  
+**FAST (Faculty of Applied Sciences & Technology)** community at **JLU**.
 
-✨ Features
-🔐 Authentication
+The platform enables **students, faculty, and staff** to:
 
-Secure login & signup with email verification
+- Connect and collaborate in a closed academic ecosystem  
+- Share knowledge, research, and project work  
+- Stay updated with departmental activities in real time  
 
-OTP-based email verification
+Unlike generic social networks, **JLU Orbit is purpose-built for academics**.
 
-JWT token-based authentication
+---
 
-Role-based access control
+## ✨ Core Features
 
-📝 Feed & Posts
+---
 
-Create posts with multiple types:
+### 🔐 Authentication & Security
 
-💬 Discussions
+- Secure **Login / Signup** workflow  
+- **OTP-based email verification**  
+- **JWT-based authentication**  
+- **Role-based access control** (Student / Faculty / Admin)  
+- Password hashing using **Bcrypt**
 
-❓ Questions
+---
 
-📢 Announcements
+### 📝 Feed & Post System
 
-🚀 Project Work
+Create and interact with multiple post types:
 
-📅 Events
+- 💬 Discussions  
+- ❓ Questions  
+- 📢 Announcements  
+- 🚀 Project Work  
+- 📅 Events  
 
-Image upload support
+Additional capabilities:
 
-Like, comment, and share functionality
+- Image upload support  
+- Like, comment, and share functionality  
+- Tag-based filtering & search  
+- **Real-time feed updates**
 
-Tag-based filtering and search
+---
 
-Real-time updates
+### 👥 Groups & Communities
 
-👥 Groups
+- Create **Public / Private groups**  
+- Group categories:
+  - Project  
+  - Hackathon  
+  - Research  
+  - Study  
+  - Club  
+- Membership management  
+- Dedicated collaboration spaces for teams
 
-Create public / private groups
+---
 
-Categories:
+### 🔬 Research Hub
 
-Project
+- Share **research papers & academic projects**  
+- Keyword-based search  
+- Original work verification  
+- Supports academic collaboration and discovery
 
-Hackathon
+---
 
-Research
+### 👤 User Profiles
 
-Study
+- Customizable profile information  
+- Course, specialization, and semester details  
+- Bio and profile image  
+- JLU ID integration
 
-Club
+---
 
-Group membership management
+### 🔔 Notifications
 
-Collaborative spaces for teams
+- Real-time notifications using **Socket.io**  
+- Activity tracking  
+- Interactive notification drawer
 
-🔬 Research Hub
+---
 
-Share research papers and academic projects
+### 🔍 Global Search
 
-Keyword-based search
+- Search across:
+  - Posts  
+  - Users  
+  - Groups  
+- Advanced filtering  
+- Optimized and relevant results
 
-Original work verification
+---
 
-Academic collaboration support
+## 🛠️ Technology Stack
 
-👤 User Profiles
+---
 
-Customizable user profiles
+### 🎨 Frontend
 
-Course, specialization, and semester details
+- HTML5  
+- Tailwind CSS  
+- Vanilla JavaScript  
+- Font Awesome Icons  
 
-Bio and profile image
+---
 
-JLU ID integration
+### ⚙️ Backend
 
-🔔 Notifications
+- Node.js  
+- Express.js  
+- MongoDB (Mongoose ODM)  
+- Socket.io (real-time features)  
+- JWT (authentication)  
+- Bcrypt (password hashing)  
+- Cloudinary (media uploads)  
+- Brevo (email & OTP service)
 
-Real-time notifications using Socket.io
+---
 
-Activity tracking
+## 🚀 Getting Started
 
-Interactive notification drawer
+---
 
-🔍 Search
+### ✅ Prerequisites
 
-Search across posts, users, and groups
+- Node.js **v18+**  
+- MongoDB (Local or Atlas)  
+- Email account for OTP services  
 
-Advanced filtering
+---
 
-Relevant and optimized results
+### 📦 Installation
 
-🛠️ Tech Stack
-Frontend
+```bash
+# Clone the repository
+git clone <repository-url>
 
-HTML5
+# Navigate into the project directory
+cd 3
 
-Tailwind CSS
+# Install dependencies
+npm install
 
-Vanilla JavaScript
+# Create environment configuration
+cp .env.example .env
 
-Font Awesome Icons
+# Update .env with your credentials
 
-Backend
+# Run in development mode
+npm run dev
 
-Node.js
+# Run in production mode
+npm start
 
-Express.js
+📁 Project Structure
+.
+├── html/                  # Frontend files
+│   ├── js/                # JavaScript modules
+│   ├── auth.html          # Authentication page
+│   ├── index.html         # Main application
+│   └── ...                # Other UI pages
+│
+├── models/                # MongoDB schemas
+│   ├── User.js
+│   ├── Post.js
+│   ├── Group.js
+│   └── ...
+│
+├── routes/                # API routes
+│   ├── auth.js
+│   ├── posts.js
+│   ├── groups.js
+│   └── ...
+│
+├── middleware/            # Express middleware
+├── uploads/               # Uploaded files
+├── utils/                 # Helper utilities
+│
+├── server.js              # Main server entry point
+└── package.json
 
-MongoDB with Mongoose
+🧠 Design Philosophy
 
-Socket.io (real-time features)
+Academic-first social networking
 
-JWT (authentication)
+Clean UI with minimal distractions
 
-Bcrypt (password hashing)
+Secure, scalable backend
 
-Cloudinary (file uploads)
-
-Brevo (email service)
-
-🚀 Getting Started
-Prerequisites
-
-Node.js v18+
-
-MongoDB (Local or Atlas)
-
-Email account for OTP services
+Real-time interaction where it matters

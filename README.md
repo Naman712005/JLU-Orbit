@@ -10,7 +10,7 @@
 ## 📌 Overview
 
 **JLU Orbit** is a modern, feature-rich **social networking and academic collaboration platform** built exclusively for the  
-**FAST (Faculty of Applied Sciences & Technology)** community at **JLU**.
+**FAST (Faculty of Science & Technology)** community at **JLU**.
 
 The platform enables **students, faculty, and staff** to:
 

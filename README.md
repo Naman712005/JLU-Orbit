@@ -31,7 +31,6 @@ Unlike generic social networks, **JLU Orbit is purpose-built for academics**.
 - Secure **Login / Signup** workflow  
 - **OTP-based email verification**  
 - **JWT-based authentication**  
-- **Role-based access control** (Student / Faculty / Admin)  
 - Password hashing using **Bcrypt**
 
 ---
